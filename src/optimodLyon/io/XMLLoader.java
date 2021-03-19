@@ -116,6 +116,10 @@ public class XMLLoader
             System.out.println(e);
         }
 
+        if (document == null)
+        {
+            throw new MalformedXMLException(String.format("Le fichier %s n'a pas pu être parser correctement", path));
+        }
 
         Node planningRequestNode = document.getElementsByTagName(PLANNING_REQUEST_XML_TAG).item(0);
 

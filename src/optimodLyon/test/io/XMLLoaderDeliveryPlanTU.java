@@ -19,7 +19,7 @@ import optimodLyon.model.Request;
  */
 public class XMLLoaderDeliveryPlanTU
 {
-    private static final String DELIVERY_FILES_PATH = "./src/optimodLyon/test/io/delivery-files";
+    private static final String DELIVERY_FILES_PATH = "./rsc/test/io/delivery-files";
 
     /**
      * Méthode qui test le cas où le fichier donné en paramètre n'existe pas
