@@ -29,14 +29,14 @@ public class Request
     /**
      * Adresse de livraison
      */
-    private int deliveryAddress;
+    private long deliveryAddress;
 
     /**
      * Adresse de récupération de la livraison
      */
-    private int pickupAddress;
+    private long pickupAddress;
 
-    public Request(int id, int deliveryDuration, int pickupDuration, int deliveryAddress, int pickupAddress)
+    public Request(int id, int deliveryDuration, int pickupDuration, long deliveryAddress, long pickupAddress)
     {
         this.id = id;
 
@@ -74,7 +74,7 @@ public class Request
     /**
      * @return L'id de l'intersection pour la livraison
      */
-    public int getDeliveryAddress()
+    public long getDeliveryAddress()
     {
         return deliveryAddress;
     }
@@ -83,7 +83,7 @@ public class Request
      * Met à jour l'adresse de livraison
      * @param deliveryAddress L'id de l'adresse de livraison
      */
-    public void setDeliveryAddress(int deliveryAddress)
+    public void setDeliveryAddress(long deliveryAddress)
     {
         this.deliveryAddress = deliveryAddress;
     }
@@ -92,7 +92,7 @@ public class Request
      * Met à jour l'adresse de récupération de la livraison
      * @param pickupAddress L'id de l'adresse de récupération de livraison
      */
-    public void setPickupAddress(int pickupAddress)
+    public void setPickupAddress(long pickupAddress)
     {
         this.pickupAddress = pickupAddress;
     }
@@ -100,7 +100,7 @@ public class Request
     /**
      * @return L'id de l'intersection pour la récupération de la livraison
      */
-    public int getPickupAddress()
+    public long getPickupAddress()
     {
         return pickupAddress;
     }

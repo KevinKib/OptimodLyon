@@ -2,7 +2,7 @@ package optimodLyon.model;
 
 import java.util.List;
 import java.util.ArrayList;
-import java.time.LocalDateTime;
+import java.sql.Time;
 
 /**
  * Classe représentant un inventaire de demandes de pickup-delivery.
@@ -24,9 +24,9 @@ public class DeliveryPlan
     /**
      * Date de départ
      */
-    private LocalDateTime departureTime;
+    private Time departureTime;
 
-    public DeliveryPlan(final List<Request> requests, final LocalDateTime departureTime, int depotIntersectionId)
+    public DeliveryPlan(final List<Request> requests, final Time departureTime, int depotIntersectionId)
     {
         this.requests = new ArrayList<Request>();
         this.requests.addAll(requests);
@@ -41,6 +41,14 @@ public class DeliveryPlan
     public int getDepotAddressId()
     {
         return this.depotIntersectionId;
+    }
+
+    /**
+     * @return Le temps de départ pour l'inventaire de pickup-delivery
+     */
+    public Time getDepartureTime()
+    {
+        return this.departureTime;
     }
 
     /**

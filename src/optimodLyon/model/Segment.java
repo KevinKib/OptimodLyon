@@ -10,12 +10,12 @@ public class Segment
     /**
      * Id de l'intersection destination du segment
      */
-    private int destinationId;
+    private long destinationId;
 
     /**
      * Id de l'intersection origine du segment
      */
-    private int originId;
+    private long originId;
 
     /**
      * Nom du segment
@@ -34,7 +34,7 @@ public class Segment
      * @param name Le nom du segment
      * @param length La longueur du segment
      */
-    public Segment(int destinationId, int originId, final String name, float length)
+    public Segment(long destinationId, long originId, final String name, float length)
     {
         this.destinationId = destinationId;
         this.originId = originId;
@@ -45,7 +45,7 @@ public class Segment
     /**
      * @return L'id de l'intersection destination
      */
-    public int getDestinationId()
+    public long getDestinationId()
     {
         return this.destinationId;
     }
@@ -69,7 +69,7 @@ public class Segment
     /**
      * @return L'id de l'intersection origine
      */
-    public int getOriginId()
+    public long getOriginId()
     {
         return this.originId;
     }
