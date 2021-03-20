@@ -1,21 +1,25 @@
 package optimodLyon.io;
 
-import optimodLyon.model.DeliveryPlan;
-import optimodLyon.model.Request;
+import optimodLyon.model.*;
 
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
+import org.xml.sax.SAXException;
+
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.parsers.ParserConfigurationException;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.sql.Time;
 import java.time.format.DateTimeFormatter;
+import java.util.HashMap;
 import java.util.List;
 import java.util.ArrayList;
+import java.util.Map;
 
 /**
  * Classe qui va charger à partir de fichiers XML la carte et les courses.
@@ -173,7 +177,7 @@ public class XMLLoader
 
         Element mapElement = (Element) mapNode;
 
-        Map<Integer, Intersection> intersections = new HashMap<>();
+        Map<Long, Intersection> intersections = new HashMap<>();
 
         NodeList intersectionNodeList = mapElement.getElementsByTagName(INTERSECTION_XML_TAG);
         if(intersectionNodeList.getLength() < 3) {
@@ -202,7 +206,7 @@ public class XMLLoader
             }
 
             // informations de l'intersection courante
-            int id = Integer.parseInt(idAttribute);
+            long id = Long.parseLong(idAttribute);
             float longitude = Float.parseFloat(longitudeAttribute);
             float latitude = Float.parseFloat(latitudeAttribute);
 
@@ -244,7 +248,7 @@ public class XMLLoader
             int originId = Integer.parseInt(originAttribute);
             float length = Float.parseFloat(lengthAttribute);
 
-            Segment segment = new Segment(destinationId, originId, nameAttribute, length);
+            Segment segment = new Segment(intersections.get(destinationId), intersections.get(originId), nameAttribute, length);
             segments.add(segment);
         }
 
@@ -256,13 +260,14 @@ public class XMLLoader
     /**
      * Charge un deliveryPlan contenu dans un fichier
      * @param path Le chemin du fichier
+     * @param map La map de la ville
      * @return Le deliveryPlan si le contenu du fichier est correcte, sinon false
      * @throws MalformedXMLException si le fichier XML contient des erreurs
      * @throws FileNotFoundException si le fichier donné en paramètre n'existe pas
      * @throws SecurityException si le fichier n'est pas accessible en écriture
      * @throws IOException si le fichier est un répertoire
      */
-    public static DeliveryPlan loadDeliveryPlan(final String path) throws MalformedXMLException, FileNotFoundException, SecurityException, IOException
+    public static DeliveryPlan loadDeliveryPlan(final CityMap map, final String path) throws MalformedXMLException, FileNotFoundException, SecurityException, IOException
     {
         DeliveryPlan deliveryPlan = null;
 
@@ -369,7 +374,7 @@ public class XMLLoader
                 long deliveryAddress = Long.parseLong(deliveryAddressAttribute);
                 long pickupAddress = Long.parseLong(pickupAddressAttribute);
 
-                Request request = new Request(Request.nextRequestId(), deliveryDuration, pickupDuration, deliveryAddress, pickupAddress);
+                Request request = new Request(deliveryDuration, pickupDuration, map.getIntersectionById(deliveryAddress), map.getIntersectionById(pickupAddress));
                 requests.add(request);
             }
         }

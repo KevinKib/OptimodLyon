@@ -15,7 +15,7 @@ import java.io.IOException;
  */
 public class XMLLoaderCityMapTU
 {
-    private static final String MAP_FILES_PATH = "./src/optimodLyon/test/io/mapfiles";
+    private static final String MAP_FILES_PATH = "./rsc/test/io/mapfiles";
 
     /**
      * Méthode qui test le cas où le fichier donné en paramètre n'existe pas
