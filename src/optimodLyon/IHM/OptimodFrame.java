@@ -1,5 +1,10 @@
 package optimodLyon.IHM;
 
+import optimodLyon.controller.Controller;
+import optimodLyon.io.XMLLoader;
+import optimodLyon.model.CityMap;
+import optimodLyon.model.DeliveryPlan;
+
 import javax.swing.*;
 import java.awt.*;
 
@@ -8,13 +13,46 @@ import java.awt.*;
  * Contains the map, and the main functionalities of the app.
  */
 public class OptimodFrame extends JFrame {
+
+    /**
+     * Composant qui va contenir toutes les différentes vues
+     */
     private JPanel mainPanel;
 
-    private JPanel buttonBarPanel;
-    private JLabel appNameLabel;
-    private JButton mapButton;
-    private JButton programButton;
-    private JButton tourButton;
+    /**
+     * Etat de la fenetre
+     */
+    private OptimodFrameState state;
+
+    /**
+     * Largeyr de la fenetre
+     */
+    private static final int FRAME_WIDTH = 900;
+
+    /**
+     * Hauteur de la fenetre
+     */
+    private static final int FRAME_HEIGHT = 640;
+
+    /**
+     * Vue centrale de la fenetre (avec la carte)
+     */
+    private JPanel centerView;
+
+    /**
+     * Vue au top de la fenetre (Panel en haut qui contient les boutons pour charger les fichiers XML)
+     */
+    private JPanel navigationView;
+
+    /**
+     * Le controleur de la fenetre
+     */
+    private Controller controller;
+
+    /**
+     * Nom de l'application
+     */
+    public static final String APP_NAME = "Optimod'Lyon";
 
     private JPanel centerPanel;
     private JLabel mapPlaceholder;
@@ -26,16 +64,20 @@ public class OptimodFrame extends JFrame {
 
     public OptimodFrame(String name) {
         super();
+
+        this.controller = new Controller();
+
         // Frame construction
-        this.setSize(new Dimension(900, 640));
+        this.setSize(FRAME_WIDTH, FRAME_HEIGHT);
+        this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
         // Main panel
         mainPanel = new JPanel();
         mainPanel.setLayout(new BorderLayout());
 
-        // Button bar
-        buildButtonBar();
-        mainPanel.add(buttonBarPanel, BorderLayout.NORTH);
+        // Navigation view
+        this.navigationView = new NavigationView(this);
+        mainPanel.add(this.navigationView, BorderLayout.NORTH);
 
         // Center Panel
         buildCenterPanel();
@@ -48,52 +90,58 @@ public class OptimodFrame extends JFrame {
         // Set main panel
         this.setContentPane(mainPanel);
 
-        // Default operations
-        this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
     }
 
-    private void buildButtonBar() {
-        // Init bar pannel
-        buttonBarPanel = new JPanel();
-        buttonBarPanel.setLayout(new GridLayout(1, 4, 1, 0));
-        buttonBarPanel.setBackground(Color.BLUE);
-
-        // Name label
-        appNameLabel = new JLabel();
-        appNameLabel.setText("Optimod'Lyon");
-        appNameLabel.setHorizontalAlignment(SwingConstants.CENTER);
-        appNameLabel.setVerticalTextPosition(SwingConstants.CENTER);
-        appNameLabel.setFont(new Font("Arial", Font.BOLD, 28));
-        appNameLabel.setForeground(Color.WHITE);
-
-        // Map button
-        mapButton = buildButton("Charger une carte");
-
-        // Program button
-        programButton = buildButton("Charger un programme de Pickup & Delivery");
-
-        // Tour Button
-        tourButton = buildButton("Calculer la tournée de Pickup & Delivery");
-
-        // Add component to the bar panel
-        buttonBarPanel.add(appNameLabel);
-        buttonBarPanel.add(mapButton);
-        buttonBarPanel.add(programButton);
-        buttonBarPanel.add(tourButton);
+    /**
+     * Mets à jour l'état courant de la fenetre
+     * @param newState Le nouvel etat
+     */
+    public void updateState(OptimodFrameState newState)
+    {
+        this.state = newState;
+        this.updateView();
     }
 
-    private JButton buildButton(String text) {
-        JButton button = new JButton();
-        button.setText(
-                String.format("<html><body style=\"text-align: center;  text-justify: inter-word;\">%s</body></html>",
-                        text)
-        );
-        button.setBackground(null);
-        button.setForeground(Color.WHITE);
-        button.setFont(new Font("Arial", Font.BOLD, 20));
-        button.setBorderPainted(false);
-        button.setBorder(BorderFactory.createLineBorder(Color.BLACK));
-        return button;
+    /**
+     * Demande au controleur de la fenetre de charger le fichier de city map
+     * @param filename Le fichier contenant les informations de la map
+     * @@return true si le fichier a bien été chargé, sinon false
+     */
+    boolean loadCityMap(String filename)
+    {
+        try
+        {
+            CityMap map = XMLLoader.loadMap(filename);
+            this.controller.setCityMap(map);
+        }
+        catch (Exception e)
+        {
+            return false;
+        }
+        return true;
+    }
+
+    /**
+     * Demande au controleur de la fenetre de charger un fichier de delivery plan
+     * @param filename le fichier contenant les informations du delivery plan
+     * @return true si le fichier a bien été chargé, sinon false
+     */
+    boolean loadDeliveryPlan(String filename)
+    {
+        try
+        {
+            DeliveryPlan plan = XMLLoader.loadDeliveryPlan(filename);
+            this.controller.setDeliveryPlan(plan);
+        }
+        catch (Exception e)
+        {
+            return false;
+        }
+        return true;
+    }
+
+    private void updateView()
+    {
     }
 
     private void buildCenterPanel() {
