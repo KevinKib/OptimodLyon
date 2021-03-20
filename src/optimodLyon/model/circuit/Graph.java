@@ -5,19 +5,19 @@ import optimodLyon.model.Waypoint;
 import java.util.List;
 
 public class Graph {
-    public List<Waypoint> getWaypointList() {
-        return waypointList;
+    public List<Waypoint> getwaypoints() {
+        return waypoints;
     }
 
-    public List<Edge> getEdgeList() {
-        return edgeList;
+    public List<Edge> getedges() {
+        return edges;
     }
 
-    private List<Waypoint> waypointList;
-    private List<Edge> edgeList;
+    private List<Waypoint> waypoints;
+    private List<Edge> edges;
 
     public Graph(List<Waypoint> waypointList, List<Edge> edgeList) {
-        this.waypointList = waypointList;
-        this.edgeList = edgeList;
+        this.waypoints = waypointList;
+        this.edges = edgeList;
     }
 }
