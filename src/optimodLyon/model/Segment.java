@@ -8,14 +8,14 @@ package optimodLyon.model;
 public class Segment
 {
     /**
-     * Id de l'intersection destination du segment
+     * Intersection destination du segment
      */
-    private long destinationId;
+    private Intersection destination;
 
     /**
-     * Id de l'intersection origine du segment
+     * Intersection origine du segment
      */
-    private long originId;
+    private Intersection origin;
 
     /**
      * Nom du segment
@@ -29,25 +29,25 @@ public class Segment
 
     /**
      * Constructeur de la classe Segment
-     * @param destinationId L'id de l'intersection destination
-     * @param originId L'id de l'intersection origine
+     * @param destination L'intersection destination
+     * @param origin L'intersection origine
      * @param name Le nom du segment
      * @param length La longueur du segment
      */
-    public Segment(long destinationId, long originId, final String name, float length)
+    public Segment(Intersection destination, Intersection origin, final String name, float length)
     {
-        this.destinationId = destinationId;
-        this.originId = originId;
-        this.name = new String(name);
+        this.destination = destination;
+        this.origin = origin;
+        this.name = name;
         this.length = length;
     }
 
     /**
-     * @return L'id de l'intersection destination
+     * @return L'intersection destination
      */
-    public long getDestinationId()
+    public Intersection getDestination()
     {
-        return this.destinationId;
+        return this.destination;
     }
 
     /**
@@ -67,10 +67,10 @@ public class Segment
     }
 
     /**
-     * @return L'id de l'intersection origine
+     * @return L'intersection origine
      */
-    public long getOriginId()
+    public Intersection getOrigin()
     {
-        return this.originId;
+        return this.origin;
     }
 }

@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<map>
+<intersection latitude="45.751892" longitude="4.883404"/>
+<intersection id="26317396" latitude="45.75356" longitude="4.883734"/>
+<intersection id="325772567" latitude="45.751896" longitude="4.8833594"/>
+<segment destination="26317396" length="187.21068" name="Rue Saint-Isidore" origin="325772567"/>
+<segment destination="365087270" length="3.491316" name="" origin="325772567"/>
+</map>

@@ -1,9 +1,9 @@
 package optimodLyon.test.io;
 
+import optimodLyon.model.CityMap;
+import org.junit.Before;
 import org.junit.Test;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -14,12 +14,31 @@ import optimodLyon.io.*;
 import optimodLyon.model.DeliveryPlan;
 import optimodLyon.model.Request;
 
+import static org.junit.Assert.*;
+
 /**
  * Classe de test qui va tester le parsing d'un fichier d'inventaire de pickup-delivery
  */
 public class XMLLoaderDeliveryPlanTU
 {
     private static final String DELIVERY_FILES_PATH = "./rsc/test/io/delivery-files";
+
+    private CityMap cityMap;
+
+    @Before
+    public void loadCityMap()
+    {
+
+        try
+        {
+            this.cityMap = XMLLoader.loadMap(new File(DELIVERY_FILES_PATH, "map.xml").getAbsolutePath());
+        }
+        catch(Exception e)
+        {
+            System.err.println(e.getMessage());
+            fail("Impossible de charger la map");
+        }
+    }
 
     /**
      * Méthode qui test le cas où le fichier donné en paramètre n'existe pas
@@ -31,7 +50,7 @@ public class XMLLoaderDeliveryPlanTU
         // Fichier qui n'existe pas
         try
         {
-            plan = XMLLoader.loadDeliveryPlan(new File(DELIVERY_FILES_PATH, "unexisting.xml").getAbsolutePath());
+            plan = XMLLoader.loadDeliveryPlan(this.cityMap, new File(DELIVERY_FILES_PATH, "unexisting.xml").getAbsolutePath());
         }
         catch (Exception e)
         {
@@ -50,7 +69,7 @@ public class XMLLoaderDeliveryPlanTU
         // Fichier qui existe mais qui est un répertoire
         try
         {
-            plan = XMLLoader.loadDeliveryPlan(new File(DELIVERY_FILES_PATH).getAbsolutePath());
+            plan = XMLLoader.loadDeliveryPlan(this.cityMap, new File(DELIVERY_FILES_PATH).getAbsolutePath());
         }
         catch (Exception e)
         {
@@ -72,7 +91,7 @@ public class XMLLoaderDeliveryPlanTU
         // Noeud depot qui n'existe pas
         try
         {
-            plan = XMLLoader.loadDeliveryPlan(path);
+            plan = XMLLoader.loadDeliveryPlan(this.cityMap, path);
         }
         catch (Exception e)
         {
@@ -85,7 +104,7 @@ public class XMLLoaderDeliveryPlanTU
         // Attribut address qui n'est pas présent
         try
         {
-            plan = XMLLoader.loadDeliveryPlan(path);
+            plan = XMLLoader.loadDeliveryPlan(this.cityMap, path);
         }
         catch (Exception e)
         {
@@ -98,7 +117,7 @@ public class XMLLoaderDeliveryPlanTU
         // Attribut departureTime qui n'existe pas
         try
         {
-            plan = XMLLoader.loadDeliveryPlan(path);
+            plan = XMLLoader.loadDeliveryPlan(this.cityMap, path);
         }
         catch (Exception e)
         {
@@ -121,7 +140,7 @@ public class XMLLoaderDeliveryPlanTU
         // Attribut pickupAddress manquant
         try
         {
-            plan = XMLLoader.loadDeliveryPlan(path);
+            plan = XMLLoader.loadDeliveryPlan(this.cityMap, path);
         }
         catch (Exception e)
         {
@@ -135,7 +154,7 @@ public class XMLLoaderDeliveryPlanTU
         // Attribut deliveryAddress manquant
         try
         {
-            plan = XMLLoader.loadDeliveryPlan(path);
+            plan = XMLLoader.loadDeliveryPlan(this.cityMap, path);
         }
         catch (Exception e)
         {
@@ -149,7 +168,7 @@ public class XMLLoaderDeliveryPlanTU
         // Attribut pickupDuration
         try
         {
-            plan = XMLLoader.loadDeliveryPlan(path);
+            plan = XMLLoader.loadDeliveryPlan(this.cityMap, path);
         }
         catch (Exception e)
         {
@@ -163,7 +182,7 @@ public class XMLLoaderDeliveryPlanTU
         // Attribut deliveryDuration
         try
         {
-            plan = XMLLoader.loadDeliveryPlan(path);
+            plan = XMLLoader.loadDeliveryPlan(this.cityMap, path);
         }
         catch (Exception e)
         {
@@ -184,7 +203,7 @@ public class XMLLoaderDeliveryPlanTU
 
         try
         {
-            plan = XMLLoader.loadDeliveryPlan(path);
+            plan = XMLLoader.loadDeliveryPlan(this.cityMap, path);
 
             // vérification des informations du depot
             assertEquals(342873658, plan.getDepotAddressId());
@@ -197,10 +216,10 @@ public class XMLLoaderDeliveryPlanTU
             Request request = requests.get(0);
 
             // vérification des informations de la requête
-            assertEquals(208769039, request.getPickupAddress());
-            assertEquals(25173820, request.getDeliveryAddress());
-            assertEquals(180, request.getPickupDuration());
-            assertEquals(240, request.getDeliveryDuration());
+            assertEquals(208769039, request.getPickup().getIntersection().getId());
+            assertEquals(25173820, request.getDelivery().getIntersection().getId());
+            assertEquals(180, request.getPickup().getDuration());
+            assertEquals(240, request.getDelivery().getDuration());
         }
         catch (Exception e)
         {
@@ -211,7 +230,7 @@ public class XMLLoaderDeliveryPlanTU
         path = new File(DELIVERY_FILES_PATH, "delivery-good-formed2.xml").getAbsolutePath();
         try
         {
-            plan = XMLLoader.loadDeliveryPlan(path);// vérification des informations du depot
+            plan = XMLLoader.loadDeliveryPlan(this.cityMap, path);// vérification des informations du depot
 
             assertEquals(25327124, plan.getDepotAddressId());
             assertEquals(Time.valueOf("8:0:0"), plan.getDepartureTime());
@@ -222,10 +241,10 @@ public class XMLLoaderDeliveryPlanTU
             Request lastRequest = requests.get(requests.size() - 1);
 
             // vérification des informations de la requête
-            assertEquals(1362204817, lastRequest.getPickupAddress());
-            assertEquals(843129906, lastRequest.getDeliveryAddress());
-            assertEquals(180, lastRequest.getPickupDuration());
-            assertEquals(540, lastRequest.getDeliveryDuration());
+            assertEquals(1362204817, lastRequest.getPickup().getIntersection().getId());
+            assertEquals(843129906, lastRequest.getDelivery().getIntersection().getId());
+            assertEquals(180, lastRequest.getPickup().getDuration());
+            assertEquals(540, lastRequest.getDelivery().getDuration());
         }
         catch (Exception e)
         {
