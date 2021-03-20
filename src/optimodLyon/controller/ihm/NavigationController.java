@@ -54,10 +54,17 @@ public class NavigationController implements ActionListener
             if (result == JFileChooser.APPROVE_OPTION)
             {
                 File selectedFile = this.fileChooser.getSelectedFile();
-                this.view.sendFileToWindow(NavigationView.FileType.MAP, selectedFile.getAbsolutePath());
+                if (!this.view.sendFileToWindow(NavigationView.FileType.MAP, selectedFile.getAbsolutePath()))
+                {
+                    String message = String.format("Le fichier de map %s n'a pas été correctement charger", selectedFile.getName());
+                    JOptionPane.showMessageDialog(null, message,"Erreur de chargement de la carte",JOptionPane.ERROR_MESSAGE);
+                }
+                else
+                {
+                    JOptionPane.showMessageDialog(null, "Carte chargée avec succés","Succés",JOptionPane.INFORMATION_MESSAGE);
+                    this.view.setState(NavigationView.NavigationViewState.MAP_LOADED);
+                }
             }
-
-            this.view.setState(NavigationView.NavigationViewState.MAP_LOADED);
         }
         else if (actionCommand.equals(NavigationView.LOAD_PROGRAM_ACTION_COMMAND))
         {
@@ -66,10 +73,17 @@ public class NavigationController implements ActionListener
             if (result == JFileChooser.APPROVE_OPTION)
             {
                 File selectedFile = this.fileChooser.getSelectedFile();
-                this.view.sendFileToWindow(NavigationView.FileType.DELIVERY_PLAN, selectedFile.getAbsolutePath());
+                if(!this.view.sendFileToWindow(NavigationView.FileType.DELIVERY_PLAN, selectedFile.getAbsolutePath()))
+                {
+                    String message = String.format("Le fichier d'inventaire %s n'a pas été correctement charger", selectedFile.getName());
+                    JOptionPane.showMessageDialog(null, message,"Erreur de chargement de l'inventaire",JOptionPane.ERROR_MESSAGE);
+                }
+                else
+                {
+                    JOptionPane.showMessageDialog(null, "Inventaire chargé avec succés","Succés",JOptionPane.INFORMATION_MESSAGE);
+                    this.view.setState(NavigationView.NavigationViewState.DELIVERY_PLAN_LOADED);
+                }
             }
-
-            this.view.setState(NavigationView.NavigationViewState.DELIVERY_PLAN_LOADED);
         }
         else if (actionCommand.equals(NavigationView.CALCULATE_CIRCUIT_ACTION_COMMAND))
         {

@@ -130,11 +130,12 @@ public class OptimodFrame extends JFrame {
     {
         try
         {
-            DeliveryPlan plan = XMLLoader.loadDeliveryPlan(filename);
+            DeliveryPlan plan = XMLLoader.loadDeliveryPlan(this.controller.getCityMap(), filename);
             this.controller.setDeliveryPlan(plan);
         }
         catch (Exception e)
         {
+            System.err.println(e);
             return false;
         }
         return true;
