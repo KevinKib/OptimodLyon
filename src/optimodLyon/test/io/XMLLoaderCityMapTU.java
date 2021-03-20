@@ -15,7 +15,7 @@ import java.io.IOException;
  */
 public class XMLLoaderCityMapTU
 {
-    private static final String MAP_FILES_PATH = "./src/optimodLyon/test/io/mapfiles";
+    private static final String MAP_FILES_PATH = "./rsc/test/io/mapfiles";
 
     /**
      * Méthode qui test le cas où le fichier donné en paramètre n'existe pas
@@ -206,42 +206,20 @@ public class XMLLoaderCityMapTU
     /**
      * Méthode qui teste les bonnes informations d'un deliveryPlan
      */
-    /*@Test
+    @Test
     public void testCityMap()
     {
         CityMap map;
-        String path = new File(MAP_FILES_PATH, "map-good-formed1.xml").getAbsolutePath();
+        String path = new File(MAP_FILES_PATH, "map.xml").getAbsolutePath();
+        String message = "";
 
         try
         {
             map = XMLLoader.loadMap(path);
-
-            // vérification du nombre d'intersections
-            List<Request> requests = plan.getRequests();
-            assertEquals(1, requests.size());
-
-            Request request = requests.get(0);
-
-            // vérification des informations de l'intersection
-            assertEquals(208769039, request.getPickupAddress());
-            assertEquals(25173820, request.getDeliveryAddress());
-            assertEquals(180, request.getPickupDuration());
-            assertEquals(240, request.getDeliveryDuration());
-
-            // vérification du nombre de segments
-            List<Request> requests = plan.getRequests();
-            assertEquals(1, requests.size());
-
-            Request request = requests.get(0);
-
-            // vérification des informations des segments
-            assertEquals(208769039, request.getPickupAddress());
-            assertEquals(25173820, request.getDeliveryAddress());
-            assertEquals(180, request.getPickupDuration());
-            assertEquals(240, request.getDeliveryDuration());
         }
-        catch (Exception e) {
-            System.err.println(e.getMessage());
+        catch (Exception e)
+        {
+            e.printStackTrace();
         }
-    }*/
+    }
 }
