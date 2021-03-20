@@ -44,7 +44,7 @@ public class XMLLoaderDeliveryPlanTU
      * Méthode qui test le cas où le fichier donné en paramètre n'existe pas
      */
     @Test
-    public void testNotFileFoundException()
+    public void testFileNotFoundException()
     {
         DeliveryPlan plan;
         // Fichier qui n'existe pas
