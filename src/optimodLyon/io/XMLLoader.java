@@ -239,13 +239,14 @@ public class XMLLoader
                 throw new MalformedXMLException(String.format("L'attribut %s est manquant pour un segment dans le fichier %s", LENGTH_XML_ATTRIBUTE, path));
             }
 
-            String nameAttribute = currentSegmentElement.getAttribute(NAME_XML_ATTRIBUTE);
-            if (nameAttribute.isEmpty()) {
+            if (!currentSegmentElement.hasAttribute(NAME_XML_ATTRIBUTE)) {
                 throw new MalformedXMLException(String.format("L'attribut %s est manquant pour un segment dans le fichier %s", NAME_XML_ATTRIBUTE, path));
             }
+            String nameAttribute = currentSegmentElement.getAttribute(NAME_XML_ATTRIBUTE);
 
-            int destinationId = Integer.parseInt(destinationAttribute);
-            int originId = Integer.parseInt(originAttribute);
+
+            long destinationId = Long.parseLong(destinationAttribute);
+            long originId = Long.parseLong(originAttribute);
             float length = Float.parseFloat(lengthAttribute);
 
             Segment segment = new Segment(intersections.get(destinationId), intersections.get(originId), nameAttribute, length);
