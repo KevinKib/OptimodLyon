@@ -1,5 +1,6 @@
 package optimodLyon.model;
 
+import java.util.ArrayList;
 import java.util.Map;
 import java.util.HashMap;
 import java.util.List;
@@ -34,7 +35,7 @@ public class CityMap
     public CityMap(List<Segment> segments, Map<Long, Intersection> intersections)
     {
         this.intersections = intersections;
-        this.segmentsByIntersectionId = new HashMap<String, Segment>();
+        this.segmentsByIntersectionId = new HashMap<>();
 
         for (Segment segment : segments)
         {
@@ -49,7 +50,7 @@ public class CityMap
     /**
      * Récupère une intersection à partir de son id
      * @param id L'id de l'intersection
-     * @return L'intersection associée à l'id
+     * @return L'intersection associée à l'id si elle existe, null sinon
      */
     public Intersection getIntersectionById(long id)
     {
@@ -65,5 +66,21 @@ public class CityMap
     public String generateHashCode(long intersectionId1, long intersectionId2)
     {
         return String.format("%s%s%s", intersectionId1, HASH_CODE_SEPARATOR, intersectionId2);
+    }
+
+    /**
+     * Récupère la liste des intersections de la CityMap
+     * @return La liste des intersections
+     */
+    public List<Intersection> getIntersections() {
+        return new ArrayList<>(intersections.values());
+    }
+
+    /**
+     * Récupère la liste des segments de la CityMap
+     * @return La liste des segments
+     */
+    public List<Segment> getSegments() {
+        return new ArrayList<>(segmentsByIntersectionId.values());
     }
 }

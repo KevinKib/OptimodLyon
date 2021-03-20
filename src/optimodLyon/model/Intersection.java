@@ -42,4 +42,20 @@ public class Intersection
     {
         return this.id;
     }
+
+    /**
+     * Récupère la longitude de l'intersection
+     * @return la longitude
+     */
+    public float getLongitude() {
+        return x;
+    }
+
+    /**
+     * Récupère la latitude de l'intersection
+     * @return la latitude
+     */
+    public float getLatitude() {
+        return y;
+    }
 }
