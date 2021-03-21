@@ -27,17 +27,17 @@ public class OptimodFrame extends JFrame {
     /**
      * Largeyr de la fenetre
      */
-    private static final int FRAME_WIDTH = 900;
+    private static final int FRAME_WIDTH = 1200;
 
     /**
      * Hauteur de la fenetre
      */
-    private static final int FRAME_HEIGHT = 640;
+    private static final int FRAME_HEIGHT = 800;
 
     /**
      * Vue centrale de la fenetre (avec la carte)
      */
-    private JPanel centerView;
+    private MapView mapView;
 
     /**
      * Vue au top de la fenetre (Panel en haut qui contient les boutons pour charger les fichiers XML)
@@ -54,7 +54,6 @@ public class OptimodFrame extends JFrame {
      */
     public static final String APP_NAME = "Optimod'Lyon";
 
-    private JPanel centerPanel;
     private JLabel mapPlaceholder;
 
     private JPanel leftPanel;
@@ -80,8 +79,8 @@ public class OptimodFrame extends JFrame {
         mainPanel.add(this.navigationView, BorderLayout.NORTH);
 
         // Center Panel
-        buildCenterPanel();
-        mainPanel.add(centerPanel, BorderLayout.CENTER);
+        this.mapView = new MapView();
+        mainPanel.add(this.mapView, BorderLayout.CENTER);
 
         // Left Panel
         buildLeftPanel();
@@ -89,7 +88,6 @@ public class OptimodFrame extends JFrame {
 
         // Set main panel
         this.setContentPane(mainPanel);
-
     }
 
     /**
@@ -113,6 +111,8 @@ public class OptimodFrame extends JFrame {
         {
             CityMap map = XMLLoader.loadMap(filename);
             this.controller.setCityMap(map);
+            this.controller.setDeliveryPlan(null);
+            this.mapView.updateCityMap(map);
         }
         catch (Exception e)
         {
@@ -132,6 +132,7 @@ public class OptimodFrame extends JFrame {
         {
             DeliveryPlan plan = XMLLoader.loadDeliveryPlan(this.controller.getCityMap(), filename);
             this.controller.setDeliveryPlan(plan);
+            this.mapView.updateDeliveryPlan(plan);
         }
         catch (Exception e)
         {
@@ -143,19 +144,6 @@ public class OptimodFrame extends JFrame {
 
     private void updateView()
     {
-    }
-
-    private void buildCenterPanel() {
-        centerPanel = new JPanel();
-        centerPanel.setLayout(new BorderLayout());
-
-        mapPlaceholder = new JLabel();
-        mapPlaceholder.setText("Map");
-        mapPlaceholder.setHorizontalAlignment(SwingConstants.CENTER);
-        mapPlaceholder.setVerticalTextPosition(SwingConstants.CENTER);
-        mapPlaceholder.setBackground(Color.GRAY);
-
-        centerPanel.add(mapPlaceholder, BorderLayout.CENTER);
     }
 
     private void buildLeftPanel() {
