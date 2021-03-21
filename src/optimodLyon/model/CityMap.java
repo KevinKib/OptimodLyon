@@ -11,6 +11,10 @@ import java.util.List;
  */
 public class CityMap
 {
+    public Map<String, Segment> getSegmentsByIntersectionId() {
+        return segmentsByIntersectionId;
+    }
+
     /**
      * Map qui match deux ids d'intersections avec un segment
      */

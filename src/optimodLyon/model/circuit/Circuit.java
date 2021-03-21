@@ -12,4 +12,5 @@ public class Circuit extends Graph {
     public Edge getEdgeByWaypoint(Waypoint waypoint){
         return null;
     }
+
 }

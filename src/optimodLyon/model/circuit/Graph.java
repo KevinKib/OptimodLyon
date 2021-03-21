@@ -13,6 +13,14 @@ public class Graph {
         return edges;
     }
 
+    public void setWaypoints(List<Waypoint> waypoints) {
+        this.waypoints = waypoints;
+    }
+
+    public void setEdges(List<Edge> edges) {
+        this.edges = edges;
+    }
+
     private List<Waypoint> waypoints;
     private List<Edge> edges;
 
