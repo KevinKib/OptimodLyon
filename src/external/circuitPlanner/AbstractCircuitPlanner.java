@@ -1,4 +1,4 @@
-package optimodLyon.circuitPlanner;
+package external.circuitPlanner;
 
 import optimodLyon.model.CityMap;
 import optimodLyon.model.DeliveryPlan;
