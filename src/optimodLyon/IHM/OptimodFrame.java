@@ -151,11 +151,11 @@ public class OptimodFrame extends JFrame {
         leftPanel.setLayout(new GridBagLayout());
 
         addPDButton = new JButton();
-        addPDButton.setText("Ajouter un P&D");
+        addPDButton.setText("Ajouter un point de Pickup & Delivery");
         modifyOrderButton = new JButton();
         modifyOrderButton.setText("Modifier l'ordre");
         legendPlaceholder = new JLabel();
-        legendPlaceholder.setText("Légende");
+        //legendPlaceholder.setText("Légende");
         leftPanel.setBackground(Color.white);
 
         GridBagConstraints cons = new GridBagConstraints();

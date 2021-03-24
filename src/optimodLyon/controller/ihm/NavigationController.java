@@ -56,12 +56,12 @@ public class NavigationController implements ActionListener
                 File selectedFile = this.fileChooser.getSelectedFile();
                 if (!this.view.sendFileToWindow(NavigationView.FileType.MAP, selectedFile.getAbsolutePath()))
                 {
-                    String message = String.format("Le fichier de map %s n'a pas été correctement charger", selectedFile.getName());
+                    String message = String.format("Le fichier de map %s n'a pas été correctement chargé", selectedFile.getName());
                     JOptionPane.showMessageDialog(null, message,"Erreur de chargement de la carte",JOptionPane.ERROR_MESSAGE);
                 }
                 else
                 {
-                    JOptionPane.showMessageDialog(null, "Carte chargée avec succés","Succés",JOptionPane.INFORMATION_MESSAGE);
+                    JOptionPane.showMessageDialog(null, "Carte chargée avec succès","Succès",JOptionPane.INFORMATION_MESSAGE);
                     this.view.setState(NavigationView.NavigationViewState.MAP_LOADED);
                 }
             }
