@@ -142,6 +142,28 @@ public class OptimodFrame extends JFrame {
         return true;
     }
 
+    /**
+     *
+     * @param
+     * @return
+     */
+    boolean loadCircuit(int cycleNumber)
+    {
+        try
+        {
+            DeliveryPlan plan = this.controller.getDeliveryPlan();
+            CityMap map = this.controller.getCityMap();
+            this.controller.computeCircuit(map, plan, cycleNumber);
+            //this.mapView.updateDeliveryPlan(plan);
+        }
+        catch (Exception e)
+        {
+            System.err.println(e);
+            return false;
+        }
+        return true;
+    }
+
     private void updateView()
     {
     }

@@ -2,6 +2,7 @@ package optimodLyon.controller;
 
 import optimodLyon.model.CityMap;
 import optimodLyon.model.DeliveryPlan;
+import optimodLyon.model.circuit.CircuitManager;
 
 /**
  * Classe qui fait le lien entre les données de la fenetre et les interactions possibles avec.
@@ -21,12 +22,18 @@ public class Controller
     private DeliveryPlan deliveryPlan;
 
     /**
+     * CircuitManager
+     */
+    private CircuitManager circuitManager;
+
+    /**
      * Constructeur par défaut du controleur
      */
     public Controller()
     {
         this.cityMap = null;
         this.deliveryPlan = null;
+        this.circuitManager = null;
     }
 
     /**
@@ -48,6 +55,15 @@ public class Controller
     }
 
     /**
+     * Met à jour le circuitManager
+     * @param circuitManager Le nouveau circuitManager
+     */
+    public void setCircuitManager(CircuitManager circuitManager)
+    {
+        this.circuitManager = circuitManager;
+    }
+
+    /**
      * @return La map de la ville
      */
     public CityMap getCityMap()
@@ -61,5 +77,15 @@ public class Controller
     public DeliveryPlan getDeliveryPlan()
     {
         return this.deliveryPlan;
+    }
+
+    /**
+     *
+     * @param
+     */
+    public void computeCircuit(CityMap map, DeliveryPlan plan, int cycleNumber)
+    {
+        // Call whatever we need from the circuit manager
+        
     }
 }

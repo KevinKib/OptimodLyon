@@ -1,3 +1,5 @@
+package optimodLyon.model.circuit;
+
 import external.circuitPlanner.CircuitPlanner1;
 import optimodLyon.model.*;
 
