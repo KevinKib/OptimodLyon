@@ -4,6 +4,8 @@ import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
 
+import optimodLyon.controller.Controller;
+import optimodLyon.controller.ihm.MapViewResizeController;
 import optimodLyon.model.*;
 
 import static optimodLyon.model.CityMap.CityMapCoordinates;
@@ -19,21 +21,6 @@ import java.util.List;
  */
 public class MapView extends JComponent
 {
-    /**
-     * Objet pour normaliser les coordonées
-     */
-    private CityMapCoordinates cityMapCoordinates;
-
-    /**
-     * Carte actuelle à afficher
-     */
-    private CityMap cityMap;
-
-    /**
-     * Inventaire des pickup-delivery
-     */
-    private DeliveryPlan deliveryPlan;
-
     /**
      * Logo de localisation d'une livraison
      */
@@ -63,14 +50,26 @@ public class MapView extends JComponent
             };
 
     /**
-     * Constructeur par défaut de la classe MapView
+     * Controle le redimensionnement du composant
      */
-    public MapView()
+    private MapViewResizeController mapViewResizeController;
+
+    /**
+     * Controleur général qui contient les données de l'application
+     */
+    private final Controller controller;
+
+    /**
+     * Constructeur par défaut de la classe MapView
+     * @param controller Le controleur général
+     */
+    public MapView(Controller controller)
     {
         super();
-        this.cityMapCoordinates = null;
         this.deliveryLocalisationlogo = null;
         this.pickupLocalisationlogo = null;
+
+        this.controller = controller;
 
         try
         {
@@ -81,6 +80,17 @@ public class MapView extends JComponent
         {
             System.err.println(e);
         }
+
+        this.mapViewResizeController = new MapViewResizeController(controller);
+        this.addComponentListener(this.mapViewResizeController);
+    }
+
+    /**
+     * @return La dimension du composant
+     */
+    public Dimension getDimension()
+    {
+        return new Dimension(this.getWidth(), this.getHeight());
     }
 
     @Override
@@ -94,26 +104,30 @@ public class MapView extends JComponent
 
         p.setColor(Color.BLACK);
 
-        if (this.cityMapCoordinates != null)
+        CityMapCoordinates cityMapCoordinates = this.controller.getCityMapCoordinates();
+
+        if (cityMapCoordinates != null)
         {
+            CityMap cityMap = this.controller.getCityMap();
             // Affichage de la carte
-            List<Segment> segments = this.cityMap.getSegments();
+            List<Segment> segments = cityMap.getSegments();
 
             for (Segment segment : segments)
             {
                 final Intersection origin = segment.getOrigin();
                 final Intersection destination = segment.getDestination();
 
-                Point originPoint = this.cityMapCoordinates.normalizeIntersection(origin);
-                Point destinationPoint = this.cityMapCoordinates.normalizeIntersection(destination);
+                Point originPoint = cityMapCoordinates.normalizeIntersection(origin);
+                Point destinationPoint = cityMapCoordinates.normalizeIntersection(destination);
 
                 p.drawLine(originPoint.x, originPoint.y, destinationPoint.x, destinationPoint.y);
             }
 
-            // Affichage des pickup-delivery : todo
-            if (this.deliveryPlan != null)
+            DeliveryPlan deliveryPlan = this.controller.getDeliveryPlan();
+            // Affichage des pickup-delivery
+            if (deliveryPlan != null)
             {
-                List<Request> requests = this.deliveryPlan.getRequests();
+                List<Request> requests = deliveryPlan.getRequests();
                 for (int i = 0; i < requests.size(); ++i)
                 {
                     Color color = null;
@@ -131,8 +145,8 @@ public class MapView extends JComponent
 
                     Request request = requests.get(i);
 
-                    Point deliveryPoint = this.cityMapCoordinates.normalizeIntersection(request.getDelivery().getIntersection());
-                    Point pickupPoint = this.cityMapCoordinates.normalizeIntersection(request.getPickup().getIntersection());
+                    Point deliveryPoint = cityMapCoordinates.normalizeIntersection(request.getDelivery().getIntersection());
+                    Point pickupPoint = cityMapCoordinates.normalizeIntersection(request.getPickup().getIntersection());
 
                     // Affichage de la delivery
                     BufferedImage image = this.resize(this.deliveryLocalisationlogo, 30, 30);
@@ -172,27 +186,5 @@ public class MapView extends JComponent
         g.fillRect(0,0,w,h);
         g.dispose();
         return dyed;
-    }
-
-
-    /**
-     * Permet de mettre à jour la carte à afficher
-     * @param cityMap La nouvelle carte
-     */
-    public void updateCityMap(CityMap cityMap)
-    {
-        this.cityMap = cityMap;
-        this.cityMapCoordinates = new CityMapCoordinates(new Dimension(this.getWidth(), this.getHeight()), this.cityMap.getIntersections());
-        this.repaint();
-    }
-
-    /**
-     * permet de mettre à jour l'inventaire
-     * @param plan
-     */
-    public void updateDeliveryPlan(DeliveryPlan plan)
-    {
-        this.deliveryPlan = plan;
-        this.repaint();
     }
 }

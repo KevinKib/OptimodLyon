@@ -79,7 +79,7 @@ public class OptimodFrame extends JFrame {
         mainPanel.add(this.navigationView, BorderLayout.NORTH);
 
         // Center Panel
-        this.mapView = new MapView();
+        this.mapView = new MapView(this.controller);
         mainPanel.add(this.mapView, BorderLayout.CENTER);
 
         // Left Panel
@@ -91,19 +91,9 @@ public class OptimodFrame extends JFrame {
     }
 
     /**
-     * Mets à jour l'état courant de la fenetre
-     * @param newState Le nouvel etat
-     */
-    public void updateState(OptimodFrameState newState)
-    {
-        this.state = newState;
-        this.updateView();
-    }
-
-    /**
      * Demande au controleur de la fenetre de charger le fichier de city map
      * @param filename Le fichier contenant les informations de la map
-     * @@return true si le fichier a bien été chargé, sinon false
+     * @return true si le fichier a bien été chargé, sinon false
      */
     boolean loadCityMap(String filename)
     {
@@ -112,7 +102,8 @@ public class OptimodFrame extends JFrame {
             CityMap map = XMLLoader.loadMap(filename);
             this.controller.setCityMap(map);
             this.controller.setDeliveryPlan(null);
-            this.mapView.updateCityMap(map);
+            this.controller.setCityMapCoordinates(this.mapView.getDimension());
+            this.mapView.repaint();
         }
         catch (Exception e)
         {
@@ -132,7 +123,7 @@ public class OptimodFrame extends JFrame {
         {
             DeliveryPlan plan = XMLLoader.loadDeliveryPlan(this.controller.getCityMap(), filename);
             this.controller.setDeliveryPlan(plan);
-            this.mapView.updateDeliveryPlan(plan);
+            this.mapView.repaint();
         }
         catch (Exception e)
         {
@@ -151,7 +142,7 @@ public class OptimodFrame extends JFrame {
         leftPanel.setLayout(new GridBagLayout());
 
         addPDButton = new JButton();
-        addPDButton.setText("Ajouter un point de Pickup & Delivery");
+        addPDButton.setText("Ajouter un Pickup & Delivery");
         modifyOrderButton = new JButton();
         modifyOrderButton.setText("Modifier l'ordre");
         legendPlaceholder = new JLabel();

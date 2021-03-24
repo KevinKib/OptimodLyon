@@ -61,7 +61,6 @@ public class NavigationController implements ActionListener
                 }
                 else
                 {
-                    JOptionPane.showMessageDialog(null, "Carte chargée avec succès","Succès",JOptionPane.INFORMATION_MESSAGE);
                     this.view.setState(NavigationView.NavigationViewState.MAP_LOADED);
                 }
             }
@@ -80,7 +79,6 @@ public class NavigationController implements ActionListener
                 }
                 else
                 {
-                    JOptionPane.showMessageDialog(null, "Inventaire chargé avec succés","Succés",JOptionPane.INFORMATION_MESSAGE);
                     this.view.setState(NavigationView.NavigationViewState.DELIVERY_PLAN_LOADED);
                 }
             }
