@@ -10,14 +10,26 @@ import java.util.List;
 public class CircuitManager
 {
 
-
-    /**
-     * Permet de récupérer une distance en fonction d'une liste de segments
-     * @param segments La liste des segments
-     * @return La distance
-     */
-    private int getDistance(final List<Segment> segments)
-    {
-        return -1;
+    public CircuitManager() {
     }
+
+    public List<Segment> deleteRequest(Request request){
+        return null;
+    }
+    public List<Segment> updateRequest(Request oldRequest, Request newRequest){
+        return null;
+    }
+    public List<List<Segment>> getSolution(){
+        return null;
+    }
+    public int getSolutionCost(){
+        return 0;
+    }
+    public int getDistance(List<Segment> segments){
+        return 0;
+    }
+    private List<Segment> graphToSegmentList(){
+        return null;
+    }
+
 }
