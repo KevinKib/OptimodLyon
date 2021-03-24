@@ -2,6 +2,8 @@ package optimodLyon.test.io;
 
 import optimodLyon.io.XMLLoader;
 import optimodLyon.model.CityMap;
+import optimodLyon.model.Intersection;
+import optimodLyon.model.Segment;
 import org.junit.Test;
 
 import static org.junit.Assert.*;
@@ -9,13 +11,14 @@ import static org.junit.Assert.*;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.util.List;
 
 /**
  * Classe de test qui va tester le parsing d'un fichier de carte
  */
 public class XMLLoaderCityMapTU
 {
-    private static final String MAP_FILES_PATH = "./src/optimodLyon/test/io/mapfiles";
+    private static final String MAP_FILES_PATH = "./rsc/test/io/mapfiles";
 
     /**
      * Méthode qui test le cas où le fichier donné en paramètre n'existe pas
@@ -204,44 +207,88 @@ public class XMLLoaderCityMapTU
     }
 
     /**
-     * Méthode qui teste les bonnes informations d'un deliveryPlan
+     * Méthode qui vérifie que le fichier livré est chargé entièrement
      */
-    /*@Test
+    @Test
     public void testCityMap()
     {
         CityMap map;
-        String path = new File(MAP_FILES_PATH, "map-good-formed1.xml").getAbsolutePath();
+        String path = new File(MAP_FILES_PATH, "map.xml").getAbsolutePath();
+        String message = "";
+
+        try
+        {
+            map = XMLLoader.loadMap(path);
+        }
+        catch (Exception e)
+        {
+            e.printStackTrace();
+            fail("Le fichier est correct donc il n'est pas censé y avoir d'exception");
+        }
+    }
+
+    /**
+     * Méthode qui teste les bonnes informations d'un deliveryPlan
+     */
+    @Test
+    public void testCityMapInformations()
+    {
+        CityMap map;
+        String path = new File(MAP_FILES_PATH, "map10.xml").getAbsolutePath();
+        String message = "";
 
         try
         {
             map = XMLLoader.loadMap(path);
 
-            // vérification du nombre d'intersections
-            List<Request> requests = plan.getRequests();
-            assertEquals(1, requests.size());
+            // vérification du nombre d'intersections dans l'inventaire
+            List<Intersection> intersections = map.getIntersections();
+            assertEquals(3, intersections.size());
 
-            Request request = requests.get(0);
+            // vérification des informations des intersections
+            Intersection intersection = map.getIntersectionById(365087270);
+            assertNotNull(intersection);
+            assertEquals(365087270, intersection.getId());
+            assertEquals(45.751892f, intersection.getY(), 0);
+            assertEquals(4.883404f, intersection.getX(), 0);
 
-            // vérification des informations de l'intersection
-            assertEquals(208769039, request.getPickupAddress());
-            assertEquals(25173820, request.getDeliveryAddress());
-            assertEquals(180, request.getPickupDuration());
-            assertEquals(240, request.getDeliveryDuration());
+            intersection = map.getIntersectionById(26317396);
+            assertNotNull(intersection);
+            assertEquals(26317396, intersection.getId());
+            assertEquals(45.75356f, intersection.getY(), 0);
+            assertEquals(4.883734f, intersection.getX(), 0);
 
-            // vérification du nombre de segments
-            List<Request> requests = plan.getRequests();
-            assertEquals(1, requests.size());
+            intersection = map.getIntersectionById(325772567);
+            assertNotNull(intersection);
+            assertEquals(325772567, intersection.getId());
+            assertEquals(45.751896f, intersection.getY(), 0);
+            assertEquals(4.8833594f, intersection.getX(), 0);
 
-            Request request = requests.get(0);
+            // vérification du nombre de segments dans l'inventaire
+            List<Segment> segments = map.getSegments();
+            assertEquals(2, segments.size());
 
             // vérification des informations des segments
-            assertEquals(208769039, request.getPickupAddress());
-            assertEquals(25173820, request.getDeliveryAddress());
-            assertEquals(180, request.getPickupDuration());
-            assertEquals(240, request.getDeliveryDuration());
+            Segment segment = segments.get(0);
+
+            if(segment.getDestination().getId() == 26317396) {
+                assertEquals(325772567, segment.getOrigin().getId());
+                assertEquals(187.21068f, segment.getLength(), 0);
+                assertEquals("Rue Saint-Isidore", segment.getName());
+            }
+            else if (segment.getDestination().getId() == 365087270) {
+                assertEquals(325772567, segment.getOrigin().getId());
+                assertEquals(3.491316f, segment.getLength(), 0);
+                assertEquals("", segment.getName());
+            }
+            else {
+                fail("Les seuls segments qu'il existe sont ceux dans les if.");
+            }
         }
-        catch (Exception e) {
-            System.err.println(e.getMessage());
+        catch (Exception e)
+        {
+            e.printStackTrace();
+            fail("Le fichier est correct donc il n'est pas censé y avoir d'exception");
         }
-    }*/
+    }
 }

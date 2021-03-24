@@ -1,5 +1,7 @@
 package optimodLyon.model;
 
+import java.util.Comparator;
+
 /**
  * Classe qui permet de représenter une intersection sur une carte.
  * @author Dorian TERBAH
@@ -20,7 +22,7 @@ public class Intersection
     /**
      * L'id de l'intersection
      */
-    private int id;
+    private long id;
 
     /**
      * Constructeur de la classe Intersection
@@ -28,7 +30,7 @@ public class Intersection
      * @param y La coordonnée y de l'intersection
      * @param id L'id de l'intersection
      */
-    public Intersection(float x, float y, int id)
+    public Intersection(float x, float y, long id)
     {
         this.x = x;
         this.y = y;
@@ -38,8 +40,24 @@ public class Intersection
     /**
      * @return L'id de l'intersection
      */
-    public int getId()
+    public long getId()
     {
         return this.id;
+    }
+
+    /**
+     * @return La coordonnées x
+     */
+    public float getX()
+    {
+        return this.x;
+    }
+
+    /**
+     * @return La coordonnée y
+     */
+    public float getY()
+    {
+        return this.y;
     }
 }
