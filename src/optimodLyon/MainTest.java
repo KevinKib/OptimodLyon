@@ -15,17 +15,7 @@ public class MainTest {
     }
 
     public static void main(String[] args) throws Exception {
-        // Apply look n'feel
-        UIManager.setLookAndFeel(new NimbusLookAndFeel());
 
-        // Run Optimod'Lyon App
-        Runnable app = new OptimodLyonApp();
-        try {
-            SwingUtilities.invokeAndWait(app);
-        } catch (InvocationTargetException ex) {
-            ex.printStackTrace();
-        } catch (InterruptedException ex) {
-            ex.printStackTrace();
-        }
+//        CircuitManager cm = new CircuitManager(new Circuit())
     }
 }
