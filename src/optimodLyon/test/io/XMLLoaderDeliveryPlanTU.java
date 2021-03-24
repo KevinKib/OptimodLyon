@@ -35,7 +35,7 @@ public class XMLLoaderDeliveryPlanTU
         }
         catch(Exception e)
         {
-            System.err.println(e.getMessage());
+            e.printStackTrace();
             fail("Impossible de charger la map");
         }
     }
@@ -51,10 +51,11 @@ public class XMLLoaderDeliveryPlanTU
         try
         {
             plan = XMLLoader.loadDeliveryPlan(this.cityMap, new File(DELIVERY_FILES_PATH, "unexisting.xml").getAbsolutePath());
+            fail("Error expected : FileNotFoundException");
         }
         catch (Exception e)
         {
-            System.err.println(e.getMessage());
+            System.out.println(e.getMessage());
             assertTrue(e instanceof FileNotFoundException);
         }
     }
@@ -70,10 +71,11 @@ public class XMLLoaderDeliveryPlanTU
         try
         {
             plan = XMLLoader.loadDeliveryPlan(this.cityMap, new File(DELIVERY_FILES_PATH).getAbsolutePath());
+            fail("Error expected : IOException");
         }
         catch (Exception e)
         {
-            System.err.println(e.getMessage());
+            System.out.println(e.getMessage());
             assertTrue(e instanceof IOException);
         }
     }
@@ -92,11 +94,12 @@ public class XMLLoaderDeliveryPlanTU
         try
         {
             plan = XMLLoader.loadDeliveryPlan(this.cityMap, path);
+            fail(String.format("Error expected : Les informations concernant le dépôt sont manquantes dans le fichier %s", path));
         }
         catch (Exception e)
         {
             message = e.getMessage();
-            System.err.println(message);
+            System.out.println(message);
             assertEquals(String.format("Les informations concernant le dépôt sont manquantes dans le fichier %s", path), message);
         }
 
@@ -105,11 +108,12 @@ public class XMLLoaderDeliveryPlanTU
         try
         {
             plan = XMLLoader.loadDeliveryPlan(this.cityMap, path);
+            fail(String.format("Error expected : L'attribut address est manquant dans les informations du dépôt dans le fichier %s", path));
         }
         catch (Exception e)
         {
             message = e.getMessage();
-            System.err.println(message);
+            System.out.println(message);
             assertEquals(String.format("L'attribut address est manquant dans les informations du dépôt dans le fichier %s", path), message);
         }
 
@@ -118,11 +122,12 @@ public class XMLLoaderDeliveryPlanTU
         try
         {
             plan = XMLLoader.loadDeliveryPlan(this.cityMap, path);
+            fail(String.format("Error expected : L'attribut de la date de départ n'est pas présent dans le fichier %s", path));
         }
         catch (Exception e)
         {
             message = e.getMessage();
-            System.err.println(message);
+            System.out.println(message);
             assertEquals(String.format("L'attribut de la date de départ n'est pas présent dans le fichier %s", path), message);
         }
     }
@@ -141,11 +146,12 @@ public class XMLLoaderDeliveryPlanTU
         try
         {
             plan = XMLLoader.loadDeliveryPlan(this.cityMap, path);
+            fail(String.format("Error expected : L'attribut pickupAddress est manquant pour une requête dans le fichier %s", path));
         }
         catch (Exception e)
         {
             message = e.getMessage();
-            System.err.println(message);
+            System.out.println(message);
             assertEquals(String.format("L'attribut pickupAddress est manquant pour une requête dans le fichier %s", path), message);
         }
 
@@ -155,11 +161,12 @@ public class XMLLoaderDeliveryPlanTU
         try
         {
             plan = XMLLoader.loadDeliveryPlan(this.cityMap, path);
+            fail(String.format("Error expected : L'attribut deliveryAddress est manquant pour une requête dans le fichier %s", path));
         }
         catch (Exception e)
         {
             message = e.getMessage();
-            System.err.println(message);
+            System.out.println(message);
             assertEquals(String.format("L'attribut deliveryAddress est manquant pour une requête dans le fichier %s", path), message);
         }
 
@@ -169,11 +176,12 @@ public class XMLLoaderDeliveryPlanTU
         try
         {
             plan = XMLLoader.loadDeliveryPlan(this.cityMap, path);
+            fail(String.format("Error expected : L'attribut pickupDuration est manquant pour une requête dans le fichier %s", path));
         }
         catch (Exception e)
         {
             message = e.getMessage();
-            System.err.println(message);
+            System.out.println(message);
             assertEquals(String.format("L'attribut pickupDuration est manquant pour une requête dans le fichier %s", path), message);
         }
 
@@ -183,11 +191,12 @@ public class XMLLoaderDeliveryPlanTU
         try
         {
             plan = XMLLoader.loadDeliveryPlan(this.cityMap, path);
+            fail(String.format("Error expected : L'attribut deliveryDuration est manquant pour une requête dans le fichier %s", path));
         }
         catch (Exception e)
         {
             message = e.getMessage();
-            System.err.println(message);
+            System.out.println(message);
             assertEquals(String.format("L'attribut deliveryDuration est manquant pour une requête dans le fichier %s", path), message);
         }
     }
@@ -223,7 +232,8 @@ public class XMLLoaderDeliveryPlanTU
         }
         catch (Exception e)
         {
-            System.err.println(e.getMessage());
+            e.printStackTrace();
+            fail("Le fichier est correct donc il n'est pas censé y avoir d'exception");
         }
 
         // tests sur un deuxieme fichier
@@ -248,7 +258,8 @@ public class XMLLoaderDeliveryPlanTU
         }
         catch (Exception e)
         {
-            System.err.println(e.getMessage());
+            e.printStackTrace();
+            fail("Le fichier est correct donc il n'est pas censé y avoir d'exception");
         }
     }
 }
