@@ -3,10 +3,7 @@ package optimodLyon;
 import optimodLyon.IHM.OptimodFrame;
 
 import javax.swing.*;
-import javax.swing.plaf.metal.MetalLookAndFeel;
-import javax.swing.plaf.multi.MultiLookAndFeel;
 import javax.swing.plaf.nimbus.NimbusLookAndFeel;
-import javax.swing.plaf.synth.SynthLookAndFeel;
 import java.lang.reflect.InvocationTargetException;
 
 /**
