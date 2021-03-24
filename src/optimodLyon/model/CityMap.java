@@ -11,6 +11,10 @@ import java.util.List;
  */
 public class CityMap
 {
+    public Map<String, Segment> getSegmentsByIntersectionId() {
+        return segmentsByIntersectionId;
+    }
+
     /**
      * Classe qui représente les différents coefficients de normalisation des coordonnées
      */

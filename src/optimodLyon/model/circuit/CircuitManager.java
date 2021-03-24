@@ -1,5 +1,4 @@
-package optimodLyon.model.circuit;
-
+import external.circuitPlanner.CircuitPlanner1;
 import optimodLyon.model.*;
 
 import java.util.List;

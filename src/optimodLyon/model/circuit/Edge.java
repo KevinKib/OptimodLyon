@@ -11,6 +11,22 @@ import java.util.List;
  * @since 1.0
  */
 public class Edge {
+
+    public Waypoint getFirst() {
+        return first;
+    }
+
+    public Waypoint getSecond() {
+        return second;
+    }
+    public List<Segment> getPath() {
+        return path;
+    }
+
+    public int getLength() {
+        return length;
+    }
+
     private List<Segment> path;
     private int length;
     private Waypoint first;
@@ -27,11 +43,5 @@ public class Edge {
 
     }
 
-    public List<Segment> getPath() {
-        return path;
-    }
 
-    public int getLength() {
-        return length;
-    }
 }
