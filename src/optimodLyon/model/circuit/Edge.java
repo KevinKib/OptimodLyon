@@ -13,7 +13,7 @@ import java.util.List;
 public class Edge {
 
     private List<Segment> path;
-    private int length;
+    private float length;
     private Waypoint first;
     private Waypoint second;
 
@@ -21,7 +21,7 @@ public class Edge {
 
     }
 
-    public Edge(List<Segment> path, int length, Waypoint first, Waypoint second) {
+    public Edge(List<Segment> path, float length, Waypoint first, Waypoint second) {
         this.path = path;
         this.length = length;
         this.first = first;
@@ -40,7 +40,7 @@ public class Edge {
         return path;
     }
 
-    public int getLength() {
+    public float getLength() {
         return length;
     }
 }

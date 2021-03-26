@@ -9,9 +9,9 @@ import java.util.List;
 import java.util.Map;
 
 
-public class CircuitPlanner1 {
+public class CircuitPlanner1 extends AbstractCircuitPlanner {
 
-    public static List<Segment> getShortestPath(CityMap cityMap, Waypoint pointA, Waypoint pointB){
+    public List<Segment> getShortestPath(CityMap cityMap, Waypoint a, Waypoint b){
         //Should call A* to compute the shortest path between the two points
         Map<String, Segment> segments = cityMap.getSegmentsByIntersectionId();
         Map.Entry<String, Segment> entry = segments.entrySet().iterator().next();
