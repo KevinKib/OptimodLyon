@@ -43,10 +43,17 @@ public class MapView extends JComponent
 
     private static Color[] COLORS = new Color[]
             {
-                Color.red, Color.green, Color.blue, Color.cyan, Color.magenta, Color.yellow,
-                Color.pink, Color.orange, Color.darkGray, new Color(0xE55674), new Color(0x0F4E95),
-                new Color(0xF68C66), new Color(0x1F5530), new Color(0x756BA6),
-                new Color(0xD0CF90), new Color(0x77CA9A), new Color(0xDD5084)
+                    new Color(0xA31834), new Color(0x006195),
+                    new Color(0x02550D), new Color(0xFFC99700), new Color(0x54327D),
+                    new Color(0xA14498), new Color(0xCB6702), new Color(0x003165),
+                    new Color(0x8E4966), new Color(0x450707), new Color(0x5B805B),
+                    new Color(0x47311D), new Color(0x20103E), new Color(0x1E7B76),
+                    new Color(0x9d029b), new Color(0x34762F), new Color(0x875300),
+                    new Color(0x0B3B3B), new Color(0xd6608f), new Color(0xAF8F76),
+                    new Color(0x444478), new Color(0x790057), new Color(0x7D5A5A),
+                    new Color(0xF68C66), new Color(0x00581A), new Color(0x756BA6),
+                    new Color(0x865D1E), new Color(0x332942), new Color(0x613143),
+                    new Color(0xe54d10), new Color(0x2e86c1), new Color(0x239b56)
             };
 
     /**
