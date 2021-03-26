@@ -107,6 +107,8 @@ public class OptimodFrame extends JFrame {
         }
         catch (Exception e)
         {
+            String message = String.format("Le fichier de carte n'a pas été correctement chargé\n%s", e.getMessage());
+            JOptionPane.showMessageDialog(null, message,"Erreur de chargement de la carte",JOptionPane.ERROR_MESSAGE);
             return false;
         }
         return true;
@@ -127,7 +129,8 @@ public class OptimodFrame extends JFrame {
         }
         catch (Exception e)
         {
-            System.err.println(e);
+            String message = String.format("Le fichier d'inventaire n'a pas été correctement chargé\n%s", e.getMessage());
+            JOptionPane.showMessageDialog(null, message,"Erreur de chargement de l'inventaire",JOptionPane.ERROR_MESSAGE);
             return false;
         }
         return true;
