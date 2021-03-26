@@ -61,8 +61,6 @@ public class CircuitManager
         this.cityMapGraph = cityMapGraph;
     }
 
-
-
     public CircuitManager(CityMap cityMap) {
         this.cityMap = cityMap;
         this.cityMapGraph = this.createCityMapGraph();
@@ -74,7 +72,10 @@ public class CircuitManager
         List<Node> nodes = new ArrayList<>();
         List<Edge> edges = new ArrayList<>();
 
-        for (Segment segment: segments) {
+        Node firstNode = null;
+
+        for (int i = 0; i<segments.size(); ++i) {
+            Segment segment = segments.get(i);
             Node origin = new Node(segment.getOrigin());
             Node destination = new Node(segment.getDestination());
             List<Segment> path = Arrays.asList(segment);
@@ -82,8 +83,12 @@ public class CircuitManager
             edges.add(edge);
             nodes.add(origin);
             nodes.add(destination);
+
+            if(i == 0) {
+                firstNode = origin;
+            }
         }
-        return new Graph(nodes, edges);
+        return new Graph(nodes, edges, firstNode);
     }
 
     public Graph createCircuit(DeliveryPlan plan){
@@ -103,7 +108,7 @@ public class CircuitManager
             Edge edge = new Edge(path, distance, pickup, delivery);
             edges.add(edge);
         }
-        return new Graph(waypoints, edges);
+        return new Graph(waypoints, edges, requests.get(0).getPickup());
     }
 
     public List<List<Segment>> getSolution(DeliveryPlan plan, int cycleNumber){
@@ -202,16 +207,25 @@ public class CircuitManager
      * Modifie la position d'un waypoint dans le circuit courant
      * @param waypoint le waypoint
      * @param position la nouvelle position du waypoint
+     * @throws NoWarehouseException si le circuit ne débute pas par un point de dépôt
      */
-    public void updateRequest(Waypoint waypoint, int position){
+    public void updateRequest(Waypoint waypoint, int position) throws NoWarehouseException {
+        Node warehouse = this.circuit.getFirstNode();
 
+        if (!(warehouse instanceof Warehouse)) {
+            throw new NoWarehouseException("Le circuit n'est pas conforme, il ne débute pas par un point de dépôt.");
+        }
+
+        int cpt = 0;
+        
     }
 
     /**
      * Retourne la longueur du circuit courant
      * @return float, la longueur du circuit courant
+     * @throws NoWarehouseException si le circuit ne débute pas par un point de dépôt
      */
-    public float getSolutionCost(){
+    public float getSolutionCost() throws NoWarehouseException {
         return this.getDistance(this.graphToSegmentList());
     }
 
@@ -230,15 +244,16 @@ public class CircuitManager
     /**
      * Retourne la liste des segments composants le circuit courant
      * @return List<Segment> La liste des segments
+     * @throws NoWarehouseException si le circuit ne débute pas par un point de dépôt
      */
-    public List<Segment> graphToSegmentList(){
+    public List<Segment> graphToSegmentList() throws NoWarehouseException {
         List<Segment> segments = new ArrayList<>();
 
-        Warehouse warehouse = this.circuit.getNodes().stream()
-                .filter(waypoint -> waypoint instanceof Warehouse)
-                .map(waypoint -> (Warehouse)waypoint)
-                .findAny()
-                .orElseThrow(NoSuchElementException::new);
+        Node warehouse = this.circuit.getFirstNode();
+
+        if (!(warehouse instanceof Warehouse)) {
+            throw new NoWarehouseException("Le circuit n'est pas conforme, il ne débute pas par un point de dépôt.");
+        }
 
         Edge currentEdge = this.circuit.getEdgeByFirstNode(warehouse);
         segments.addAll(currentEdge.getPath());
