@@ -1,7 +1,7 @@
 package optimodLyon.model.circuit;
 
+import optimodLyon.model.Node;
 import optimodLyon.model.Segment;
-import optimodLyon.model.Waypoint;
 
 import java.util.List;
 
@@ -12,36 +12,35 @@ import java.util.List;
  */
 public class Edge {
 
-    public Waypoint getFirst() {
-        return first;
-    }
-
-    public Waypoint getSecond() {
-        return second;
-    }
-    public List<Segment> getPath() {
-        return path;
-    }
-
-    public int getLength() {
-        return length;
-    }
-
     private List<Segment> path;
-    private int length;
-    private Waypoint first;
-    private Waypoint second;
+    private float length;
+    private Node first;
+    private Node second;
 
-    public Edge(List<Segment> path, int length, Waypoint first, Waypoint second) {
+    public Edge() {
+
+    }
+
+    public Edge(List<Segment> path, float length, Node first, Node second) {
         this.path = path;
         this.length = length;
         this.first = first;
         this.second = second;
     }
 
-    public Edge() {
-
+    public Node getFirst() {
+        return first;
     }
 
+    public Node getSecond() {
+        return second;
+    }
 
+    public List<Segment> getPath() {
+        return path;
+    }
+
+    public float getLength() {
+        return length;
+    }
 }

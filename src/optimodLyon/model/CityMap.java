@@ -11,10 +11,6 @@ import java.util.List;
  */
 public class CityMap
 {
-    public Map<String, Segment> getSegmentsByIntersectionId() {
-        return segmentsByIntersectionId;
-    }
-
     /**
      * Classe qui représente les différents coefficients de normalisation des coordonnées
      */
@@ -56,24 +52,24 @@ public class CityMap
             this.mapComponentDimension = mapComponentDimension;
 
             this.minLatitude = intersections.stream()
-                    .min(Comparator.comparing(Intersection::getY))
+                    .min(Comparator.comparing(Intersection::getLatitude))
                     .orElseThrow(NoSuchElementException::new)
-                    .getY();
+                    .getLatitude();
 
             this.minLongitude = intersections.stream()
-                    .min(Comparator.comparing(Intersection::getX))
+                    .min(Comparator.comparing(Intersection::getLongitude))
                     .orElseThrow(NoSuchElementException::new)
-                    .getX();
+                    .getLongitude();
 
             this.maxLatitude = intersections.stream()
-                    .max(Comparator.comparing(Intersection::getY))
+                    .max(Comparator.comparing(Intersection::getLatitude))
                     .orElseThrow(NoSuchElementException::new)
-                    .getY();
+                    .getLatitude();
 
             this.maxLongitude = intersections.stream()
-                    .max(Comparator.comparing(Intersection::getX))
+                    .max(Comparator.comparing(Intersection::getLongitude))
                     .orElseThrow(NoSuchElementException::new)
-                    .getX();
+                    .getLongitude();
         }
 
         /**
@@ -83,8 +79,8 @@ public class CityMap
          */
         public Point normalizeIntersection(final Intersection intersection)
         {
-            int finalX = (int) (((intersection.getX() - this.minLongitude) / (this.maxLongitude - this.minLongitude)) * this.mapComponentDimension.width);
-            int finalY = (int) (((intersection.getY() - this.minLatitude) / (this.maxLatitude - this.minLatitude)) * this.mapComponentDimension.height);
+            int finalX = (int) (((intersection.getLongitude() - this.minLongitude) / (this.maxLongitude - this.minLongitude)) * this.mapComponentDimension.width);
+            int finalY = (int) (((intersection.getLatitude() - this.minLatitude) / (this.maxLatitude - this.minLatitude)) * this.mapComponentDimension.height);
 
             return new Point(finalX, finalY);
         }
@@ -129,7 +125,7 @@ public class CityMap
             Intersection origin = segment.getOrigin();
             Intersection destination = segment.getDestination();
 
-            String key = this.generateHashCode(origin.getId(), destination.getId());
+            String key = this.generateHashCode(origin, destination);
             this.segmentsByIntersectionId.put(key, segment);
         }
     }
@@ -161,13 +157,40 @@ public class CityMap
     }
 
     /**
-     * Créer une clé à partir de deux ids d'intersection
-     * @param intersectionId1 L'id de la première intersection
-     * @param intersectionId2 L'id de la deuxième intersection
+     * Retourne un segment à partir de deux intersections.
+     * @param a La première intersection.
+     * @param b La seconde intersection.
+     * @return Le segment correspondant aux deux intersections.
+     */
+    public Segment getSegment(Intersection a, Intersection b) {
+        /* Les segments de la map possédant une origine et une destination,
+         * on peut parfois avoir un null si on cherche un segment de A a B mais pas de B à A.
+         * La méthode getSegment teste les deux cas pour retourner quand même le bon segment si l'utilisateur
+         * ne passe pas la bonne intersection en premier. */
+        Segment returnedSeg = this.segmentsByIntersectionId.get(generateHashCode(a, b));
+        if (returnedSeg == null) {
+            returnedSeg = this.segmentsByIntersectionId.get(generateHashCode(b, a));
+        }
+
+        return returnedSeg;
+    }
+
+    /**
+     * Retourne la liste contenant les segments indexés par leur IDs d'intersection.
+     * @return La liste concernée.
+     */
+    public Map<String, Segment> getSegmentsByIntersectionIdList() {
+        return segmentsByIntersectionId;
+    }
+
+    /**
+     * Créer une clé à partir de deux intersections
+     * @param a La première intersection
+     * @param b La deuxième intersection
      * @return La clé générée
      */
-    public String generateHashCode(long intersectionId1, long intersectionId2)
+    private String generateHashCode(Intersection a, Intersection b)
     {
-        return String.format("%s%s%s", intersectionId1, HASH_CODE_SEPARATOR, intersectionId2);
+        return String.format("%s%s%s", a.getId(), HASH_CODE_SEPARATOR, b.getId());
     }
 }

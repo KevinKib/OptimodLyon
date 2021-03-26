@@ -1,7 +1,5 @@
 package optimodLyon.model;
 
-import java.util.Comparator;
-
 /**
  * Classe qui permet de représenter une intersection sur une carte.
  * @author Dorian TERBAH
@@ -10,14 +8,14 @@ import java.util.Comparator;
 public class Intersection
 {
     /**
-     * La coordonnée x de l'intersection
+     * La longitude de l'intersection (coordonnée x)
      */
-    public final float x;
+    public final float longitude;
 
     /**
-     * La coordonnée y de l'intersection
+     * La latitude de l'intersection (coordonnée y)
      */
-    public final float y;
+    public final float latitude;
 
     /**
      * L'id de l'intersection
@@ -26,14 +24,14 @@ public class Intersection
 
     /**
      * Constructeur de la classe Intersection
-     * @param x La coordonnée x de l'intersection
-     * @param y La coordonnée y de l'intersection
+     * @param longitude La coordonnée longitude de l'intersection
+     * @param latitude La coordonnée y de l'intersection
      * @param id L'id de l'intersection
      */
-    public Intersection(float x, float y, long id)
+    public Intersection(float longitude, float latitude, long id)
     {
-        this.x = x;
-        this.y = y;
+        this.longitude = longitude;
+        this.latitude = latitude;
         this.id = id;
     }
 
@@ -46,18 +44,18 @@ public class Intersection
     }
 
     /**
-     * @return La coordonnées x
+     * @return Retourne la longitude d'une intersection - autrement dit, la coordonnée x
      */
-    public float getX()
+    public float getLongitude()
     {
-        return this.x;
+        return this.longitude;
     }
 
     /**
-     * @return La coordonnée y
+     * @return Retourne la latitude d'une intersection - autrement dit, la coordonnée y
      */
-    public float getY()
+    public float getLatitude()
     {
-        return this.y;
+        return this.latitude;
     }
 }

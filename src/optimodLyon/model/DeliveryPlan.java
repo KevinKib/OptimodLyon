@@ -3,6 +3,7 @@ package optimodLyon.model;
 import java.util.List;
 import java.util.ArrayList;
 import java.sql.Time;
+import java.util.NoSuchElementException;
 
 /**
  * Classe représentant un inventaire de demandes de pickup-delivery.
@@ -66,15 +67,6 @@ public class DeliveryPlan
     public void addRequest(Request request)
     {
         this.requests.add(request);
-    }
-
-    /**
-     * Remplace l'ancienne requête par la nouvelle
-     * @param oldRequest L'ancienne requête
-     * @param newRequest La nouvelle requête
-     */
-    public void updateRequest(Request oldRequest, Request newRequest)
-    {
     }
 
     /**
