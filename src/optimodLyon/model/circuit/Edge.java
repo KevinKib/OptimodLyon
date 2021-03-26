@@ -12,25 +12,14 @@ import java.util.List;
  */
 public class Edge {
 
-    public Node getFirst() {
-        return first;
-    }
-
-    public Node getSecond() {
-        return second;
-    }
-    public List<Segment> getPath() {
-        return path;
-    }
-
-    public float getLength() {
-        return length;
-    }
-
     private List<Segment> path;
     private float length;
     private Node first;
     private Node second;
+
+    public Edge() {
+
+    }
 
     public Edge(List<Segment> path, float length, Node first, Node second) {
         this.path = path;
@@ -39,9 +28,19 @@ public class Edge {
         this.second = second;
     }
 
-    public Edge() {
-
+    public Node getFirst() {
+        return first;
     }
 
+    public Node getSecond() {
+        return second;
+    }
 
+    public List<Segment> getPath() {
+        return path;
+    }
+
+    public float getLength() {
+        return length;
+    }
 }

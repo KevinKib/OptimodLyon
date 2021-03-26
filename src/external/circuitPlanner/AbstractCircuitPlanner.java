@@ -1,17 +1,14 @@
 package external.circuitPlanner;
 
-import optimodLyon.model.CityMap;
-import optimodLyon.model.DeliveryPlan;
-import optimodLyon.model.Intersection;
-import optimodLyon.model.Segment;
+import optimodLyon.model.*;
+import optimodLyon.model.circuit.Graph;
 
 import java.util.List;
 import java.util.Map;
 
 public abstract class AbstractCircuitPlanner {
 
-    public abstract void searchSolution(CityMap map, DeliveryPlan plan, int cyclists);
+    public abstract List<List<Segment>> searchSolution(CityMap map, DeliveryPlan plan, int cycleNumber);
 
-    public abstract Map.Entry<List<Segment>, Integer> getShortestPath(CityMap map, Intersection a, Intersection b, int cyclists);
-
+    public abstract List<Segment> getShortestPath(Graph cityMapGraph, Waypoint pointA, Waypoint pointB);
 }
