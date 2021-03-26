@@ -1,19 +1,15 @@
 package external.circuitPlanner;
 
-import optimodLyon.model.CityMap;
-import optimodLyon.model.DeliveryPlan;
-import optimodLyon.model.Segment;
-import optimodLyon.model.Waypoint;
+import optimodLyon.model.*;
 import optimodLyon.model.circuit.Graph;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
 
-public class CircuitPlanner1 {
+public class CircuitPlanner1 extends AbstractCircuitPlanner{
 
-    public static List<Segment> getShortestPath(Graph cityMapGraph, Waypoint pointA, Waypoint pointB){
+    public List<Segment> getShortestPath(Graph cityMapGraph, Waypoint pointA, Waypoint pointB){
         //Should call A* to compute the shortest path between the two points
         List<Segment> segmentList = new ArrayList<>();
 
@@ -28,4 +24,5 @@ public class CircuitPlanner1 {
         }
         return null;
     }
+
 }

@@ -1,5 +1,6 @@
 package optimodLyon.model.circuit;
 
+import external.circuitPlanner.AbstractCircuitPlanner;
 import external.circuitPlanner.CircuitPlanner1;
 import optimodLyon.model.*;
 
@@ -50,6 +51,7 @@ public class CircuitManager
      */
     private CityMap cityMap;
     private Graph cityMapGraph;
+    private AbstractCircuitPlanner circuitPlanner;
 
     public Graph getCityMapGraph() {
         return cityMapGraph;
@@ -64,6 +66,7 @@ public class CircuitManager
     public CircuitManager(CityMap cityMap) {
         this.cityMap = cityMap;
         this.cityMapGraph = this.createCityMapGraph();
+        this.circuitPlanner = new CircuitPlanner1();
     }
 
     public Graph createCityMapGraph(){
@@ -95,8 +98,8 @@ public class CircuitManager
             Pickup pickup = request.getPickup();
             waypoints.add(delivery);
             waypoints.add(pickup);
-            List<Segment> path = CircuitPlanner1.getShortestPath(this.cityMapGraph, pickup, delivery);
-            int distance = this.getDistance(path);
+            List<Segment> path = this.circuitPlanner.getShortestPath(this.cityMapGraph, pickup, delivery);
+            float distance = this.getDistance(path);
             Edge edge = new Edge(path, distance, pickup, delivery);
             edges.add(edge);
         }
@@ -126,23 +129,23 @@ public class CircuitManager
             Delivery delivery = request.getDelivery();
             Pickup pickup = request.getPickup();
 
-            List<Waypoint> waypoints = this.circuit.getWaypoints();
+            List<Node> waypoints = this.circuit.getNodes();
             waypoints.add(pickup);
             waypoints.add(delivery);
 
-            Edge pickupSplitEdge = this.circuit.getEdgeByFirstWaypoint(beforePickup);
-            Waypoint destinationPickup = pickupSplitEdge.getSecond();
+            Edge pickupSplitEdge = this.circuit.getEdgeByFirstNode(beforePickup);
+            Node destinationPickup = pickupSplitEdge.getSecond();
 
             this.circuit.removeEdge(pickupSplitEdge);
             this.circuit.addEdge(createEdge(beforePickup, pickup));
-            this.circuit.addEdge(createEdge(pickup, destinationPickup));
+            this.circuit.addEdge(createEdge(pickup, (Waypoint) destinationPickup));
 
-            Edge deliverySplitEdge = this.circuit.getEdgeByFirstWaypoint(beforeDelivery);
-            Waypoint destinationDelivery = deliverySplitEdge.getSecond();
+            Edge deliverySplitEdge = this.circuit.getEdgeByFirstNode(beforeDelivery);
+            Node destinationDelivery = deliverySplitEdge.getSecond();
 
             this.circuit.removeEdge(deliverySplitEdge);
             this.circuit.addEdge(createEdge(beforeDelivery, delivery));
-            this.circuit.addEdge(createEdge(delivery, destinationDelivery));
+            this.circuit.addEdge(createEdge(delivery, (Waypoint) destinationDelivery));
         }
     }
 
@@ -155,23 +158,23 @@ public class CircuitManager
             Delivery delivery = request.getDelivery();
             Pickup pickup = request.getPickup();
 
-            List<Waypoint> waypoints = this.circuit.getWaypoints();
+            List<Node> waypoints = this.circuit.getNodes();
             waypoints.remove(pickup);
             waypoints.remove(delivery);
 
-            Edge pickupGroupEdge1 = this.circuit.getEdgeBySecondWaypoint(pickup);
-            Waypoint originPickup = pickupGroupEdge1.getFirst();
-            Edge pickupGroupEdge2 = this.circuit.getEdgeByFirstWaypoint(pickup);
-            Waypoint destinationPickup = pickupGroupEdge2.getSecond();
+            Edge pickupGroupEdge1 = this.circuit.getEdgeBySecondNode(pickup);
+            Waypoint originPickup = (Waypoint) pickupGroupEdge1.getFirst();
+            Edge pickupGroupEdge2 = this.circuit.getEdgeByFirstNode(pickup);
+            Waypoint destinationPickup = (Waypoint) pickupGroupEdge2.getSecond();
 
             this.circuit.removeEdge(pickupGroupEdge1);
             this.circuit.removeEdge(pickupGroupEdge2);
             this.circuit.addEdge(createEdge(originPickup, destinationPickup));
 
-            Edge deliveryGroupEdge1 = this.circuit.getEdgeBySecondWaypoint(delivery);
-            Waypoint originDelivery = deliveryGroupEdge1.getFirst();
-            Edge deliveryGroupEdge2 = this.circuit.getEdgeByFirstWaypoint(delivery);
-            Waypoint destinationDelivery = deliveryGroupEdge2.getSecond();
+            Edge deliveryGroupEdge1 = this.circuit.getEdgeBySecondNode(delivery);
+            Waypoint originDelivery = (Waypoint) deliveryGroupEdge1.getFirst();
+            Edge deliveryGroupEdge2 = this.circuit.getEdgeByFirstNode(delivery);
+            Waypoint destinationDelivery = (Waypoint) deliveryGroupEdge2.getSecond();
 
             this.circuit.removeEdge(deliveryGroupEdge1);
             this.circuit.removeEdge(deliveryGroupEdge2);
@@ -185,13 +188,13 @@ public class CircuitManager
      */
     public void updateWaypoint(Waypoint waypoint){
         if(circuit != null) {
-            Edge edge = this.circuit.getEdgeBySecondWaypoint(waypoint);
+            Edge edge = this.circuit.getEdgeBySecondNode(waypoint);
             this.circuit.removeEdge(edge);
-            this.circuit.addEdge(this.createEdge(edge.getFirst(), waypoint));
+            this.circuit.addEdge(this.createEdge((Waypoint) edge.getFirst(), waypoint));
 
-            edge = this.circuit.getEdgeByFirstWaypoint(waypoint);
+            edge = this.circuit.getEdgeByFirstNode(waypoint);
             this.circuit.removeEdge(edge);
-            this.circuit.addEdge(this.createEdge(waypoint, edge.getSecond()));
+            this.circuit.addEdge(this.createEdge(waypoint, (Waypoint) edge.getSecond()));
         }
     }
 
@@ -231,18 +234,18 @@ public class CircuitManager
     public List<Segment> graphToSegmentList(){
         List<Segment> segments = new ArrayList<>();
 
-        Warehouse warehouse = this.circuit.getWaypoints().stream()
+        Warehouse warehouse = this.circuit.getNodes().stream()
                 .filter(waypoint -> waypoint instanceof Warehouse)
                 .map(waypoint -> (Warehouse)waypoint)
                 .findAny()
                 .orElseThrow(NoSuchElementException::new);
 
-        Edge currentEdge = this.circuit.getEdgeByFirstWaypoint(warehouse);
+        Edge currentEdge = this.circuit.getEdgeByFirstNode(warehouse);
         segments.addAll(currentEdge.getPath());
-        Waypoint destination = currentEdge.getSecond();
+        Node destination = currentEdge.getSecond();
 
         while (!(destination instanceof Warehouse)) {
-            currentEdge = this.circuit.getEdgeByFirstWaypoint(destination);
+            currentEdge = this.circuit.getEdgeByFirstNode(destination);
             segments.addAll(currentEdge.getPath());
             destination = currentEdge.getSecond();
         }
@@ -255,7 +258,7 @@ public class CircuitManager
      * @return Edge, le Edge crée
      */
     private Edge createEdge(Waypoint first, Waypoint second){
-        List<Segment> path = this.circuitPlanner.getShortestPath(this.cityMap, first, second);
+        List<Segment> path = this.circuitPlanner.getShortestPath(this.cityMapGraph, first, second);
         float distance = this.getDistance(path);
         Edge edge = new Edge(path, distance, first, second);
         return edge;
