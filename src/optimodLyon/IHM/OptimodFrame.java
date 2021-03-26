@@ -97,19 +97,9 @@ public class OptimodFrame extends JFrame {
     }
 
     /**
-     * Mets à jour l'état courant de la fenetre
-     * @param newState Le nouvel etat
-     */
-    public void updateState(OptimodFrameState newState)
-    {
-        this.state = newState;
-        this.updateView();
-    }
-
-    /**
      * Demande au controleur de la fenetre de charger le fichier de city map
      * @param filename Le fichier contenant les informations de la map
-     * @@return true si le fichier a bien été chargé, sinon false
+     * @return true si le fichier a bien été chargé, sinon false
      */
     boolean loadCityMap(String filename)
     {
@@ -118,7 +108,8 @@ public class OptimodFrame extends JFrame {
             CityMap map = XMLLoader.loadMap(filename);
             this.controller.setCityMap(map);
             this.controller.setDeliveryPlan(null);
-            this.mapView.updateCityMap(map);
+            this.controller.setCityMapCoordinates(this.mapView.getDimension());
+            this.mapView.repaint();
         }
         catch (Exception e)
         {
@@ -138,7 +129,28 @@ public class OptimodFrame extends JFrame {
         {
             DeliveryPlan plan = XMLLoader.loadDeliveryPlan(this.controller.getCityMap(), filename);
             this.controller.setDeliveryPlan(plan);
-            this.mapView.updateDeliveryPlan(plan);
+            this.mapView.repaint();
+        }
+        catch (Exception e)
+        {
+            System.err.println(e);
+            return false;
+        }
+        return true;
+    }
+
+    /**
+     *
+     * @param
+     * @return
+     */
+    boolean loadCircuit(int cycleNumber)
+    {
+        try
+        {
+            DeliveryPlan plan = this.controller.getDeliveryPlan();
+            this.controller.computeCircuit(plan, cycleNumber);
+            //this.mapView.updateDeliveryPlan(plan);
         }
         catch (Exception e)
         {
@@ -152,26 +164,14 @@ public class OptimodFrame extends JFrame {
     {
     }
 
-    /**
-     * Creation du menu de gauche
-     *
-     */
     private void buildLeftPanel() {
         leftPanel = new JPanel();
         leftPanel.setLayout(new GridBagLayout());
 
-        // Bouton d'ajout du couple pickup and delivery
         addPDButton = new JButton();
-        addPDButton.setText("Ajouter un point de Pickup & Delivery");
-
-
-        // Bouton de modification de l'ordre de passage du livreur
+        addPDButton.setText("Ajouter un Pickup & Delivery");
         modifyOrderButton = new JButton();
         modifyOrderButton.setText("Modifier l'ordre");
-
-
-
-        // Légende
         legendPlaceholder = new JLabel();
         //legendPlaceholder.setText("Légende");
         leftPanel.setBackground(Color.white);
