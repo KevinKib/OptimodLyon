@@ -84,7 +84,7 @@ public class OptimodFrame extends JFrame {
         mainPanel.add(this.navigationView, BorderLayout.NORTH);
 
         // Center Panel
-        this.mapView = new MapView();
+        this.mapView = new MapView(this.controller);
         mainPanel.add(this.mapView, BorderLayout.CENTER);
 
         // Left Menu
@@ -162,6 +162,10 @@ public class OptimodFrame extends JFrame {
 
     private void updateView()
     {
+    }
+
+    public Controller getController() {
+        return controller;
     }
 
     private void buildLeftPanel() {

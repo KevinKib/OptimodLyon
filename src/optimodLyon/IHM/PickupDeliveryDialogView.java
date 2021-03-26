@@ -1,6 +1,9 @@
 package optimodLyon.IHM;
+import optimodLyon.controller.Controller;
 import optimodLyon.controller.ihm.DialogController;
 import optimodLyon.model.Segment;
+
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.swing.*;
@@ -19,16 +22,19 @@ public class PickupDeliveryDialogView extends JDialog {
     private JComboBox dVoie1;
     private JComboBox dVoie2;
 
-    public PickupDeliveryDialogView(final JFrame frame, final List<Segment> voies){
+    private Controller controller;
+
+    public PickupDeliveryDialogView(final JFrame frame, Controller controller){
         super(frame, "Ajout d'un couple Pickup&Delivery", Dialog.ModalityType.DOCUMENT_MODAL);
+        this.controller = controller;
         this.setBounds(132, 132, 500, 500);
 
         Container dialogContainer = this.getContentPane();
 
         dialogContainer.setLayout(new BorderLayout());
 
-        JPanel pickupPanel = buidPanelForm(voies, "Pickup");
-        JPanel deliveryPanel = buidPanelForm(voies, "Delivery");
+        JPanel pickupPanel = buidPanelForm(controller.getCityMap().getSegments(), "Pickup");
+        JPanel deliveryPanel = buidPanelForm(controller.getCityMap().getSegments(), "Delivery");
         dialogContainer.add(pickupPanel, BorderLayout.NORTH);
         dialogContainer.add(deliveryPanel, BorderLayout.CENTER);
 
@@ -46,6 +52,12 @@ public class PickupDeliveryDialogView extends JDialog {
         dialogContainer.add(footerButtonPanel, BorderLayout.SOUTH);
     }
 
+    public Controller getController() {
+        return controller;
+    }
+
+
+
     private JPanel buidPanelForm(List<Segment> voies, String name){
         JLabel pickupLabel = new JLabel(name);
         pickupLabel.setFont(new Font(pickupLabel.getFont().getName(), Font.BOLD, 18));
@@ -57,7 +69,7 @@ public class PickupDeliveryDialogView extends JDialog {
         panel1.setLayout(new BoxLayout(panel1, BoxLayout.Y_AXIS));
 
         JPanel voie1 = buildComboBox(voies, "Voie n°1", true);
-        JPanel voie2 = buildComboBox(voies, "Voie n°2", false);
+        JPanel voie2 = buildComboBox(new ArrayList<>(), "Voie n°2", false);
         if(name.equals("Pickup")){
             this.pVoie1 = (JComboBox) voie1.getComponent(1);
             this.pVoie2 = (JComboBox) voie2.getComponent(1);
@@ -83,7 +95,6 @@ public class PickupDeliveryDialogView extends JDialog {
         panel1.add(formPickupPanel);
         return panel1;
     }
-
 
     private JPanel buildInput(final String inputLabelText){
         JPanel inputPanel = new JPanel();

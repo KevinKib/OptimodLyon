@@ -3,6 +3,7 @@ package optimodLyon.model;
 import java.awt.*;
 import java.util.*;
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * Classe qui représente une carte XML.
@@ -144,6 +145,16 @@ public class CityMap
     public List<Segment> getSegments()
     {
         return Collections.unmodifiableList(new ArrayList<Segment>(this.segmentsByIntersectionId.values()));
+    }
+
+    /**
+     * @return Les segments ayant une intersection avec le nom de la rue passé en paramèrtre
+     */
+    public List<Segment> getIntersectionSegments(final Segment segment){
+        List<Segment> segments = this.getSegments();
+        return segments.stream()
+                .filter(s -> !s.equals(segment) && (s.getDestination().equals(segment.getOrigin()) || s.getOrigin().equals(segment.getDestination())))
+                .collect(Collectors.toList());
     }
 
     /**

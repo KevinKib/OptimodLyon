@@ -18,18 +18,18 @@ public class DialogController implements ItemListener, ActionListener {
     private JComboBox<Segment> dVoie1;
     private JComboBox<Segment> dVoie2;
 
-    private JDialog pickupDeliveyDialogView;
+    private PickupDeliveryDialogView pickupDeliveyDialogView;
 
     PickupAndDeliveryForm pickupAndDeliveryForm;
 
 
-    public DialogController(JDialog dialog, JComboBox pVoie1, JComboBox pVoie2, JComboBox dVoie1, JComboBox dVoie2, JButton okButton, JButton cancelButton){
+    public DialogController(PickupDeliveryDialogView pickupDeliveryDialogView, JComboBox pVoie1, JComboBox pVoie2, JComboBox dVoie1, JComboBox dVoie2, JButton okButton, JButton cancelButton){
         this.pVoie1 = pVoie1;
         this.pVoie2 = pVoie2;
         this.dVoie1 = dVoie1;
         this.dVoie2 = dVoie2;
 
-        this.pickupDeliveyDialogView = dialog;
+        this.pickupDeliveyDialogView = pickupDeliveryDialogView;
 
         this.pVoie1.addItemListener(this);
         this.pVoie2.addItemListener(this);
@@ -43,12 +43,18 @@ public class DialogController implements ItemListener, ActionListener {
 
     }
 
+
+
     @Override
     public void itemStateChanged(ItemEvent e) {
         Object o = e.getSource();
         if(o instanceof JComboBox){
             JComboBox<Segment> comboBox = (JComboBox<Segment>) o;
             if(comboBox.equals(this.pVoie1) && this.pVoie1.getSelectedIndex()!=0){
+                List<Segment> intersectionSegment = this.pickupDeliveyDialogView.getController().getCityMap().getIntersectionSegments((Segment) comboBox.getSelectedItem());
+                for(Segment s : intersectionSegment){
+                    this.pVoie2.addItem(s);
+                }
                 this.pVoie2.setEnabled(true);
                 this.pickupAndDeliveryForm.setpVoie1((Segment) comboBox.getSelectedItem());
             } else if(comboBox.equals(this.pVoie2) && this.pVoie2.getSelectedIndex()!=0){

@@ -3,6 +3,7 @@ package optimodLyon.controller.ihm;
 import optimodLyon.IHM.LeftMenuView;
 import optimodLyon.IHM.NavigationView;
 import optimodLyon.IHM.PickupDeliveryDialogView;
+import optimodLyon.controller.Controller;
 import optimodLyon.model.Segment;
 
 import javax.swing.*;
@@ -21,9 +22,7 @@ public class LeftMenuController implements ActionListener {
      */
     private final LeftMenuView view;
 
-    private List<Segment> listVoie1;
-    private final String[] listVoie2 = new String[]{"La doua", "Gaston Berger", "La rotonde", "La joconde"};
-
+    private final Controller controller;
 
 
     /**
@@ -31,31 +30,14 @@ public class LeftMenuController implements ActionListener {
      * @param view La Navigationview associée au controleur
      * @param buttons Les boutons qui seront controlés par ce controleur
      */
-    public LeftMenuController(LeftMenuView view, List<JButton> buttons)
+    public LeftMenuController(LeftMenuView view, List<JButton> buttons, final Controller controller)
     {
         this.view = view;
-        listVoie1 = new ArrayList<>();
+        this.controller = controller;
         for (JButton button : buttons)
         {
             button.addActionListener(this);
         }
-        this.initArray();
-    }
-
-    private void initArray(){
-        Segment s1 = new Segment();
-        s1.setName("La doua");
-        Segment s2 = new Segment();
-        s1.setName("Gaston Berger");
-        Segment s3 = new Segment();
-        s1.setName("Rotonde");
-        Segment s4 = new Segment();
-        s1.setName("Joconde");
-        this.listVoie1.add(s1);
-        this.listVoie1.add(s2);
-        this.listVoie1.add(s3);
-        this.listVoie1.add(s4);
-
     }
 
     @Override
@@ -64,7 +46,7 @@ public class LeftMenuController implements ActionListener {
         System.out.println("Renter");
         if(actionCommand.equals(LeftMenuView.ADD_PICKUP_AND_DELIVERY_POINTS)){
             System.out.println("Renter");
-            PickupDeliveryDialogView pickupDeliveryDialogView = new PickupDeliveryDialogView(this.view.getWindow(), listVoie1);
+            PickupDeliveryDialogView pickupDeliveryDialogView = new PickupDeliveryDialogView(this.view.getWindow(), this.controller);
             pickupDeliveryDialogView.setVisible(true);
         } else if(actionCommand.equals(LeftMenuView.MODIFY_ITINERARY_ORDER)) {
 

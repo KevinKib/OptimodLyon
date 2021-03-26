@@ -29,6 +29,7 @@ public class LeftMenuView extends JPanel {
     private JButton modifyOrderButton;
     private JLabel legendPlaceholder;
 
+
     public LeftMenuView (final OptimodFrame window) {
         super(new GridLayout(3,1));
         this.window = window;
@@ -51,7 +52,7 @@ public class LeftMenuView extends JPanel {
         buttons.add(this.addPDButton);
         buttons.add(this.modifyOrderButton);
 
-        LeftMenuController leftMenuController = new LeftMenuController(this, buttons);
+        LeftMenuController leftMenuController = new LeftMenuController(this, buttons, window.getController());
     }
 
     public OptimodFrame getWindow() {
