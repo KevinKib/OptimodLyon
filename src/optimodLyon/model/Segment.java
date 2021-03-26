@@ -27,6 +27,11 @@ public class Segment
      */
     private float length;
 
+
+    public Segment(){
+
+    }
+
     /**
      * Constructeur de la classe Segment
      * @param destination L'intersection destination
@@ -67,10 +72,22 @@ public class Segment
     }
 
     /**
+     * Affecte le nom du segment
+     */
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    /**
      * @return L'intersection origine
      */
     public Intersection getOrigin()
     {
         return this.origin;
+    }
+
+    @Override
+    public String toString() {
+        return this.getName();
     }
 }

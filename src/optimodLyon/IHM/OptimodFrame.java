@@ -45,6 +45,11 @@ public class OptimodFrame extends JFrame {
     private JPanel navigationView;
 
     /**
+     * Vue du menu à gauche
+     */
+    private JPanel leftMenuView;
+
+    /**
      * Le controleur de la fenetre
      */
     private Controller controller;
@@ -82,9 +87,10 @@ public class OptimodFrame extends JFrame {
         this.mapView = new MapView();
         mainPanel.add(this.mapView, BorderLayout.CENTER);
 
-        // Left Panel
-        buildLeftPanel();
-        mainPanel.add(leftPanel, BorderLayout.WEST);
+        // Left Menu
+        this.leftMenuView = new LeftMenuView(this);
+        //buildLeftPanel();
+        mainPanel.add(this.leftMenuView, BorderLayout.WEST);
 
         // Set main panel
         this.setContentPane(mainPanel);
@@ -146,14 +152,26 @@ public class OptimodFrame extends JFrame {
     {
     }
 
+    /**
+     * Creation du menu de gauche
+     *
+     */
     private void buildLeftPanel() {
         leftPanel = new JPanel();
         leftPanel.setLayout(new GridBagLayout());
 
+        // Bouton d'ajout du couple pickup and delivery
         addPDButton = new JButton();
         addPDButton.setText("Ajouter un point de Pickup & Delivery");
+
+
+        // Bouton de modification de l'ordre de passage du livreur
         modifyOrderButton = new JButton();
         modifyOrderButton.setText("Modifier l'ordre");
+
+
+
+        // Légende
         legendPlaceholder = new JLabel();
         //legendPlaceholder.setText("Légende");
         leftPanel.setBackground(Color.white);
