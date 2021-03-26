@@ -2,11 +2,11 @@ package optimodLyon.controller.ihm;
 
 import optimodLyon.IHM.NavigationView;
 
+import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
 import java.util.List;
-import javax.swing.*;
 
 /**
  * Classe qui permet de donner un comportement aux différents boutons
@@ -85,6 +85,8 @@ public class NavigationController implements ActionListener
         }
         else if (actionCommand.equals(NavigationView.CALCULATE_CIRCUIT_ACTION_COMMAND))
         {
+            this.view.notifyWindowToLoadCircuit(1);
+            // this.view.setState(NavigationView.NavigationViewState.CIRCUIT_CALCULATED);
             // TODO: calcul avec les algos
         }
     }
