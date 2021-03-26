@@ -56,12 +56,11 @@ public class NavigationController implements ActionListener
                 File selectedFile = this.fileChooser.getSelectedFile();
                 if (!this.view.sendFileToWindow(NavigationView.FileType.MAP, selectedFile.getAbsolutePath()))
                 {
-                    String message = String.format("Le fichier de map %s n'a pas été correctement chargé", selectedFile.getName());
+                    String message = String.format("Le fichier de carte %s n'a pas été correctement chargé", selectedFile.getName());
                     JOptionPane.showMessageDialog(null, message,"Erreur de chargement de la carte",JOptionPane.ERROR_MESSAGE);
                 }
                 else
                 {
-                    JOptionPane.showMessageDialog(null, "Carte chargée avec succès","Succès",JOptionPane.INFORMATION_MESSAGE);
                     this.view.setState(NavigationView.NavigationViewState.MAP_LOADED);
                 }
             }
@@ -75,12 +74,11 @@ public class NavigationController implements ActionListener
                 File selectedFile = this.fileChooser.getSelectedFile();
                 if(!this.view.sendFileToWindow(NavigationView.FileType.DELIVERY_PLAN, selectedFile.getAbsolutePath()))
                 {
-                    String message = String.format("Le fichier d'inventaire %s n'a pas été correctement charger", selectedFile.getName());
+                    String message = String.format("Le fichier d'inventaire %s n'a pas été correctement chargé", selectedFile.getName());
                     JOptionPane.showMessageDialog(null, message,"Erreur de chargement de l'inventaire",JOptionPane.ERROR_MESSAGE);
                 }
                 else
                 {
-                    JOptionPane.showMessageDialog(null, "Inventaire chargé avec succés","Succés",JOptionPane.INFORMATION_MESSAGE);
                     this.view.setState(NavigationView.NavigationViewState.DELIVERY_PLAN_LOADED);
                 }
             }

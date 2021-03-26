@@ -84,6 +84,15 @@ public class CityMap
 
             return new Point(finalX, finalY);
         }
+
+        /**
+         * Met à jour les dimensions du composant qui prend en charge la carte
+         * @param mapComponentDimension Les nouvelles dimension de la carte
+         */
+        public void setMapComponentDimension(Dimension mapComponentDimension)
+        {
+            this.mapComponentDimension = mapComponentDimension;
+        }
     }
 
     /**
