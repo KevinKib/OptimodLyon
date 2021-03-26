@@ -11,6 +11,10 @@ import java.util.List;
  */
 public class CityMap
 {
+    public Map<String, Segment> getSegmentsByIntersectionId() {
+        return segmentsByIntersectionId;
+    }
+
     /**
      * Classe qui représente les différents coefficients de normalisation des coordonnées
      */
@@ -83,6 +87,15 @@ public class CityMap
             int finalY = (int) (((intersection.getY() - this.minLatitude) / (this.maxLatitude - this.minLatitude)) * this.mapComponentDimension.height);
 
             return new Point(finalX, finalY);
+        }
+
+        /**
+         * Met à jour les dimensions du composant qui prend en charge la carte
+         * @param mapComponentDimension Les nouvelles dimension de la carte
+         */
+        public void setMapComponentDimension(Dimension mapComponentDimension)
+        {
+            this.mapComponentDimension = mapComponentDimension;
         }
     }
 
