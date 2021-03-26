@@ -201,6 +201,7 @@ public class NavigationView extends JPanel
         button.setForeground(Color.WHITE);
         button.setFont(new Font("Arial", Font.BOLD, 15));
         button.setBorderPainted(false);
+        button.setBorder(BorderFactory.createLineBorder(Color.BLACK));
         return button;
     }
 }
