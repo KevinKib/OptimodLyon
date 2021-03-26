@@ -5,22 +5,12 @@ package optimodLyon.model;
  * @author Fanny ROUVEL
  * @since 1.0
  */
-abstract public class Waypoint {
-
-    private Intersection intersection;
+public abstract class Waypoint extends Node{
     private int duration;
 
     public Waypoint(Intersection intersection, int duration) {
-        this.intersection = intersection;
+        super(intersection);
         this.duration = duration;
-    }
-
-    /**
-     * Retourne l'intersection sur laquelle se trouve le waypoint
-     * @return Intersection
-     */
-    public Intersection getIntersection() {
-        return intersection;
     }
 
     /**
@@ -31,6 +21,10 @@ abstract public class Waypoint {
         return duration;
     }
 
+    public void setDuration(int duration) {
+        this.duration = duration;
+    }
+
     /**
      * Met à jour un waypoint
      * @param intersection, l'intersection où est situé le waypoint
@@ -38,7 +32,7 @@ abstract public class Waypoint {
      */
     public void updateWaypoint(Intersection intersection, int duration)
     {
-        this.intersection = intersection;
+        this.setIntersection(intersection);
         this.duration = duration;
     }
 

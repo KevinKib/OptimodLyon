@@ -1,9 +1,13 @@
 package optimodLyon.IHM;
 
+import optimodLyon.model.*;
+
 import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
 
+import optimodLyon.controller.Controller;
+import optimodLyon.controller.ihm.MapViewResizeController;
 import optimodLyon.model.*;
 
 import static optimodLyon.model.CityMap.CityMapCoordinates;
@@ -12,6 +16,8 @@ import java.awt.image.BufferedImage;
 import java.io.File;
 import java.util.List;
 
+import static optimodLyon.model.CityMap.CityMapCoordinates;
+
 /**
  * Composant qui va contenir la carte.
  * @author Dorian TERBAH
@@ -19,21 +25,6 @@ import java.util.List;
  */
 public class MapView extends JComponent
 {
-    /**
-     * Objet pour normaliser les coordonées
-     */
-    private CityMapCoordinates cityMapCoordinates;
-
-    /**
-     * Carte actuelle à afficher
-     */
-    private CityMap cityMap;
-
-    /**
-     * Inventaire des pickup-delivery
-     */
-    private DeliveryPlan deliveryPlan;
-
     /**
      * Logo de localisation d'une livraison
      */
@@ -56,21 +47,40 @@ public class MapView extends JComponent
 
     private static Color[] COLORS = new Color[]
             {
-                Color.red, Color.green, Color.blue, Color.cyan, Color.magenta, Color.yellow,
-                Color.pink, Color.orange, Color.darkGray, new Color(0xE55674), new Color(0x0F4E95),
-                new Color(0xF68C66), new Color(0x1F5530), new Color(0x756BA6),
-                new Color(0xD0CF90), new Color(0x77CA9A), new Color(0xDD5084)
+                    new Color(0xA31834), new Color(0x006195),
+                    new Color(0x02550D), new Color(0xFFC99700), new Color(0x54327D),
+                    new Color(0xA14498), new Color(0xCB6702), new Color(0x003165),
+                    new Color(0x8E4966), new Color(0x450707), new Color(0x5B805B),
+                    new Color(0x47311D), new Color(0x20103E), new Color(0x1E7B76),
+                    new Color(0x9d029b), new Color(0x34762F), new Color(0x875300),
+                    new Color(0x0B3B3B), new Color(0xd6608f), new Color(0xAF8F76),
+                    new Color(0x444478), new Color(0x790057), new Color(0x7D5A5A),
+                    new Color(0xF68C66), new Color(0x00581A), new Color(0x756BA6),
+                    new Color(0x865D1E), new Color(0x332942), new Color(0x613143),
+                    new Color(0xe54d10), new Color(0x2e86c1), new Color(0x239b56)
             };
 
     /**
-     * Constructeur par défaut de la classe MapView
+     * Controle le redimensionnement du composant
      */
-    public MapView()
+    private MapViewResizeController mapViewResizeController;
+
+    /**
+     * Controleur général qui contient les données de l'application
+     */
+    private final Controller controller;
+
+    /**
+     * Constructeur par défaut de la classe MapView
+     * @param controller Le controleur général
+     */
+    public MapView(Controller controller)
     {
         super();
-        this.cityMapCoordinates = null;
         this.deliveryLocalisationlogo = null;
         this.pickupLocalisationlogo = null;
+
+        this.controller = controller;
 
         try
         {
@@ -81,6 +91,17 @@ public class MapView extends JComponent
         {
             System.err.println(e);
         }
+
+        this.mapViewResizeController = new MapViewResizeController(controller);
+        this.addComponentListener(this.mapViewResizeController);
+    }
+
+    /**
+     * @return La dimension du composant
+     */
+    public Dimension getDimension()
+    {
+        return new Dimension(this.getWidth(), this.getHeight());
     }
 
     @Override
@@ -94,26 +115,30 @@ public class MapView extends JComponent
 
         p.setColor(Color.BLACK);
 
-        if (this.cityMapCoordinates != null)
+        CityMapCoordinates cityMapCoordinates = this.controller.getCityMapCoordinates();
+
+        if (cityMapCoordinates != null)
         {
+            CityMap cityMap = this.controller.getCityMap();
             // Affichage de la carte
-            List<Segment> segments = this.cityMap.getSegments();
+            List<Segment> segments = cityMap.getSegments();
 
             for (Segment segment : segments)
             {
                 final Intersection origin = segment.getOrigin();
                 final Intersection destination = segment.getDestination();
 
-                Point originPoint = this.cityMapCoordinates.normalizeIntersection(origin);
-                Point destinationPoint = this.cityMapCoordinates.normalizeIntersection(destination);
+                Point originPoint = cityMapCoordinates.normalizeIntersection(origin);
+                Point destinationPoint = cityMapCoordinates.normalizeIntersection(destination);
 
                 p.drawLine(originPoint.x, originPoint.y, destinationPoint.x, destinationPoint.y);
             }
 
-            // Affichage des pickup-delivery : todo
-            if (this.deliveryPlan != null)
+            DeliveryPlan deliveryPlan = this.controller.getDeliveryPlan();
+            // Affichage des pickup-delivery
+            if (deliveryPlan != null)
             {
-                List<Request> requests = this.deliveryPlan.getRequests();
+                List<Request> requests = deliveryPlan.getRequests();
                 for (int i = 0; i < requests.size(); ++i)
                 {
                     Color color = null;
@@ -131,8 +156,8 @@ public class MapView extends JComponent
 
                     Request request = requests.get(i);
 
-                    Point deliveryPoint = this.cityMapCoordinates.normalizeIntersection(request.getDelivery().getIntersection());
-                    Point pickupPoint = this.cityMapCoordinates.normalizeIntersection(request.getPickup().getIntersection());
+                    Point deliveryPoint = cityMapCoordinates.normalizeIntersection(request.getDelivery().getIntersection());
+                    Point pickupPoint = cityMapCoordinates.normalizeIntersection(request.getPickup().getIntersection());
 
                     // Affichage de la delivery
                     BufferedImage image = this.resize(this.deliveryLocalisationlogo, 30, 30);
@@ -172,27 +197,5 @@ public class MapView extends JComponent
         g.fillRect(0,0,w,h);
         g.dispose();
         return dyed;
-    }
-
-
-    /**
-     * Permet de mettre à jour la carte à afficher
-     * @param cityMap La nouvelle carte
-     */
-    public void updateCityMap(CityMap cityMap)
-    {
-        this.cityMap = cityMap;
-        this.cityMapCoordinates = new CityMapCoordinates(new Dimension(this.getWidth(), this.getHeight()), this.cityMap.getIntersections());
-        this.repaint();
-    }
-
-    /**
-     * permet de mettre à jour l'inventaire
-     * @param plan
-     */
-    public void updateDeliveryPlan(DeliveryPlan plan)
-    {
-        this.deliveryPlan = plan;
-        this.repaint();
     }
 }

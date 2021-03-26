@@ -1,45 +1,25 @@
 package optimodLyon.model.circuit;
 
-import external.circuitPlanner.AbstractCircuitPlanner;
 import external.circuitPlanner.CircuitPlanner1;
 import optimodLyon.model.*;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.NoSuchElementException;
 
 /**
  * Classe gérant un circuit
- * @author Fanny ROUVEL
+ * @author Fanny ROUVEL && Yolann GAUVIN
  * @since 1.0
  */
-public class CircuitManager {
-
-    /**
-     * Le circuit à gérer, sous la forme d'un graphe
-     */
-    private Circuit circuit;
-
-    /**
-     * La carte sur laquelle le circuit se base
-     */
-    private CityMap cityMap;
-
-    /**
-     * Le circuit planner utilisé pour créer mettre en place le circuit
-     */
-    private AbstractCircuitPlanner circuitPlanner;
-
-    public CircuitManager(CityMap cityMap) {
-        this.circuitPlanner = new CircuitPlanner1();
-        this.cityMap = cityMap;
-    }
-
+public class CircuitManager
+{
     /**
      * Retourne le graph du circuit courant
      * @return Circuit, le graphe représentant le circuit courant s'il existe, null sinon
      */
-    public Circuit getGraph() {
+    public Graph getGraph() {
         return circuit;
     }
 
@@ -49,6 +29,90 @@ public class CircuitManager {
      */
     public CityMap getCityMap() {
         return cityMap;
+    }
+
+    public void setCircuit(Graph circuit) {
+        this.circuit = circuit;
+    }
+
+    public void setCityMap(CityMap cityMap) {
+        this.cityMap = cityMap;
+        this.cityMapGraph = this.createCityMapGraph();
+    }
+
+    /**
+     * Le circuit à gérer, sous la forme d'un graphe
+     */
+    private Graph circuit;
+
+    /**
+     * La carte sur laquelle le circuit se base
+     */
+    private CityMap cityMap;
+    private Graph cityMapGraph;
+
+    public Graph getCityMapGraph() {
+        return cityMapGraph;
+    }
+
+    public void setCityMapGraph(Graph cityMapGraph) {
+        this.cityMapGraph = cityMapGraph;
+    }
+
+
+
+    public CircuitManager(CityMap cityMap) {
+        this.cityMap = cityMap;
+        this.cityMapGraph = this.createCityMapGraph();
+    }
+
+    public Graph createCityMapGraph(){
+        List<Segment> segments = this.cityMap.getSegments();
+        List<Node> nodes = new ArrayList<>();
+        List<Edge> edges = new ArrayList<>();
+
+        for (Segment segment: segments) {
+            Node origin = new Node(segment.getOrigin());
+            Node destination = new Node(segment.getDestination());
+            List<Segment> path = Arrays.asList(segment);
+            Edge edge = new Edge(path, segment.getLength(), origin, destination);
+            edges.add(edge);
+            nodes.add(origin);
+            nodes.add(destination);
+        }
+        return new Graph(nodes, edges);
+    }
+
+    public Graph createCircuit(DeliveryPlan plan){
+        List<Request> requests = plan.getRequests();
+        List<Node> waypoints = new ArrayList<>();
+        List<Edge> edges = new ArrayList<>();
+
+        //For each waypoint in the requests of the plan, (either Delivery or Pickup): append them to the circuit waypoint
+        //And computes the edge between
+        for (Request request: requests) {
+            Delivery delivery = request.getDelivery();
+            Pickup pickup = request.getPickup();
+            waypoints.add(delivery);
+            waypoints.add(pickup);
+            List<Segment> path = CircuitPlanner1.getShortestPath(this.cityMapGraph, pickup, delivery);
+            int distance = this.getDistance(path);
+            Edge edge = new Edge(path, distance, pickup, delivery);
+            edges.add(edge);
+        }
+        return new Graph(waypoints, edges);
+    }
+
+    public List<List<Segment>> getSolution(DeliveryPlan plan, int cycleNumber){
+        //The first step is to create the graph corresponding to the delivery plan, which is the circuit.
+        this.circuit = this.createCircuit(plan);
+
+        System.out.println(this.cityMapGraph);
+        System.out.println(this.circuit);
+
+        System.out.println(plan.getRequests());
+        //CircuitPlanner1.searchSolution(this.cityMap, plan, cycleNumber);
+        return null;
     }
 
     /**
@@ -196,5 +260,7 @@ public class CircuitManager {
         Edge edge = new Edge(path, distance, first, second);
         return edge;
     }
+
+
 
 }

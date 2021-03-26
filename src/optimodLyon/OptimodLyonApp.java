@@ -22,14 +22,14 @@ public class OptimodLyonApp implements Runnable {
         // Apply look n'feel
         UIManager.setLookAndFeel(new NimbusLookAndFeel());
 
-        // Run Optimod'Lyon App
-        Runnable app = new OptimodLyonApp();
-        try {
-            SwingUtilities.invokeAndWait(app);
-        } catch (InvocationTargetException ex) {
-            ex.printStackTrace();
-        } catch (InterruptedException ex) {
-            ex.printStackTrace();
+            // Run Optimod'Lyon App
+            Runnable app = new OptimodLyonApp();
+            try {
+                SwingUtilities.invokeAndWait(app);
+            } catch (InvocationTargetException ex) {
+                ex.printStackTrace();
+            } catch (InterruptedException ex) {
+                ex.printStackTrace();
         }
     }
 }
