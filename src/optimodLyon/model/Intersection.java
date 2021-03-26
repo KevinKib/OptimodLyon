@@ -1,7 +1,5 @@
 package optimodLyon.model;
 
-import java.util.Comparator;
-
 /**
  * Classe qui permet de représenter une intersection sur une carte.
  * @author Dorian TERBAH

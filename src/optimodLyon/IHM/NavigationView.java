@@ -171,6 +171,11 @@ public class NavigationView extends JPanel
         return false;
     }
 
+    public boolean notifyWindowToLoadCircuit(int cycleNumber)
+    {
+        return this.window.loadCircuit(cycleNumber);
+    }
+
     /**
      * Permet de mettre à jour la vue en fonction de son nouvel état
      */

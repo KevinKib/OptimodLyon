@@ -3,6 +3,7 @@ package optimodLyon.controller;
 import optimodLyon.model.CityMap;
 import static optimodLyon.model.CityMap.CityMapCoordinates;
 import optimodLyon.model.DeliveryPlan;
+import optimodLyon.model.circuit.CircuitManager;
 
 import java.awt.*;
 
@@ -29,6 +30,11 @@ public class Controller
     private CityMapCoordinates cityMapCoordinates;
 
     /**
+     * CircuitManager
+     */
+    private CircuitManager circuitManager;
+
+    /**
      * Constructeur par défaut du controleur
      */
     public Controller()
@@ -36,6 +42,7 @@ public class Controller
         this.cityMap = null;
         this.deliveryPlan = null;
         this.cityMapCoordinates = null;
+        this.circuitManager = null;
     }
 
     /**
@@ -45,6 +52,12 @@ public class Controller
     public void setCityMap(CityMap cityMap)
     {
         this.cityMap = cityMap;
+        if (circuitManager != null){
+            this.circuitManager.setCityMap(cityMap);
+        }
+        else {
+            this.circuitManager = new CircuitManager(cityMap);
+        }
     }
 
     /**
@@ -54,6 +67,15 @@ public class Controller
     public void setDeliveryPlan(DeliveryPlan deliveryPlan)
     {
         this.deliveryPlan = deliveryPlan;
+    }
+
+    /**
+     * Met à jour le circuitManager
+     * @param circuitManager Le nouveau circuitManager
+     */
+    public void setCircuitManager(CircuitManager circuitManager)
+    {
+        this.circuitManager = circuitManager;
     }
 
     /**
@@ -91,5 +113,14 @@ public class Controller
     public CityMapCoordinates getCityMapCoordinates()
     {
         return this.cityMapCoordinates;
+    }
+
+    /**
+     *
+     * @param
+     */
+    public void computeCircuit(DeliveryPlan plan, int cycleNumber)
+    {
+        this.circuitManager.getSolution(plan, cycleNumber);
     }
 }

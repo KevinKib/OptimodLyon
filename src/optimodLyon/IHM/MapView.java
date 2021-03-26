@@ -1,5 +1,7 @@
 package optimodLyon.IHM;
 
+import optimodLyon.model.*;
+
 import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
@@ -13,6 +15,8 @@ import static optimodLyon.model.CityMap.CityMapCoordinates;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.util.List;
+
+import static optimodLyon.model.CityMap.CityMapCoordinates;
 
 /**
  * Composant qui va contenir la carte.
