@@ -1,8 +1,8 @@
 package optimodLyon.model.circuit;
 
 import optimodLyon.model.Node;
-import optimodLyon.model.Waypoint;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class Graph {
@@ -36,7 +36,7 @@ public class Graph {
 
     /**
      * Retourne un edge dont le premier node est égal au node passé en paramètre
-     * @param Node
+     * @param node
      * @return le edge correspondant
      */
     public Edge getEdgeByFirstNode(Node node) {
@@ -50,7 +50,7 @@ public class Graph {
 
     /**
      * Retourne un edge dont le second node est égal au node passé en paramètre
-     * @param Node
+     * @param node
      * @return le edge correspondant
      */
     public Edge getEdgeBySecondNode(Node node) {
@@ -60,6 +60,52 @@ public class Graph {
             }
         }
         return null;
+    }
+
+    /**
+     * Retourne un node dont l'id de l'intersection est égal à l'id passé en paramètre
+     * @param id
+     * @return le node correspondant
+     */
+    public Node getNodeByIntersectionID(int id) {
+        for (Node node: this.nodes) {
+            if(node.getIntersection().getId() == id) {
+                return node;
+            }
+        }
+        return null;
+    }
+
+    /**
+     * Retourne la liste des nodes directement connectés au node passé en paramètre
+     * @param node
+     * @return la liste de nodes correspondant
+     */
+    public List<Node> getConnectionsFromNode(Node node) {
+        List<Node> connections = new ArrayList<>();
+        for (Edge edge: this.edges) {
+            if(edge.getFirst().equals(node)) {
+                connections.add(edge.getSecond());
+            }
+            else if(edge.getSecond().equals(node)){
+                connections.add(edge.getFirst());
+            }
+        }
+        return connections;
+    }
+
+    /**
+     * Retourne le coût estimé pour naviguer entre deux node.
+     * @param start, end
+     * @return le coût estimé
+     */
+    public float computeCost(Node start, Node end) {
+        float y1 = start.getIntersection().y;
+        float y2 = end.getIntersection().y;
+        float x1 = start.getIntersection().x;
+        float x2 = end.getIntersection().x;
+
+        return (float) Math.sqrt((y2 - y1) * (y2 - y1) + (x2 - x1) * (x2 - x1));
     }
 
     /**
