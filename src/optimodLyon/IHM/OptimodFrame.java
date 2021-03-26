@@ -152,8 +152,7 @@ public class OptimodFrame extends JFrame {
         try
         {
             DeliveryPlan plan = this.controller.getDeliveryPlan();
-            CityMap map = this.controller.getCityMap();
-            this.controller.computeCircuit(map, plan, cycleNumber);
+            this.controller.computeCircuit(plan, cycleNumber);
             //this.mapView.updateDeliveryPlan(plan);
         }
         catch (Exception e)

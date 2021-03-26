@@ -1,31 +1,38 @@
 package optimodLyon.model.circuit;
 
-import optimodLyon.model.Waypoint;
+import optimodLyon.model.Node;
 
 import java.util.List;
 
 public class Graph {
-    public List<Waypoint> getwaypoints() {
-        return waypoints;
+    public List<Node> getNodes() {
+        return nodes;
     }
 
-    public List<Edge> getedges() {
+    public List<Edge> getEdges() {
         return edges;
     }
 
-    public void setWaypoints(List<Waypoint> waypoints) {
-        this.waypoints = waypoints;
+    public void setNodes(List<Node> nodes) {
+        this.nodes = nodes;
     }
 
     public void setEdges(List<Edge> edges) {
         this.edges = edges;
     }
 
-    private List<Waypoint> waypoints;
+    private List<Node> nodes;
     private List<Edge> edges;
 
-    public Graph(List<Waypoint> waypointList, List<Edge> edgeList) {
-        this.waypoints = waypointList;
-        this.edges = edgeList;
+    public Graph(List<Node> nodes, List<Edge> edges) {
+        this.nodes = nodes;
+        this.edges = edges;
+    }
+
+    public void addNode(Node node){
+        this.nodes.add(node);
+    }
+    public void addEdge(Edge edge){
+        this.edges.add(edge);
     }
 }

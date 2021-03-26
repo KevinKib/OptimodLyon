@@ -1,23 +1,30 @@
 package external.circuitPlanner;
 
 import optimodLyon.model.CityMap;
+import optimodLyon.model.DeliveryPlan;
 import optimodLyon.model.Segment;
 import optimodLyon.model.Waypoint;
+import optimodLyon.model.circuit.Graph;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
 
 public class CircuitPlanner1 {
 
-    public static List<Segment> getShortestPath(CityMap cityMap, Waypoint pointA, Waypoint pointB){
+    public static List<Segment> getShortestPath(Graph cityMapGraph, Waypoint pointA, Waypoint pointB){
         //Should call A* to compute the shortest path between the two points
-        Map<String, Segment> segments = cityMap.getSegmentsByIntersectionId();
-        Map.Entry<String, Segment> entry = segments.entrySet().iterator().next();
         List<Segment> segmentList = new ArrayList<>();
-        segmentList.add(entry.getValue());
 
         return segmentList;
+    }
+
+    public List<List<Segment>> searchSolution(CityMap map, DeliveryPlan plan, int cycleNumber){
+
+        int requestNumber = plan.getRequests().toArray().length;
+        for (int i=0; i<requestNumber; i++){
+
+        }
+        return null;
     }
 }

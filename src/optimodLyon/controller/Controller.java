@@ -43,6 +43,12 @@ public class Controller
     public void setCityMap(CityMap cityMap)
     {
         this.cityMap = cityMap;
+        if (circuitManager != null){
+            this.circuitManager.setCityMap(cityMap);
+        }
+        else {
+            this.circuitManager = new CircuitManager(cityMap);
+        }
     }
 
     /**
@@ -83,9 +89,8 @@ public class Controller
      *
      * @param
      */
-    public void computeCircuit(CityMap map, DeliveryPlan plan, int cycleNumber)
+    public void computeCircuit(DeliveryPlan plan, int cycleNumber)
     {
-        // Call whatever we need from the circuit manager
-        
+        this.circuitManager.getSolution(plan, cycleNumber);
     }
 }
