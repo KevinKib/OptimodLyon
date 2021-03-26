@@ -52,24 +52,24 @@ public class CityMap
             this.mapComponentDimension = mapComponentDimension;
 
             this.minLatitude = intersections.stream()
-                    .min(Comparator.comparing(Intersection::getY))
+                    .min(Comparator.comparing(Intersection::getLatitude))
                     .orElseThrow(NoSuchElementException::new)
-                    .getY();
+                    .getLatitude();
 
             this.minLongitude = intersections.stream()
-                    .min(Comparator.comparing(Intersection::getX))
+                    .min(Comparator.comparing(Intersection::getLongitude))
                     .orElseThrow(NoSuchElementException::new)
-                    .getX();
+                    .getLongitude();
 
             this.maxLatitude = intersections.stream()
-                    .max(Comparator.comparing(Intersection::getY))
+                    .max(Comparator.comparing(Intersection::getLatitude))
                     .orElseThrow(NoSuchElementException::new)
-                    .getY();
+                    .getLatitude();
 
             this.maxLongitude = intersections.stream()
-                    .max(Comparator.comparing(Intersection::getX))
+                    .max(Comparator.comparing(Intersection::getLongitude))
                     .orElseThrow(NoSuchElementException::new)
-                    .getX();
+                    .getLongitude();
         }
 
         /**
@@ -79,8 +79,8 @@ public class CityMap
          */
         public Point normalizeIntersection(final Intersection intersection)
         {
-            int finalX = (int) (((intersection.getX() - this.minLongitude) / (this.maxLongitude - this.minLongitude)) * this.mapComponentDimension.width);
-            int finalY = (int) (((intersection.getY() - this.minLatitude) / (this.maxLatitude - this.minLatitude)) * this.mapComponentDimension.height);
+            int finalX = (int) (((intersection.getLongitude() - this.minLongitude) / (this.maxLongitude - this.minLongitude)) * this.mapComponentDimension.width);
+            int finalY = (int) (((intersection.getLatitude() - this.minLatitude) / (this.maxLatitude - this.minLatitude)) * this.mapComponentDimension.height);
 
             return new Point(finalX, finalY);
         }

@@ -249,20 +249,20 @@ public class XMLLoaderCityMapTU
             Intersection intersection = map.getIntersectionById(365087270);
             assertNotNull(intersection);
             assertEquals(365087270, intersection.getId());
-            assertEquals(45.751892f, intersection.getY(), 0);
-            assertEquals(4.883404f, intersection.getX(), 0);
+            assertEquals(45.751892f, intersection.getLatitude(), 0);
+            assertEquals(4.883404f, intersection.getLongitude(), 0);
 
             intersection = map.getIntersectionById(26317396);
             assertNotNull(intersection);
             assertEquals(26317396, intersection.getId());
-            assertEquals(45.75356f, intersection.getY(), 0);
-            assertEquals(4.883734f, intersection.getX(), 0);
+            assertEquals(45.75356f, intersection.getLatitude(), 0);
+            assertEquals(4.883734f, intersection.getLongitude(), 0);
 
             intersection = map.getIntersectionById(325772567);
             assertNotNull(intersection);
             assertEquals(325772567, intersection.getId());
-            assertEquals(45.751896f, intersection.getY(), 0);
-            assertEquals(4.8833594f, intersection.getX(), 0);
+            assertEquals(45.751896f, intersection.getLatitude(), 0);
+            assertEquals(4.8833594f, intersection.getLongitude(), 0);
 
             // vérification du nombre de segments dans l'inventaire
             List<Segment> segments = map.getSegments();
