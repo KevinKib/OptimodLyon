@@ -5,7 +5,7 @@ package optimodLyon.model;
  * @author Dorian TERBAH
  * @since 1.0
  */
-public class Segment
+public class Segment implements Comparable<Segment>
 {
     /**
      * Intersection destination du segment
@@ -28,8 +28,8 @@ public class Segment
     private float length;
 
 
-    public Segment(){
-
+    public Segment(String name){
+        this.name = name;
     }
 
     /**
@@ -87,7 +87,23 @@ public class Segment
     }
 
     @Override
+    public boolean equals(Object o){
+        if(o instanceof Segment){
+            Segment s = (Segment) o;
+            if(s.getName().trim().equals(this.name.trim())){
+                return true;
+            }
+        }
+        return false;
+    }
+
+    @Override
     public String toString() {
         return this.getName();
+    }
+
+    @Override
+    public int compareTo(Segment segment) {
+        return this.getName().compareTo(segment.getName());
     }
 }

@@ -4,6 +4,7 @@ import java.awt.*;
 import java.util.*;
 import java.util.List;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 /**
  * Classe qui représente une carte XML.
@@ -144,7 +145,9 @@ public class CityMap
      */
     public List<Segment> getSegments()
     {
-        return Collections.unmodifiableList(new ArrayList<Segment>(this.segmentsByIntersectionId.values()));
+        List<Segment> segments = new ArrayList<>(this.segmentsByIntersectionId.values());
+        Collections.sort(segments);
+        return Collections.unmodifiableList(segments);
     }
 
     /**
@@ -152,9 +155,20 @@ public class CityMap
      */
     public List<Segment> getIntersectionSegments(final Segment segment){
         List<Segment> segments = this.getSegments();
-        return segments.stream()
-                .filter(s -> !s.equals(segment) && (s.getDestination().equals(segment.getOrigin()) || s.getOrigin().equals(segment.getDestination())))
+        List<Segment> finalIntersectionSegments = new ArrayList<>();
+        // Recuperer tous les segment portant le même nom que celui passer en paramètre
+        List<Segment> allSegmentOfRue = segments.stream()
+                .filter(s -> s.getName().equals(segment.getName()))
                 .collect(Collectors.toList());
+        for(Segment seg : allSegmentOfRue){
+            finalIntersectionSegments = Stream.concat( finalIntersectionSegments.stream(),
+                    segments.stream()
+                            .filter(s -> !s.getName().equals("") && !s.getName().equals(seg.getName()) && (s.getDestination().equals(seg.getOrigin()) || s.getOrigin().equals(seg.getDestination())))
+            ).distinct()
+            .collect(Collectors.toList());
+            System.out.println(finalIntersectionSegments);
+        }
+        return new ArrayList<>(new HashSet<>(finalIntersectionSegments));
     }
 
     /**

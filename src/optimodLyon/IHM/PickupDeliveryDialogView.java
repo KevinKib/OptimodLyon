@@ -4,6 +4,7 @@ import optimodLyon.controller.ihm.DialogController;
 import optimodLyon.model.Segment;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import javax.swing.*;
@@ -67,7 +68,6 @@ public class PickupDeliveryDialogView extends JDialog {
 
         JPanel panel1 = new JPanel();
         panel1.setLayout(new BoxLayout(panel1, BoxLayout.Y_AXIS));
-
         JPanel voie1 = buildComboBox(voies, "Voie n°1", true);
         JPanel voie2 = buildComboBox(new ArrayList<>(), "Voie n°2", false);
         if(name.equals("Pickup")){
@@ -110,13 +110,14 @@ public class PickupDeliveryDialogView extends JDialog {
 
     private JPanel buildComboBox(List<Segment> options, final String comboTextLabel, boolean enabled){
         JPanel inputPanel = new JPanel();
-        final JList list = new JList(new DefaultListModel());
         inputPanel.setLayout(new GridLayout(2,1));
         inputPanel.setBounds(10,10,200, 30);
         JComboBox<Segment> combo = new JComboBox<>();
-        //combo.addItem("Selectionner une voie...");
+        combo.addItem(new Segment("Selectionner une voie..."));
         for(Segment s : options){
-            combo.addItem(s);
+            if(!s.getName().equals("")){
+                combo.addItem(s);
+            }
         }
         combo.setEnabled(enabled);
         JLabel inputLabel = new JLabel(comboTextLabel);
