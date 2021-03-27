@@ -53,6 +53,12 @@ public class CircuitManager
     private Graph cityMapGraph;
     private AbstractCircuitPlanner circuitPlanner;
 
+    public List<List<Segment>> getSolution() {
+        return solution;
+    }
+
+    private List<List<Segment>> solution;
+
     public Graph getCityMapGraph() {
         return cityMapGraph;
     }
@@ -112,7 +118,7 @@ public class CircuitManager
         return new Graph(waypoints, edges);
     }
 
-    public List<List<Segment>> getSolution(DeliveryPlan plan, int cycleNumber){
+    public void computeSolution(DeliveryPlan plan, int cycleNumber){
         //The first step is to create the graph corresponding to the delivery plan, which is the circuit.
         this.circuit = this.createCircuit(plan);
 
@@ -120,8 +126,8 @@ public class CircuitManager
         System.out.println(this.circuit);
 
         System.out.println(plan.getRequests());
-        //CircuitPlanner1.searchSolution(this.cityMap, plan, cycleNumber);
-        return null;
+
+        this.solution = this.circuitPlanner.searchSolution(this.circuit, cycleNumber);
     }
 
     /**

@@ -1,6 +1,9 @@
 package external.circuitPlanner;
 
-import optimodLyon.model.*;
+import optimodLyon.model.Node;
+import optimodLyon.model.Segment;
+import optimodLyon.model.Waypoint;
+import optimodLyon.model.circuit.Edge;
 import optimodLyon.model.circuit.Graph;
 
 import java.util.*;
@@ -61,13 +64,16 @@ public class CircuitPlanner1 extends AbstractCircuitPlanner{
         return null;
     }
 
-    public List<List<Segment>> searchSolution(CityMap map, DeliveryPlan plan, int cycleNumber){
-
-        int requestNumber = plan.getRequests().toArray().length;
-        for (int i=0; i<requestNumber; i++){
-
+    public List<List<Segment>> searchSolution(Graph circuit, int cycleNumber){
+        List<List<Segment>> pathForAllCycle = new ArrayList<>();
+        List<Segment> pathForOneCycle = new ArrayList<>();
+        for (int i=0; i<cycleNumber; i++){
+            for(Edge edge : circuit.getEdges()){
+                pathForOneCycle = edge.getPath();
+            }
+            pathForAllCycle.add(pathForOneCycle);
         }
-        return null;
+        return pathForAllCycle;
     }
 
 }

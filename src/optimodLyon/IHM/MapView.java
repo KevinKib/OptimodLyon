@@ -1,17 +1,12 @@
 package optimodLyon.IHM;
 
+import optimodLyon.controller.Controller;
+import optimodLyon.controller.ihm.MapViewResizeController;
 import optimodLyon.model.*;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
-
-import optimodLyon.controller.Controller;
-import optimodLyon.controller.ihm.MapViewResizeController;
-import optimodLyon.model.*;
-
-import static optimodLyon.model.CityMap.CityMapCoordinates;
-
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.util.List;
@@ -168,6 +163,24 @@ public class MapView extends JComponent
                     image = this.resize(this.pickupLocalisationlogo, 30, 30);
                     image = this.dye(image, color);
                     p.drawImage(image, pickupPoint.x - 15, pickupPoint.y - 30, null);
+                }
+
+                List<List<Segment>> solution = this.controller.getCircuitManager().getSolution();
+                System.out.println(solution);
+                if (solution != null) {
+                    // Affichage des itinéraires
+                    for (List<Segment> cycle: solution){
+                        for (Segment segment : cycle) {
+                            final Intersection origin = segment.getOrigin();
+                            final Intersection destination = segment.getDestination();
+
+                            Point originPoint = cityMapCoordinates.normalizeIntersection(origin);
+                            Point destinationPoint = cityMapCoordinates.normalizeIntersection(destination);
+
+                            p.drawLine(originPoint.x, originPoint.y, destinationPoint.x, destinationPoint.y);
+                            p.setColor(Color.RED);
+                        }
+                    }
                 }
             }
         }

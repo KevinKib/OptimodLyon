@@ -7,7 +7,6 @@ import optimodLyon.model.DeliveryPlan;
 
 import javax.swing.*;
 import java.awt.*;
-
 /**
  * Main class of the application Optimod'Lyon.
  * Contains the map, and the main functionalities of the app.
@@ -144,7 +143,7 @@ public class OptimodFrame extends JFrame {
         {
             DeliveryPlan plan = this.controller.getDeliveryPlan();
             this.controller.computeCircuit(plan, cycleNumber);
-            //this.mapView.updateDeliveryPlan(plan);
+            this.mapView.repaint();
         }
         catch (Exception e)
         {
