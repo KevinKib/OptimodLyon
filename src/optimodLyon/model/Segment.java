@@ -1,5 +1,7 @@
 package optimodLyon.model;
 
+import java.util.Objects;
+
 /**
  * Classe qui représente un segment de rue dans une carte.
  * @author Dorian TERBAH
@@ -88,13 +90,21 @@ public class Segment implements Comparable<Segment>
 
     @Override
     public boolean equals(Object o){
-        if(o instanceof Segment){
-            Segment s = (Segment) o;
-            if(s.getName().trim().equals(this.name.trim())){
-                return true;
-            }
+        if (this == o)
+        {
+            return true;
         }
-        return false;
+        else if (o == null)
+        {
+            return false;
+        }
+        else if (this.getClass() != o.getClass())
+        {
+            return false;
+        }
+
+        Segment s = (Segment) o;
+        return Objects.equals(this.name, s.name);
     }
 
     @Override

@@ -1,10 +1,10 @@
 package optimodLyon.IHM;
+import optimodLyon.ListUtils;
 import optimodLyon.controller.Controller;
 import optimodLyon.controller.ihm.DialogController;
 import optimodLyon.model.Segment;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 import javax.swing.*;
@@ -18,10 +18,14 @@ public class PickupDeliveryDialogView extends JDialog {
     private JButton okButton;
     private JButton cancelButton;
 
-    private JComboBox pVoie1;
-    private JComboBox pVoie2;
-    private JComboBox dVoie1;
-    private JComboBox dVoie2;
+    private JComboBox pickupFirstWay;
+    private JComboBox pickupSecondWay;
+    private JComboBox deliveryFirstWay;
+    private JComboBox deliverySecondWay;
+
+    private JSpinner deliveryDurationSpinner;
+
+    private JSpinner pickupDurationSpinner;
 
     private Controller controller;
 
@@ -48,7 +52,7 @@ public class PickupDeliveryDialogView extends JDialog {
         footerButtonPanel.add(cancelButton);
         footerButtonPanel.add(okButton);
 
-        DialogController dialogController = new DialogController(this, pVoie1, pVoie2, dVoie1, dVoie2, okButton, cancelButton);
+        DialogController dialogController = new DialogController(this, okButton, cancelButton);
 
         dialogContainer.add(footerButtonPanel, BorderLayout.SOUTH);
     }
@@ -66,19 +70,24 @@ public class PickupDeliveryDialogView extends JDialog {
         JSeparator separator = new JSeparator();
         separator.setOrientation(SwingConstants.HORIZONTAL);
 
-        JPanel panel1 = new JPanel();
-        panel1.setLayout(new BoxLayout(panel1, BoxLayout.Y_AXIS));
-        JPanel voie1 = buildComboBox(voies, "Voie n°1", true);
-        JPanel voie2 = buildComboBox(new ArrayList<>(), "Voie n°2", false);
-        if(name.equals("Pickup")){
-            this.pVoie1 = (JComboBox) voie1.getComponent(1);
-            this.pVoie2 = (JComboBox) voie2.getComponent(1);
-        } else {
-            this.dVoie1 = (JComboBox) voie1.getComponent(1);
-            this.dVoie2 = (JComboBox) voie2.getComponent(1);
-        }
 
         JPanel dureePickup = buildInput("Durée de récupération (en seconde)");
+        JPanel panel1 = new JPanel();
+        panel1.setLayout(new BoxLayout(panel1, BoxLayout.Y_AXIS));
+        JPanel voie1 = buildComboBox(ListUtils.removeDuplicatesSegment(voies), "Voie n°1", true);
+        JPanel voie2 = buildComboBox(new ArrayList<>(), "Voie n°2", false);
+        if(name.equals("Pickup")){
+            this.pickupFirstWay = (JComboBox) voie1.getComponent(1);
+            this.pickupSecondWay = (JComboBox) voie2.getComponent(1);
+
+            this.pickupDurationSpinner = (JSpinner) dureePickup.getComponent(1);
+        } else {
+            this.deliveryFirstWay = (JComboBox) voie1.getComponent(1);
+            this.deliverySecondWay = (JComboBox) voie2.getComponent(1);
+
+            this.deliveryDurationSpinner = (JSpinner) dureePickup.getComponent(1);
+        }
+
 
         JPanel labelPanel = new JPanel();
         labelPanel.setLayout(new BorderLayout());
@@ -100,7 +109,7 @@ public class PickupDeliveryDialogView extends JDialog {
         JPanel inputPanel = new JPanel();
         inputPanel.setLayout(new GridLayout(2,1));
         inputPanel.setBounds(10,10,200, 30);
-        JTextField input = new JTextField();
+        JSpinner input = new JSpinner(new SpinnerNumberModel(0, 0, Integer.MAX_VALUE, 1));
         JLabel inputLabel = new JLabel(inputLabelText);
         inputPanel.add(inputLabel, BorderLayout.NORTH);
         inputPanel.add(input, BorderLayout.SOUTH);
@@ -125,5 +134,33 @@ public class PickupDeliveryDialogView extends JDialog {
         inputPanel.add(combo, BorderLayout.SOUTH);
 
         return inputPanel;
+    }
+
+    // GETTERS
+
+    public JSpinner getDeliveryDurationSpinner()
+    {
+        return this.deliveryDurationSpinner;
+    }
+
+    public JSpinner getPickupDurationSpinner()
+    {
+        return this.pickupDurationSpinner;
+    }
+
+    public JComboBox<Segment> getPickupFirstWay() {
+        return pickupFirstWay;
+    }
+
+    public JComboBox<Segment> getPickupSecondWay() {
+        return pickupSecondWay;
+    }
+
+    public JComboBox<Segment> getDeliveryFirstWay() {
+        return deliveryFirstWay;
+    }
+
+    public JComboBox<Segment> getDeliverySecondWay() {
+        return deliverySecondWay;
     }
 }

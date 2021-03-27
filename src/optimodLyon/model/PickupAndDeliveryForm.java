@@ -2,74 +2,90 @@ package optimodLyon.model;
 
 public class PickupAndDeliveryForm {
 
-    private Segment pVoie1;
-    private Segment pVoie2;
+    private Segment pickupFirstWay;
+    private Segment pickupSecondWay;
     private int pDuration;
 
-    private Segment dVoie1;
-    private Segment dVoie2;
+    private Segment deliveryFirstWay;
+    private Segment deliverySecondWay;
     private int dDuration;
 
-    public PickupAndDeliveryForm(){
-
+    public Segment getPickupFirstWay() {
+        return pickupFirstWay;
     }
 
-    public Segment getpVoie1() {
-        return pVoie1;
+    public void setPickupFirstWay(Segment pickupFirstWay) {
+        this.pickupFirstWay = pickupFirstWay;
     }
 
-    public void setpVoie1(Segment pVoie1) {
-        this.pVoie1 = pVoie1;
+    public Segment getPickupSecondWay() {
+        return pickupSecondWay;
     }
 
-    public Segment getpVoie2() {
-        return pVoie2;
+    public void setPickupSecondWay(Segment pickupSecondWay) {
+        this.pickupSecondWay = pickupSecondWay;
     }
 
-    public void setpVoie2(Segment pVoie2) {
-        this.pVoie2 = pVoie2;
+    public Segment getDeliveryFirstWay() {
+        return deliveryFirstWay;
     }
 
-    public int getpDuration() {
+    public Segment getDeliverySecondWay() {
+        return deliverySecondWay;
+    }
+
+    public void setDeliverySecondWay(Segment deliverySecondWay) {
+        this.deliverySecondWay = deliverySecondWay;
+    }
+
+    public PickupAndDeliveryForm()
+    {
+        this.dDuration = 0;
+        this.pDuration = 0;
+
+        this.pickupFirstWay = null;
+        this.deliveryFirstWay = null;
+
+        this.pickupSecondWay = null;
+        this.deliverySecondWay = null;
+    }
+
+    public int getPickupDuration() {
         return pDuration;
     }
 
-    public void setpDuration(int pDuration) {
+    public void setPickupDuration(int pDuration) {
         this.pDuration = pDuration;
     }
 
-    public Segment getdVoie1() {
-        return dVoie1;
+    public void setDeliveryFirstWay(Segment deliveryFirstWay) {
+        this.deliveryFirstWay = deliveryFirstWay;
     }
 
-    public void setdVoie1(Segment dVoie1) {
-        this.dVoie1 = dVoie1;
-    }
-
-    public Segment getdVoie2() {
-        return dVoie2;
-    }
-
-    public void setdVoie2(Segment dVoie2) {
-        this.dVoie2 = dVoie2;
-    }
-
-    public int getdDuration() {
+    public int getDeliveryDuration() {
         return dDuration;
     }
 
-    public void setdDuration(int dDuration) {
+    public void setDeliveryDuration(int dDuration) {
         this.dDuration = dDuration;
+    }
+
+    public boolean isValid()
+    {
+        return this.deliveryFirstWay != null
+                && this.deliverySecondWay != null
+                && this.pickupFirstWay != null
+                && this.pickupSecondWay != null;
     }
 
     @Override
     public String toString() {
         return "PickupAndDeliveryForm{" +
-                "pVoie1='" + pVoie1 + '\'' +
-                ", pVoie2='" + pVoie2 + '\'' +
+                "pVoie1='" + pickupFirstWay + '\'' +
+                ", pVoie2='" + pickupSecondWay + '\'' +
                 ", pDuration=" + pDuration +
-                ", dVoie1='" + dVoie1 + '\'' +
-                ", dVoie2='" + dVoie2 + '\'' +
+                ", dVoie1='" + deliveryFirstWay + '\'' +
+                ", dVoie2='" + deliverySecondWay + '\'' +
                 ", dDuration=" + dDuration +
                 '}';
     }
