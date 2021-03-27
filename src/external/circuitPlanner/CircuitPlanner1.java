@@ -3,7 +3,6 @@ package external.circuitPlanner;
 import optimodLyon.model.Node;
 import optimodLyon.model.Segment;
 import optimodLyon.model.Waypoint;
-import optimodLyon.model.circuit.Edge;
 import optimodLyon.model.circuit.Graph;
 
 import java.util.*;
@@ -38,13 +37,7 @@ public class CircuitPlanner1 extends AbstractCircuitPlanner{
                     path.add(0, current.getCurrent());
                     current = visitedNodes.get(current.getPrevious());
                 } while (current != null);
-                System.out.println("found shortest path, ready to convert it into segment list");
-                long startTime = System.nanoTime();
                 List<Segment> segments = cityMapGraph.getPath(path);
-                long endTime = System.nanoTime();
-
-                long duration = (endTime - startTime);
-                System.out.println("duration");
                 return segments;
             }
             List<Node> nodes = cityMapGraph.getConnectionsFromNode(next.getCurrent());
@@ -67,11 +60,13 @@ public class CircuitPlanner1 extends AbstractCircuitPlanner{
     public List<List<Segment>> searchSolution(Graph circuit, int cycleNumber){
         List<List<Segment>> pathForAllCycle = new ArrayList<>();
         List<Segment> pathForOneCycle = new ArrayList<>();
+        List<Node> nodes = circuit.getNodes();
         for (int i=0; i<cycleNumber; i++){
-            for(Edge edge : circuit.getEdges()){
-                pathForOneCycle = edge.getPath();
+            for(int j=0; j<nodes.size()-1;j++){
+                pathForOneCycle = circuit.getEdgeByNodes(nodes.get(j), nodes.get(j+1)).getPath();
+                pathForAllCycle.add(pathForOneCycle);
             }
-            pathForAllCycle.add(pathForOneCycle);
+
         }
         return pathForAllCycle;
     }

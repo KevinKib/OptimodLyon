@@ -14,6 +14,15 @@ public class Edge {
 
     private List<Segment> path;
     private float length;
+
+    public void setFirst(Node first) {
+        this.first = first;
+    }
+
+    public void setSecond(Node second) {
+        this.second = second;
+    }
+
     private Node first;
     private Node second;
 
@@ -42,5 +51,9 @@ public class Edge {
 
     public float getLength() {
         return length;
+    }
+
+    public void setPath(List<Segment> path) {
+        this.path = path;
     }
 }

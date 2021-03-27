@@ -67,6 +67,7 @@ public class Graph {
 
     /**
      * Retourne un edge dont les nodes en extrémités correpondent à ceux en paramètre
+     * Réordonne l'edge si le sens intial n'est pas bon.
      * @param start, end
      * @return le edge correspondant
      */
@@ -76,6 +77,9 @@ public class Graph {
                 return edge;
             }
             else if (edge.getFirst().equals(end) && edge.getSecond().equals(start)){
+                for(Segment segment: edge.getPath()){
+                    segment.revertDirection();
+                }
                 return edge;
             }
         }
@@ -130,13 +134,12 @@ public class Graph {
     }
 
     /**
-     * Retourne le coût estimé pour naviguer entre deux node.
+     * Récupère le chemin sous forme de liste de segment à partir d'une liste de noeuds.
      * @param nodes
      * @return le chemin sous forme de la liste des segments liant les noeuds.
      */
     public List<Segment> getPath(List<Node> nodes) {
         List<Segment> segments = new ArrayList<>();
-        System.out.println("nodes");
         for (int i = 0; i < nodes.size()-1; i++) {
             Edge edge = this.getEdgeByNodes(nodes.get(i), nodes.get(i+1));
             segments.addAll(edge.getPath());
