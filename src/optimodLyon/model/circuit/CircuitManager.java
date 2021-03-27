@@ -96,12 +96,18 @@ public class CircuitManager
         for (Request request: requests) {
             Delivery delivery = request.getDelivery();
             Pickup pickup = request.getPickup();
+
             waypoints.add(delivery);
+
+            for (int i=0; i<waypoints.size()-1; i++){
+                edges.add(this.createEdge((Waypoint) waypoints.get(i), delivery));
+            }
+
             waypoints.add(pickup);
-            List<Segment> path = this.circuitPlanner.getShortestPath(this.cityMapGraph, pickup, delivery);
-            float distance = this.getDistance(path);
-            Edge edge = new Edge(path, distance, pickup, delivery);
-            edges.add(edge);
+
+            for (int i=0; i<waypoints.size()-1; i++){
+                edges.add(this.createEdge((Waypoint) waypoints.get(i), pickup));
+            }
         }
         return new Graph(waypoints, edges);
     }

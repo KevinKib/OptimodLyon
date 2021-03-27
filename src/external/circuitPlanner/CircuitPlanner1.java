@@ -10,6 +10,7 @@ public class CircuitPlanner1 extends AbstractCircuitPlanner{
 
     //TODO Need to test the method
     public List<Segment> getShortestPath(Graph cityMapGraph, Waypoint pointA, Waypoint pointB){
+        System.out.println("start to compute shortest path");
         //Should call A* to compute the shortest path between the two points
         List<Segment> segmentList = new ArrayList<>();
 
@@ -34,10 +35,17 @@ public class CircuitPlanner1 extends AbstractCircuitPlanner{
                     path.add(0, current.getCurrent());
                     current = visitedNodes.get(current.getPrevious());
                 } while (current != null);
-                //TODO need to find a way to convert a list of node into a list of Segments.
-                return path;
+                System.out.println("found shortest path, ready to convert it into segment list");
+                long startTime = System.nanoTime();
+                List<Segment> segments = cityMapGraph.getPath(path);
+                long endTime = System.nanoTime();
+
+                long duration = (endTime - startTime);
+                System.out.println("duration");
+                return segments;
             }
-            cityMapGraph.getConnectionsFromNode(next.getCurrent()).forEach(connection -> {
+            List<Node> nodes = cityMapGraph.getConnectionsFromNode(next.getCurrent());
+            nodes.forEach(connection -> {
                 PathNode nextNode = visitedNodes.getOrDefault(connection, new PathNode(connection));
                 visitedNodes.put(connection, nextNode);
 
@@ -50,8 +58,7 @@ public class CircuitPlanner1 extends AbstractCircuitPlanner{
                 }
             });
         }
-
-        return segmentList;
+        return null;
     }
 
     public List<List<Segment>> searchSolution(CityMap map, DeliveryPlan plan, int cycleNumber){
