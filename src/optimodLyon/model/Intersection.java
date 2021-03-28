@@ -5,8 +5,7 @@ package optimodLyon.model;
  * @author Dorian TERBAH
  * @since 1.0
  */
-public class Intersection
-{
+public class Intersection {
     /**
      * La longitude de l'intersection (coordonnée x)
      */
