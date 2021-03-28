@@ -143,9 +143,23 @@ public class Graph {
         for (int i = 0; i < nodes.size()-1; i++) {
             Edge edge = this.getEdgeByNodes(nodes.get(i), nodes.get(i+1));
             segments.addAll(edge.getPath());
-            System.out.println(i);
+//            System.out.println(i);
         }
         return segments;
+    }
+
+    /**
+     * Calcule la longueur du chemin du graphe.
+     * @return Longueur du chemin.
+     */
+    public int getLength() {
+        int length = 0;
+        for(int j=0; j<nodes.size()-1;j++){
+            Edge e = this.getEdgeByNodes(nodes.get(j), nodes.get(j+1));
+            length += e.getLength();
+        }
+
+        return length;
     }
 
     /**

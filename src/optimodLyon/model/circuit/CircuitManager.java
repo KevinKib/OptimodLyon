@@ -122,10 +122,9 @@ public class CircuitManager
         //The first step is to create the graph corresponding to the delivery plan, which is the circuit.
         this.circuit = this.createCircuit(plan);
 
-        System.out.println(this.cityMapGraph);
-        System.out.println(this.circuit);
-
-        System.out.println(plan.getRequests());
+//        System.out.println(this.cityMapGraph);
+//        System.out.println(this.circuit);
+//        System.out.println(plan.getRequests());
 
         this.solution = this.circuitPlanner.searchSolution(this.circuit, cycleNumber);
     }

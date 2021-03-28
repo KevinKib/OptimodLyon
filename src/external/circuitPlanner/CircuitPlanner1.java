@@ -3,6 +3,7 @@ package external.circuitPlanner;
 import optimodLyon.model.Node;
 import optimodLyon.model.Segment;
 import optimodLyon.model.Waypoint;
+import optimodLyon.model.circuit.Edge;
 import optimodLyon.model.circuit.Graph;
 
 import java.util.*;
@@ -10,9 +11,15 @@ import java.util.*;
 
 public class CircuitPlanner1 extends AbstractCircuitPlanner{
 
+    private AlgorithmeVoyageurCommerce voyageurCommerce;
+
+    public CircuitPlanner1() {
+        this.voyageurCommerce = new AlgorithmeAleatoire();
+    }
+
     //TODO Need to test the method
     public List<Segment> getShortestPath(Graph cityMapGraph, Waypoint pointA, Waypoint pointB){
-        System.out.println("start to compute shortest path");
+        System.out.println("start to compute shortest between " + pointA.getIntersection().getId() + " and " + pointB.getIntersection().getId());
         //Should call A* to compute the shortest path between the two points
         List<Segment> segmentList = new ArrayList<>();
 
@@ -58,17 +65,23 @@ public class CircuitPlanner1 extends AbstractCircuitPlanner{
     }
 
     public List<List<Segment>> searchSolution(Graph circuit, int cycleNumber){
-        List<List<Segment>> pathForAllCycle = new ArrayList<>();
+        List<List<Segment>> pathForAllCycles = new ArrayList<>();
         List<Segment> pathForOneCycle = new ArrayList<>();
         List<Node> nodes = circuit.getNodes();
+
         for (int i=0; i<cycleNumber; i++){
             for(int j=0; j<nodes.size()-1;j++){
-                pathForOneCycle = circuit.getEdgeByNodes(nodes.get(j), nodes.get(j+1)).getPath();
-                pathForAllCycle.add(pathForOneCycle);
-            }
+                Edge e = circuit.getEdgeByNodes(nodes.get(j), nodes.get(j+1));
 
+                pathForOneCycle = e.getPath();
+                pathForAllCycles.add(pathForOneCycle);
+            }
         }
-        return pathForAllCycle;
+
+        Graph result = this.voyageurCommerce.calculate(circuit);
+        System.out.println(result.getLength());
+
+        return pathForAllCycles;
     }
 
 }
