@@ -17,10 +17,6 @@ public class Edge {
     private Node first;
     private Node second;
 
-    public Edge() {
-
-    }
-
     public Edge(List<Segment> path, float length, Node first, Node second) {
         this.path = path;
         this.length = length;
