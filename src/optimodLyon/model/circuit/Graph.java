@@ -60,6 +60,21 @@ public class Graph {
     }
 
     /**
+     * Retourne un edge dont les node sont égaux aux nodes passés en paramètres
+     * @param first First node link to the edge
+     * @param second Second node link to the edge
+     * @return le edge correspondant
+     */
+    public Edge getEdgeByNodes(Node first, Node second) {
+        for (Edge edge: getEdges()) {
+            if(edge.getFirst().equals(first) && edge.getSecond().equals(second)) {
+                return edge;
+            }
+        }
+        return null;
+    }
+
+    /**
      * Supprime un edge du graphe
      * @param edge, le edge à supprimer
      */

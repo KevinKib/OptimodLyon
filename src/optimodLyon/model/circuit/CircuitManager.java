@@ -204,20 +204,38 @@ public class CircuitManager
     }
 
     /**
-     * Modifie la position d'un waypoint dans le circuit courant
-     * @param waypoint le waypoint
-     * @param position la nouvelle position du waypoint
+     * Modifie l'ordre des waypoint dans le circuit
+     * @param oldWaypointList la liste anciennement triée des waypoint
+     * @param newWaypointList la liste nouvellement triée des waypoint
      * @throws NoWarehouseException si le circuit ne débute pas par un point de dépôt
      */
-    public void updateRequest(Waypoint waypoint, int position) throws NoWarehouseException {
+    public void updateRequest(List<Waypoint> oldWaypointList, List<Waypoint> newWaypointList) throws NoWarehouseException {
         Node warehouse = this.circuit.getFirstNode();
 
         if (!(warehouse instanceof Warehouse)) {
             throw new NoWarehouseException("Le circuit n'est pas conforme, il ne débute pas par un point de dépôt.");
         }
 
-        int cpt = 0;
-        
+        for(int oldCpt = 0; oldCpt < oldWaypointList.size(); ++oldCpt){
+            Waypoint waypointFromOld = oldWaypointList.get(oldCpt);
+            Waypoint waypointFromNew = newWaypointList.get(oldCpt);
+
+            // S'il y a eu un changement d'ordre
+            if (!waypointFromOld.equals(waypointFromNew)){
+
+                // On supprime les arcs liés à l'ancien Waypoint
+                Edge edgeToRemove = this.circuit.getEdgeByNodes(newWaypointList.get(oldCpt - 1), waypointFromOld);
+                this.circuit.removeEdge(edgeToRemove);
+                edgeToRemove = this.circuit.getEdgeByNodes(waypointFromOld, oldWaypointList.get(oldCpt + 1));
+                this.circuit.removeEdge(edgeToRemove);
+
+                // On crée les nouveaux arcs liés au nouveau Waypoint
+                Edge createdEdge = this.createEdge(newWaypointList.get(oldCpt - 1), waypointFromNew);
+                this.circuit.addEdge(createdEdge);
+                createdEdge = this.createEdge(waypointFromNew, oldWaypointList.get(oldCpt + 1));
+                this.circuit.addEdge(createdEdge);
+            }
+        }
     }
 
     /**
