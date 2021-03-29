@@ -26,7 +26,7 @@ public class CircuitManagerTU {
     @Test
     public void addRequestOnCircuitTest()
     {
-        Warehouse warehouse = new Warehouse(null, 0);
+        Warehouse warehouse = new Warehouse(null);
         Waypoint pickup1 = new Pickup(null, 2);
         Waypoint delivery1 = new Delivery(null, 2);
 
@@ -64,7 +64,7 @@ public class CircuitManagerTU {
     @Test
     public void deleteRequestFromCircuitTest()
     {
-        Warehouse warehouse = new Warehouse(null, 0);
+        Warehouse warehouse = new Warehouse(null);
         Pickup pickup1 = new Pickup(null, 2);
         Delivery delivery1 = new Delivery(null, 2);
         Pickup pickup2 = new Pickup(null, 1);
@@ -103,7 +103,7 @@ public class CircuitManagerTU {
     @Test
     public void changeCircuitOrderTest()
     {
-        Warehouse warehouse = new Warehouse(null, 0);
+        Warehouse warehouse = new Warehouse(null);
         Waypoint pickup1 = new Pickup(null, 2);
         Waypoint delivery1 = new Delivery(null, 2);
         Waypoint pickup2 = new Pickup(null, 1);

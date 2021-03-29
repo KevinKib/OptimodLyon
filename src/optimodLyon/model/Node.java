@@ -23,6 +23,9 @@ public class Node {
         }
         // typecast o to Node so that we can compare intersections
         Node node = (Node) o;
+        if (this.intersection == null) {
+            return node.intersection == null;
+        }
         return this.intersection.equals(node.intersection);
     }
 

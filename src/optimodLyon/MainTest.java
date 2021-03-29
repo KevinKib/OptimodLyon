@@ -1,10 +1,9 @@
 package optimodLyon;
 
 import optimodLyon.IHM.OptimodFrame;
-
-import javax.swing.*;
-import javax.swing.plaf.nimbus.NimbusLookAndFeel;
-import java.lang.reflect.InvocationTargetException;
+import external.circuitPlanner.CircuitPlanner1;
+import optimodLyon.controller.Controller;
+import optimodLyon.io.XMLLoader;
 
 public class MainTest {
     private OptimodFrame mainFrame;
@@ -15,7 +14,12 @@ public class MainTest {
     }
 
     public static void main(String[] args) throws Exception {
+        CircuitPlanner1 circuitPlanner1 = new CircuitPlanner1();
 
-//        CircuitManager cm = new CircuitManager(new Circuit())
+        Controller c = new Controller();
+        c.setCityMap(XMLLoader.loadMap("./rsc/test/io/mapFiles/map.xml"));
+        c.setDeliveryPlan(XMLLoader.loadDeliveryPlan(c.getCityMap(), "./rsc/test/io/delivery-files/delivery-good-formed1.xml"));
+
+        circuitPlanner1.searchSolution(c.getCircuitManager().createCircuit(c.getDeliveryPlan()), 1);
     }
 }

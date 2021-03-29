@@ -25,6 +25,14 @@ public class Graph {
         this.firstNode = firstNode;
     }
 
+    public void setNodes(List<Node> nodes) {
+        this.nodes = nodes;
+    }
+
+    public void setEdges(List<Edge> edges) {
+        this.edges = edges;
+    }
+
     public void addNode(Node node){
         if(this.nodes.isEmpty()) {
             this.firstNode = node;
@@ -83,7 +91,6 @@ public class Graph {
         }
         return null;
     }
-
 
     /**
      * Retourne un node dont l'id de l'intersection est égal à l'id passé en paramètre
@@ -147,17 +154,11 @@ public class Graph {
     }
 
     /**
-     * Calcule la longueur du chemin du graphe.
-     * @return Longueur du chemin.
+     * Ajoute un edge du graphe
+     * @param edge, le edge à ajouter
      */
-    public int getLength() {
-        int length = 0;
-        for(int j=0; j<nodes.size()-1;j++){
-            Edge e = this.getEdgeByNodes(nodes.get(j), nodes.get(j+1));
-            length += e.getLength();
-        }
-
-        return length;
+    public void addEdge(Edge edge) {
+        this.getEdges().add(edge);
     }
 
     /**
@@ -169,18 +170,24 @@ public class Graph {
     }
 
     /**
-     * Ajoute un edge du graphe
-     * @param edge, le edge à ajouter
-     */
-    public void addEdge(Edge edge) {
-        this.getEdges().add(edge);
-    }
-
-    /**
      * Retourne le premier noeud du graphe
      * @return le premier noeud
      */
     public Node getFirstNode() {
         return firstNode;
+    }
+
+    /**
+     * Calcule la longueur du chemin du graphe.
+     * @return Longueur du chemin.
+     */
+    public int getLength() {
+        int length = 0;
+        for(int j=0; j<nodes.size()-1;j++) {
+            length += this.getEdgeByNodes(nodes.get(j), nodes.get(j+1)).getLength();
+        }
+
+        length += this.getEdgeByNodes(nodes.get(nodes.size()-1), nodes.get(0)).getLength();
+        return length;
     }
 }

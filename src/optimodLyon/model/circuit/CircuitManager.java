@@ -102,6 +102,8 @@ public class CircuitManager
         List<Node> waypoints = new ArrayList<>();
         List<Edge> edges = new ArrayList<>();
 
+        waypoints.add(plan.getWarehouse());
+
         //For each waypoint in the requests of the plan, (either Delivery or Pickup): append them to the circuit waypoint
         //And computes the edge between
         for (Request request: requests) {

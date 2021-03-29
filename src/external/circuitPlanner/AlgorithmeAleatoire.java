@@ -14,10 +14,12 @@ import java.util.ArrayList;
 public class AlgorithmeAleatoire extends AlgorithmeVoyageurCommerce {
 
     public Graph calculate(Graph g) {
-        Graph result = new Graph(g.getNodes(), g.getEdges());
-        ArrayList<Node> validNodes = new ArrayList<>();
+        Graph result = new Graph(g.getNodes(), g.getEdges(), g.getFirstNode());
 
-        
+        ArrayList<Node> validNodes = new ArrayList<>();
+//        validNodes.add(g.getFirstNode())
+        System.out.println(g.getFirstNode());
+
 
         for (Node n : g.getNodes()) {
             System.out.println(n.getClass());
