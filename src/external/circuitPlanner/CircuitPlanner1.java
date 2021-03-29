@@ -79,7 +79,6 @@ public class CircuitPlanner1 extends AbstractCircuitPlanner{
         }
 
         Graph result = this.voyageurCommerce.calculate(circuit);
-        System.out.println(result.getLength());
 
         return pathForAllCycles;
     }

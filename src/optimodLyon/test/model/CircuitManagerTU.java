@@ -27,8 +27,8 @@ public class CircuitManagerTU {
     public void addRequestOnCircuitTest()
     {
         Warehouse warehouse = new Warehouse(null);
-        Waypoint pickup1 = new Pickup(null, 2);
-        Waypoint delivery1 = new Delivery(null, 2);
+        Waypoint pickup1 = new Pickup(null, 2, null);
+        Waypoint delivery1 = new Delivery(null, 2, null);
 
         List<Node> waypoints = new ArrayList<>();
         waypoints.add(warehouse);
@@ -43,8 +43,8 @@ public class CircuitManagerTU {
         Graph circuit = new Graph(waypoints, edges, warehouse);
         circuitManager.setCircuit(circuit);
 
-        Pickup pickup2 = new Pickup(null, 1);
-        Delivery delivery2 = new Delivery(null, 1);
+        Pickup pickup2 = new Pickup(null, 1, null);
+        Delivery delivery2 = new Delivery(null, 1, null);
 
         Request request = new Request(pickup2, delivery2);
         circuitManager.addRequest(request, pickup1, delivery1);
@@ -65,10 +65,10 @@ public class CircuitManagerTU {
     public void deleteRequestFromCircuitTest()
     {
         Warehouse warehouse = new Warehouse(null);
-        Pickup pickup1 = new Pickup(null, 2);
-        Delivery delivery1 = new Delivery(null, 2);
-        Pickup pickup2 = new Pickup(null, 1);
-        Delivery delivery2 = new Delivery(null, 1);
+        Pickup pickup1 = new Pickup(null, 2, null);
+        Delivery delivery1 = new Delivery(null, 2, null);
+        Pickup pickup2 = new Pickup(null, 1, null);
+        Delivery delivery2 = new Delivery(null, 1, null);
 
         Request request = new Request(pickup1, delivery1);
 
@@ -104,10 +104,10 @@ public class CircuitManagerTU {
     public void changeCircuitOrderTest()
     {
         Warehouse warehouse = new Warehouse(null);
-        Waypoint pickup1 = new Pickup(null, 2);
-        Waypoint delivery1 = new Delivery(null, 2);
-        Waypoint pickup2 = new Pickup(null, 1);
-        Waypoint delivery2 = new Delivery(null, 1);
+        Waypoint pickup1 = new Pickup(null, 2, null);
+        Waypoint delivery1 = new Delivery(null, 2, null);
+        Waypoint pickup2 = new Pickup(null, 1, null);
+        Waypoint delivery2 = new Delivery(null, 1, null);
 
         List<Node> waypoints = new ArrayList<>();
         waypoints.add(warehouse);

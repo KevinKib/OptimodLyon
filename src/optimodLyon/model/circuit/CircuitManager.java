@@ -122,7 +122,7 @@ public class CircuitManager
                 edges.add(this.createEdge((Waypoint) waypoints.get(i), pickup));
             }
         }
-        return new Graph(waypoints, edges, requests.get(0).getPickup());
+        return new Graph(waypoints, edges, plan.getWarehouse());
     }
 
     public void computeSolution(DeliveryPlan plan, int cycleNumber){
