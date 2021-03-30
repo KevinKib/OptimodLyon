@@ -14,7 +14,7 @@ public class CircuitPlanner1 extends AbstractCircuitPlanner{
     private AlgorithmeVoyageurCommerce voyageurCommerce;
 
     public CircuitPlanner1() {
-        this.voyageurCommerce = new AlgorithmeLointaineInsertion();
+        this.voyageurCommerce = new Algorithme3Opt();
     }
 
     //TODO Need to test the method

@@ -46,7 +46,7 @@ public class AlgorithmePlusProcheVoisin extends AlgorithmeVoyageurCommerce{
         System.out.println(result.getLength());
         System.out.println(g.getLength());
 
-        this.checkResultValidity(result);
+        this.checkResultValidity(result, true);
 
         return result;
     }

@@ -5,6 +5,8 @@ import external.circuitPlanner.CircuitPlanner1;
 import optimodLyon.controller.Controller;
 import optimodLyon.io.XMLLoader;
 
+import java.io.File;
+
 public class MainTest {
     private OptimodFrame mainFrame;
 
@@ -17,7 +19,7 @@ public class MainTest {
         CircuitPlanner1 circuitPlanner1 = new CircuitPlanner1();
 
         Controller c = new Controller();
-        c.setCityMap(XMLLoader.loadMap("./rsc/test/io/mapFiles/map.xml"));
+        c.setCityMap(XMLLoader.loadMap("./rsc/test/io/mapfiles/map.xml"));
         c.setDeliveryPlan(XMLLoader.loadDeliveryPlan(c.getCityMap(), "./rsc/test/io/delivery-files/delivery-good-formed2.xml"));
 
         circuitPlanner1.searchSolution(c.getCircuitManager().createCircuit(c.getDeliveryPlan()), 1);

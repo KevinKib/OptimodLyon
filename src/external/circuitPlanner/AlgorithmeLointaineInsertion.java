@@ -28,17 +28,6 @@ public class AlgorithmeLointaineInsertion extends AlgorithmeVoyageurCommerce{
 
         while (selectedNodes.size() != g.getNodes().size()) {
 
-            System.out.println();
-            System.out.println("Current path : ");
-            for (Node selectedNode : selectedNodes) {
-                System.out.println(selectedNode);
-            }
-
-            System.out.println("Valid nodes :");
-            for (Node validNode : validNodes) {
-                System.out.println(validNode);
-            }
-
             // Selection step
             // Given a sub-tour, find node r not in the sub-tour FARTHEST to any node j in the sub-tour;
             // i.e. with minimal crj
@@ -51,9 +40,6 @@ public class AlgorithmeLointaineInsertion extends AlgorithmeVoyageurCommerce{
                     bestNodeR = nodeR;
                 }
             }
-
-            System.out.println("Chosen node :");
-            System.out.println(bestNodeR.getKey());
 
             // Insertion step
             // Find the arc (i, j) in the sub-tour which minimizes cir + crj - cij.
@@ -75,14 +61,11 @@ public class AlgorithmeLointaineInsertion extends AlgorithmeVoyageurCommerce{
                         + g.getEdgeByNodes(bestNodeR.getKey(), selectedNodes.get(j)).getLength()
                         - g.getEdgeByNodes(selectedNodes.get(i-1), selectedNodes.get(j)).getLength();
 
-                System.out.println(i + " : " + distance);
-
                 if (distance <= bestDistance) {
                     bestDistance = distance;
                     bestI = i;
                 }
             }
-            System.out.println("BEST I : "+bestI);
             this.addNodeToSelected(bestNodeR.getKey(), bestI);
         }
 
@@ -92,7 +75,7 @@ public class AlgorithmeLointaineInsertion extends AlgorithmeVoyageurCommerce{
         System.out.println(result.getLength());
         System.out.println(g.getLength());
 
-        this.checkResultValidity(result);
+        this.checkResultValidity(result, true);
 
         return result;
     }

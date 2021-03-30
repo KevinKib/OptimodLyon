@@ -113,7 +113,7 @@ public abstract class AlgorithmeVoyageurCommerce {
         }
     }
 
-    protected void checkResultValidity(Graph result) {
+    protected boolean checkResultValidity(Graph result, boolean printResult) {
         boolean isValid = true;
 
         if (!(result.getFirstNode() instanceof Warehouse)) {
@@ -130,11 +130,29 @@ public abstract class AlgorithmeVoyageurCommerce {
             }
         }
 
-        if (!isValid) {
-            System.err.println("Invalid result!");
+        if (printResult) {
+            if (!isValid) {
+                System.err.println("Invalid result!");
+            }
+            else {
+                System.out.println("The result is valid.");
+            }
         }
-        else {
-            System.out.println("The result is valid.");
+
+        return isValid;
+    }
+
+    protected void displayPath() {
+        System.out.println("Current path : ");
+        for (Node selectedNode : selectedNodes) {
+            System.out.println(selectedNode);
+        }
+    }
+
+    protected void displayValidNodes() {
+        System.out.println("Valid nodes :");
+        for (Node validNode : validNodes) {
+            System.out.println(validNode);
         }
     }
 }
