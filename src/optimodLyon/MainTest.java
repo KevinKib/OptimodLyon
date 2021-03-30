@@ -18,7 +18,7 @@ public class MainTest {
 
         Controller c = new Controller();
         c.setCityMap(XMLLoader.loadMap("./rsc/test/io/mapFiles/map.xml"));
-        c.setDeliveryPlan(XMLLoader.loadDeliveryPlan(c.getCityMap(), "./rsc/test/io/delivery-files/delivery-good-formed1.xml"));
+        c.setDeliveryPlan(XMLLoader.loadDeliveryPlan(c.getCityMap(), "./rsc/test/io/delivery-files/delivery-good-formed2.xml"));
 
         circuitPlanner1.searchSolution(c.getCircuitManager().createCircuit(c.getDeliveryPlan()), 1);
     }
