@@ -76,8 +76,7 @@ public class NavigationController implements ActionListener
         else if (actionCommand.equals(NavigationView.CALCULATE_CIRCUIT_ACTION_COMMAND))
         {
             this.view.notifyWindowToLoadCircuit(1);
-            // this.view.setState(NavigationView.NavigationViewState.CIRCUIT_CALCULATED);
-            // TODO: calcul avec les algos
+            this.view.setState(NavigationView.NavigationViewState.CIRCUIT_CALCULATED);
         }
     }
 }

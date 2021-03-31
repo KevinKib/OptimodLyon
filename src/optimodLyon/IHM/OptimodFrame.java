@@ -107,6 +107,7 @@ public class OptimodFrame extends JFrame {
             CityMap map = XMLLoader.loadMap(filename);
             this.controller.setCityMap(map);
             this.controller.setDeliveryPlan(null);
+            this.controller.setCircuitManager(null);
             this.controller.setCityMapCoordinates(this.mapView.getDimension());
             this.mapView.repaint();
         }
@@ -130,6 +131,7 @@ public class OptimodFrame extends JFrame {
         {
             DeliveryPlan plan = XMLLoader.loadDeliveryPlan(this.controller.getCityMap(), filename);
             this.controller.setDeliveryPlan(plan);
+            this.controller.setCircuitManager(null);
             this.mapView.repaint();
         }
         catch (Exception e)
