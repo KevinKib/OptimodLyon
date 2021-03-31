@@ -5,6 +5,8 @@ import optimodLyon.model.PickupAndDeliveryForm;
 import optimodLyon.model.Segment;
 
 import javax.swing.*;
+import javax.swing.event.ChangeEvent;
+import javax.swing.event.ChangeListener;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.ItemEvent;
@@ -109,7 +111,8 @@ public class DialogController implements ItemListener, ActionListener, ChangeLis
     public void actionPerformed(ActionEvent e) {
         String actionCommand = e.getActionCommand();
         if(actionCommand.equals(PickupDeliveryDialogView.ACTION_OK)){
-            System.out.println(this.pickupAndDeliveryForm);
+            this.pickupDeliveyDialogView.getController().addRequest(this.pickupAndDeliveryForm);
+            this.pickupDeliveyDialogView.dispose();
         } else if(actionCommand.equals(PickupDeliveryDialogView.ACTION_CANCEL)) {
             this.pickupDeliveyDialogView.dispose();
         }

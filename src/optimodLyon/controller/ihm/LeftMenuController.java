@@ -43,11 +43,12 @@ public class LeftMenuController implements ActionListener {
     @Override
     public void actionPerformed(ActionEvent e) {
         String actionCommand = e.getActionCommand();
-        System.out.println("Renter");
         if(actionCommand.equals(LeftMenuView.ADD_PICKUP_AND_DELIVERY_POINTS)){
-            System.out.println("Renter");
-            PickupDeliveryDialogView pickupDeliveryDialogView = new PickupDeliveryDialogView(this.view.getWindow(), this.controller);
-            pickupDeliveryDialogView.setVisible(true);
+            if(this.controller.getDeliveryPlan() != null){
+                PickupDeliveryDialogView pickupDeliveryDialogView = new PickupDeliveryDialogView(this.view.getWindow(), this.controller);
+                pickupDeliveryDialogView.setVisible(true);
+            }
+
         } else if(actionCommand.equals(LeftMenuView.MODIFY_ITINERARY_ORDER)) {
 
         }

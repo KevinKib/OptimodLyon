@@ -152,6 +152,21 @@ public class CityMap
         return Collections.unmodifiableList(segments);
     }
 
+    public Intersection getCommonIntersection(Segment a, Segment b){
+        List<Segment> allSegmentOfRue = this.getSegments().stream()
+                .filter(s -> s.getName().equals(a.getName()))
+                .collect(Collectors.toList());
+
+        for(Segment seg : allSegmentOfRue){
+            if(seg.getOrigin().equals(b.getDestination())){
+                return seg.getOrigin();
+            } else if(seg.getDestination().equals(b.getOrigin())){
+                return seg.getDestination();
+            }
+        }
+        return null;
+    }
+
     /**
      * @return Les segments ayant une intersection avec le nom de la rue passé en paramèrtre
      */
