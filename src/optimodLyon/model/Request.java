@@ -25,6 +25,12 @@ public class Request
         this.pickup = new Pickup(pickupIntersection, pickupDuration);
     }
 
+    public Request(Pickup pickup, Delivery delivery)
+    {
+        this.pickup = pickup;
+        this.delivery = delivery;
+    }
+
     public Delivery getDelivery() {
         return delivery;
     }
