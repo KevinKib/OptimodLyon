@@ -34,14 +34,13 @@ public class CircuitPlanner1 extends AbstractCircuitPlanner{
         while (!nodesToBeVisited.isEmpty()) {
             PathNode next = nodesToBeVisited.poll();
             if (next.getCurrent().equals(end)) {
-                List<Node> path = new ArrayList<>();
+                List<Node> nodesPath = new ArrayList<>();
                 PathNode current = next;
                 do {
-                    path.add(0, current.getCurrent());
+                    nodesPath.add(0, current.getCurrent());
                     current = visitedNodes.get(current.getPrevious());
                 } while (current != null);
-                Collections.reverse(path);
-                List<Segment> segments = cityMapGraph.getPath(path);
+                List<Segment> segments = cityMapGraph.getPath(nodesPath);
                 for(int i=0;i<segments.size()-1;i++){
                     if(!segments.get(i).getDestination().equals(segments.get(i+1).getOrigin())){
                         System.out.println("not equals origin and destination between 2 following segments");
@@ -72,6 +71,7 @@ public class CircuitPlanner1 extends AbstractCircuitPlanner{
         List<Segment> pathForOneCycle = new ArrayList<>();
 
         Graph result = this.voyageurCommerce.calculate(circuit);
+        result.addNode(result.getFirstNode());
         List<Node> nodes = result.getNodes();
 
         for (int i=0; i<cycleNumber; i++){

@@ -32,6 +32,11 @@ public class MapView extends JComponent
     private BufferedImage pickupLocalisationlogo;
 
     /**
+     * Logo de localisation d'un dépôt
+     */
+    private BufferedImage warehouseLocalisationlogo;
+
+    /**
      * Chemin d'accés à l'image de localisation d'une livraison
      */
     private static final String DELIVERY_LOCALISATION_PATH = "./rsc/image/delivery-localisation.png";
@@ -40,6 +45,11 @@ public class MapView extends JComponent
      * Chemin d'accés à l'image de localisation d'une recherche de livraison
      */
     private static final String PICKUP_LOCALISATION_PATH = "./rsc/image/pickup-localisation.png";
+
+    /**
+     * Chemin d'accés à l'image de localisation d'un dépôt
+     */
+    private static final String WAREHOUSE_LOCALISATION_PATH = "./rsc/image/warehouse.png";
 
     private static Color[] COLORS = new Color[]
             {
@@ -82,6 +92,7 @@ public class MapView extends JComponent
         {
             this.deliveryLocalisationlogo = ImageIO.read(new File(DELIVERY_LOCALISATION_PATH));
             this.pickupLocalisationlogo = ImageIO.read(new File(PICKUP_LOCALISATION_PATH));
+            this.warehouseLocalisationlogo = ImageIO.read(new File(WAREHOUSE_LOCALISATION_PATH));
         }
         catch (Exception e)
         {
@@ -134,6 +145,10 @@ public class MapView extends JComponent
             // Affichage des pickup-delivery
             if (deliveryPlan != null)
             {
+                Point wareHousePoint = cityMapCoordinates.normalizeIntersection(deliveryPlan.getWarehouse().getIntersection());
+                BufferedImage image = this.resize(this.warehouseLocalisationlogo, 20, 20);
+                p.drawImage(image, wareHousePoint.x - 10, wareHousePoint.y - 10, null);
+
                 List<Request> requests = deliveryPlan.getRequests();
                 for (int i = 0; i < requests.size(); ++i)
                 {
@@ -156,7 +171,7 @@ public class MapView extends JComponent
                     Point pickupPoint = cityMapCoordinates.normalizeIntersection(request.getPickup().getIntersection());
 
                     // Affichage de la delivery
-                    BufferedImage image = this.resize(this.deliveryLocalisationlogo, 30, 30);
+                    image = this.resize(this.deliveryLocalisationlogo, 30, 30);
                     image = this.dye(image, color);
                     p.drawImage(image, deliveryPoint.x - 15, deliveryPoint.y - 30, null);
 

@@ -23,6 +23,7 @@ public class Graph {
         this.nodes = nodes;
         this.edges = edges;
         this.firstNode = firstNode;
+        this.revertedSegments = new ArrayList<>();
     }
 
     public void setNodes(List<Node> nodes) {
@@ -95,6 +96,10 @@ public class Graph {
                     segment.revertDirection();
                 }
                 return edge;
+            }
+            else if(edge.getFirst().equals(end) || edge.getFirst().equals(start) || edge.getSecond().equals(start) ||
+                    edge.getSecond().equals(end)){
+                System.out.println("found one");
             }
         }
         return null;
