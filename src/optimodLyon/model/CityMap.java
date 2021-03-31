@@ -1,8 +1,12 @@
 package optimodLyon.model;
 
+import optimodLyon.ListUtils;
+
 import java.awt.*;
 import java.util.*;
 import java.util.List;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 /**
  * Classe qui représente une carte XML.
@@ -143,7 +147,45 @@ public class CityMap
      */
     public List<Segment> getSegments()
     {
-        return Collections.unmodifiableList(new ArrayList<Segment>(this.segmentsByIntersectionId.values()));
+        List<Segment> segments = new ArrayList<>(this.segmentsByIntersectionId.values());
+        Collections.sort(segments);
+        return Collections.unmodifiableList(segments);
+    }
+
+    public Intersection getCommonIntersection(Segment a, Segment b){
+        List<Segment> allSegmentOfRue = this.getSegments().stream()
+                .filter(s -> s.getName().equals(a.getName()))
+                .collect(Collectors.toList());
+
+        for(Segment seg : allSegmentOfRue){
+            if(seg.getOrigin().equals(b.getDestination())){
+                return seg.getOrigin();
+            } else if(seg.getDestination().equals(b.getOrigin())){
+                return seg.getDestination();
+            }
+        }
+        return null;
+    }
+
+    /**
+     * @return Les segments ayant une intersection avec le nom de la rue passé en paramèrtre
+     */
+    public List<Segment> getIntersectionSegments(final Segment segment){
+        List<Segment> segments = this.getSegments();
+        List<Segment> finalIntersectionSegments = new ArrayList<>();
+        // Recuperer tous les segment portant le même nom que celui passer en paramètre
+        List<Segment> allSegmentOfRue = segments.stream()
+                .filter(s -> s.getName().equals(segment.getName()))
+                .collect(Collectors.toList());
+
+        for(Segment seg : allSegmentOfRue){
+            finalIntersectionSegments.addAll(
+                    segments.stream()
+                            .filter(s -> !s.getName().equals("") && !s.getName().equals(seg.getName()) && (s.getDestination().equals(seg.getOrigin()) || s.getOrigin().equals(seg.getDestination())))
+            .collect(Collectors.toList()));
+        }
+
+        return ListUtils.removeDuplicatesSegment(finalIntersectionSegments);
     }
 
     /**
