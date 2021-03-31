@@ -182,6 +182,7 @@ public class MapView extends JComponent
                     p.drawImage(image, pickupPoint.x - 15, pickupPoint.y - 30, null);
                 }
 
+                // Test
                 List<List<Segment>> solution = this.controller.getCircuitManager().getSolution();
 
                 int order = 1;
