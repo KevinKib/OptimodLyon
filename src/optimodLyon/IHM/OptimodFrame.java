@@ -44,6 +44,11 @@ public class OptimodFrame extends JFrame {
     private JPanel navigationView;
 
     /**
+     * Vue du menu à gauche
+     */
+    private JPanel leftMenuView;
+
+    /**
      * Le controleur de la fenetre
      */
     private Controller controller;
@@ -81,9 +86,10 @@ public class OptimodFrame extends JFrame {
         this.mapView = new MapView(this.controller);
         mainPanel.add(this.mapView, BorderLayout.CENTER);
 
-        // Left Panel
-        buildLeftPanel();
-        mainPanel.add(leftPanel, BorderLayout.WEST);
+        // Left Menu
+        this.leftMenuView = new LeftMenuView(this);
+        //buildLeftPanel();
+        mainPanel.add(this.leftMenuView, BorderLayout.WEST);
 
         // Set main panel
         this.setContentPane(mainPanel);
@@ -106,6 +112,8 @@ public class OptimodFrame extends JFrame {
         }
         catch (Exception e)
         {
+            String message = String.format("Le fichier de carte n'a pas été correctement chargé\n%s", e.getMessage());
+            JOptionPane.showMessageDialog(null, message,"Erreur de chargement de la carte",JOptionPane.ERROR_MESSAGE);
             return false;
         }
         return true;
@@ -126,7 +134,8 @@ public class OptimodFrame extends JFrame {
         }
         catch (Exception e)
         {
-            System.err.println(e);
+            String message = String.format("Le fichier d'inventaire n'a pas été correctement chargé\n%s", e.getMessage());
+            JOptionPane.showMessageDialog(null, message,"Erreur de chargement de l'inventaire",JOptionPane.ERROR_MESSAGE);
             return false;
         }
         return true;
@@ -155,6 +164,10 @@ public class OptimodFrame extends JFrame {
 
     private void updateView()
     {
+    }
+
+    public Controller getController() {
+        return controller;
     }
 
     private void buildLeftPanel() {

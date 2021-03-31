@@ -87,6 +87,7 @@ public class MapView extends JComponent
         this.pickupLocalisationlogo = null;
 
         this.controller = controller;
+        this.controller.registerObservedView(this);
 
         try
         {

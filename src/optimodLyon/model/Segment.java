@@ -1,11 +1,13 @@
 package optimodLyon.model;
 
+import java.util.Objects;
+
 /**
  * Classe qui représente un segment de rue dans une carte.
  * @author Dorian TERBAH
  * @since 1.0
  */
-public class Segment
+public class Segment implements Comparable<Segment>
 {
     /**
      * Intersection destination du segment
@@ -26,6 +28,11 @@ public class Segment
      * Longueur du segment
      */
     private float length;
+
+
+    public Segment(String name){
+        this.name = name;
+    }
 
     /**
      * Constructeur de la classe Segment
@@ -67,11 +74,47 @@ public class Segment
     }
 
     /**
+     * Affecte le nom du segment
+     */
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    /**
      * @return L'intersection origine
      */
     public Intersection getOrigin()
     {
         return this.origin;
+    }
+
+    @Override
+    public boolean equals(Object o){
+        if (this == o)
+        {
+            return true;
+        }
+        else if (o == null)
+        {
+            return false;
+        }
+        else if (this.getClass() != o.getClass())
+        {
+            return false;
+        }
+
+        Segment s = (Segment) o;
+        return Objects.equals(this.name, s.name);
+    }
+
+    @Override
+    public String toString() {
+        return this.getName();
+    }
+
+    @Override
+    public int compareTo(Segment segment) {
+        return this.getName().compareTo(segment.getName());
     }
 
     /**

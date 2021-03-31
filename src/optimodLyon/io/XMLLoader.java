@@ -139,7 +139,7 @@ public class XMLLoader
      * @throws SecurityException si le fichier n'est pas accessible en écriture
      * @throws IOException si le fichier est un répertoire
      */
-    public static CityMap loadMap(final String path) throws MalformedXMLException, FileNotFoundException, SecurityException, IOException {
+    public static CityMap loadMap(final String path) throws MalformedXMLException, FileNotFoundException, SecurityException, IOException, UnsupportedFileException {
         CityMap map = null;
 
         File file = new File(path);
@@ -169,12 +169,16 @@ public class XMLLoader
             builder = documentFactory.newDocumentBuilder();
             document = builder.parse(file);
         } catch (ParserConfigurationException | SAXException e) {
-            e.printStackTrace();
+            throw new UnsupportedFileException(String.format("Le fichier %s n'est pas un fichier au format XML", path));
         }
 
         Node mapNode = document.getElementsByTagName(MAP_XML_TAG).item(0);
 
         Element mapElement = (Element) mapNode;
+
+        if (mapNode == null) {
+            throw new MalformedXMLException(String.format("Pas de carte dans le fichier %s", path));
+        }
 
         Map<Long, Intersection> intersections = new HashMap<>();
 
@@ -306,7 +310,7 @@ public class XMLLoader
 
         if (document == null)
         {
-            throw new MalformedXMLException(String.format("Le fichier %s n'a pas pu être parser correctement", path));
+            throw new MalformedXMLException(String.format("Le fichier %s n'a pas pu être parsé correctement", path));
         }
 
         Node planningRequestNode = document.getElementsByTagName(PLANNING_REQUEST_XML_TAG).item(0);
