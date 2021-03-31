@@ -99,7 +99,7 @@ public class NavigationView extends JPanel
         super(new GridLayout(1, 4, 1, 0));
         this.window = window;
 
-        this.setBackground(Color.BLUE);
+        this.setBackground(new Color(0x284158));
 
         // Name label
         this.appNameLabel = new JLabel();

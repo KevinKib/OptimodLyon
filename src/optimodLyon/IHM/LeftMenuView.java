@@ -27,7 +27,7 @@ public class LeftMenuView extends JPanel {
     private JPanel leftPanel;
     private JButton addPDButton;
     private JButton modifyOrderButton;
-    private JLabel legendPlaceholder;
+    private JPanel legendPanel;
 
 
     public LeftMenuView (final OptimodFrame window) {
@@ -44,8 +44,12 @@ public class LeftMenuView extends JPanel {
         modifyOrderButton.setText("Modifier l'ordre");
         modifyOrderButton.setActionCommand(MODIFY_ITINERARY_ORDER);
 
+        // Légende
+        legendPanel = new LegendView(this.window);
+
         this.add(addPDButton);
         this.add(modifyOrderButton);
+        this.add(legendPanel);
 
         // création du controleur
         List<JButton> buttons = new ArrayList<>();
@@ -57,39 +61,5 @@ public class LeftMenuView extends JPanel {
 
     public OptimodFrame getWindow() {
         return window;
-    }
-
-    /**
-     * Creation du menu de gauche
-     *
-     */
-    private void buildLeftPanel() {
-        leftPanel = new JPanel();
-        leftPanel.setLayout(new GridBagLayout());
-
-        // Bouton d'ajout du couple pickup and delivery
-        addPDButton = new JButton();
-        addPDButton.setText("Ajouter un point de Pickup & Delivery");
-
-
-        // Bouton de modification de l'ordre de passage du livreur
-        modifyOrderButton = new JButton();
-        modifyOrderButton.setText("Modifier l'ordre");
-
-
-
-        // Légende
-        legendPlaceholder = new JLabel();
-        //legendPlaceholder.setText("Légende");
-        leftPanel.setBackground(Color.white);
-
-        GridBagConstraints cons = new GridBagConstraints();
-        cons.gridy = 1;
-        leftPanel.add(addPDButton, cons);
-        cons.gridy++;
-        leftPanel.add(modifyOrderButton, cons);
-        cons.gridy++;
-        cons.gridheight = GridBagConstraints.REMAINDER;
-        leftPanel.add(legendPlaceholder, cons);
     }
 }
