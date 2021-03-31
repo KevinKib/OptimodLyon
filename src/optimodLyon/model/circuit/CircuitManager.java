@@ -56,6 +56,10 @@ public class CircuitManager
         return solution;
     }
 
+    public void setSolution(List<List<Segment>> solution) {
+        this.solution = solution;
+    }
+
     private List<List<Segment>> solution;
 
     public Graph getCityMapGraph() {
