@@ -9,6 +9,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.File;
+import java.util.ArrayList;
 import java.util.List;
 
 import static optimodLyon.model.CityMap.CityMapCoordinates;
@@ -166,7 +167,10 @@ public class MapView extends JComponent
                 }
 
                 List<List<Segment>> solution = this.controller.getCircuitManager().getSolution();
-                boolean drawArrow = true;
+
+                int order = 1;
+                int waypointNumber = 1;
+                List<Segment> visitedSegments = new ArrayList<>();
                 if (solution != null) {
                     // Affichage des itinéraires
                     for (List<Segment> cycle: solution){
@@ -180,16 +184,26 @@ public class MapView extends JComponent
                             p.setColor(Color.RED);
                             Graphics2D g2 = (Graphics2D) p;
                             g2.setStroke(new BasicStroke(2));
-                            if (drawArrow){
+                            if(visitedSegments.contains(segment)){
+                                System.out.println("Already displayed this segment");
+                                System.out.println(order);
+                            }
+                            for (Request request : requests) {
+                                Intersection deliveryPoint = request.getDelivery().getIntersection();
+                                Intersection pickupPoint = request.getPickup().getIntersection();
+                                if (origin.equals(deliveryPoint) || origin.equals(pickupPoint)) {
+                                    g2.drawString(String.valueOf(waypointNumber), originPoint.x, originPoint.y);
+                                    waypointNumber += 1;
+                                }
+                            }
+                            if (Math.floorMod(order,2)==0){
                                 this.drawArrowLine(g2,originPoint.x, originPoint.y, destinationPoint.x, destinationPoint.y,20,5);
-                                drawArrow = false;
                             }
                             else{
                                 g2.drawLine(originPoint.x, originPoint.y, destinationPoint.x, destinationPoint.y);
-                                drawArrow = true;
                             }
-
-
+                            visitedSegments.add(segment);
+                            order +=1;
                         }
                     }
                 }
@@ -224,7 +238,7 @@ public class MapView extends JComponent
         int[] ypoints = {y2, (int) ym, (int) yn};
 
         g.drawLine(x1, y1, x2, y2);
-        if (D-d>5){
+        if (D-d>1){
             g.fillPolygon(xpoints, ypoints, 3);
         }
     }

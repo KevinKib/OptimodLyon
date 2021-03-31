@@ -31,7 +31,10 @@ public class Graph {
 
     public void setEdges(List<Edge> edges) {
         this.edges = edges;
+        this.revertedSegments = new ArrayList<>();
     }
+
+    private List<Segment> revertedSegments;
 
     public void addNode(Node node){
         if(this.nodes.isEmpty()) {
@@ -84,6 +87,11 @@ public class Graph {
             }
             else if (edge.getFirst().equals(end) && edge.getSecond().equals(start)){
                 for(Segment segment: edge.getPath()){
+
+                    if(this.revertedSegments.contains(segment)){
+                        System.out.println("reverting again a new segment");
+                    }
+                    this.revertedSegments.add(segment);
                     segment.revertDirection();
                 }
                 return edge;
@@ -148,7 +156,6 @@ public class Graph {
         for (int i = 0; i < nodes.size()-1; i++) {
             Edge edge = this.getEdgeByNodes(nodes.get(i), nodes.get(i+1));
             segments.addAll(edge.getPath());
-//            System.out.println(i);
         }
         return segments;
     }

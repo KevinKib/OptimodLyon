@@ -111,13 +111,11 @@ public class CircuitManager
             Pickup pickup = request.getPickup();
 
             waypoints.add(delivery);
-
             for (int i=0; i<waypoints.size()-1; i++){
                 edges.add(this.createEdge((Waypoint) waypoints.get(i), delivery));
             }
 
             waypoints.add(pickup);
-
             for (int i=0; i<waypoints.size()-1; i++){
                 edges.add(this.createEdge((Waypoint) waypoints.get(i), pickup));
             }
@@ -128,11 +126,8 @@ public class CircuitManager
     public void computeSolution(DeliveryPlan plan, int cycleNumber){
         //The first step is to create the graph corresponding to the delivery plan, which is the circuit.
         this.circuit = this.createCircuit(plan);
-
-//        System.out.println(this.cityMapGraph);
-//        System.out.println(this.circuit);
-//        System.out.println(plan.getRequests());
-
+        System.out.println("Circuit has been built. Searching for solution...");
+        //Then get the solution which is the ordered circuit. Taking in account the number of cycle.
         this.solution = this.circuitPlanner.searchSolution(this.circuit, cycleNumber);
     }
 

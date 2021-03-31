@@ -3,7 +3,6 @@ package external.circuitPlanner;
 import optimodLyon.model.Node;
 import optimodLyon.model.Segment;
 import optimodLyon.model.Waypoint;
-import optimodLyon.model.circuit.Edge;
 import optimodLyon.model.circuit.Graph;
 
 import java.util.*;
@@ -14,14 +13,11 @@ public class CircuitPlanner1 extends AbstractCircuitPlanner{
     private AlgorithmeVoyageurCommerce voyageurCommerce;
 
     public CircuitPlanner1() {
-        this.voyageurCommerce = new Algorithme3Opt();
+        this.voyageurCommerce = new Algorithme2Opt();
     }
 
     //TODO Need to test the method
     public List<Segment> getShortestPath(Graph cityMapGraph, Waypoint pointA, Waypoint pointB){
-        System.out.println("start to compute shortest between " + pointA.getIntersection().getId() + " and " + pointB.getIntersection().getId());
-        //Should call A* to compute the shortest path between the two points
-        List<Segment> segmentList = new ArrayList<>();
 
         // The priority queue allow to get the nodes to be visited in order given the result of the compareTo method.
         Queue<PathNode> nodesToBeVisited = new PriorityQueue<>();
@@ -44,7 +40,14 @@ public class CircuitPlanner1 extends AbstractCircuitPlanner{
                     path.add(0, current.getCurrent());
                     current = visitedNodes.get(current.getPrevious());
                 } while (current != null);
+                Collections.reverse(path);
                 List<Segment> segments = cityMapGraph.getPath(path);
+                for(int i=0;i<segments.size()-1;i++){
+                    if(!segments.get(i).getDestination().equals(segments.get(i+1).getOrigin())){
+                        System.out.println("not equals origin and destination between 2 following segments");
+                        System.out.println(segments.get(i));
+                    }
+                }
                 return segments;
             }
             List<Node> nodes = cityMapGraph.getConnectionsFromNode(next.getCurrent());
@@ -71,11 +74,10 @@ public class CircuitPlanner1 extends AbstractCircuitPlanner{
 
         for (int i=0; i<cycleNumber; i++){
             for(int j=0; j<nodes.size()-1;j++){
-                Edge e = circuit.getEdgeByNodes(nodes.get(j), nodes.get(j+1));
 
-                pathForOneCycle = e.getPath();
-                pathForAllCycles.add(pathForOneCycle);
+                pathForOneCycle.addAll(circuit.getEdgeByNodes(nodes.get(j), nodes.get(j+1)).getPath());
             }
+            pathForAllCycles.add(pathForOneCycle);
         }
 
         Graph result = this.voyageurCommerce.calculate(circuit);
