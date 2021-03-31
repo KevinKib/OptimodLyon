@@ -54,13 +54,9 @@ public class DialogController implements ItemListener, ActionListener {
                 Segment segmentRef = (Segment) comboBox.getSelectedItem();
                 List<Segment> intersectionSegment = this.pickupDeliveyDialogView.getController().getCityMap().getIntersectionSegments(segmentRef);
                 this.pVoie2.removeAllItems();
-                System.out.println("Ref : "+segmentRef.getOrigin().getId()+" "+segmentRef.getDestination().getId());
-                System.out.println();
                 for(Segment s : intersectionSegment){
-                    System.out.println("Segment : "+s.getOrigin().getId()+" "+s.getDestination().getId());
                     this.pVoie2.addItem(s);
                 }
-                System.out.println();
                 this.pVoie2.setEnabled(true);
                 this.pickupAndDeliveryForm.setpVoie1((Segment) comboBox.getSelectedItem());
             } else if(comboBox.equals(this.pVoie2) && this.pVoie2.getSelectedIndex()!=0){

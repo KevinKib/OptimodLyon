@@ -88,6 +88,8 @@ public class Segment implements Comparable<Segment>
 
     @Override
     public boolean equals(Object o){
+        if(this == o)
+            return true;
         if(o instanceof Segment){
             Segment s = (Segment) o;
             if(s.getName().trim().equals(this.name.trim())){

@@ -164,8 +164,8 @@ public class CityMap
             finalIntersectionSegments = Stream.concat( finalIntersectionSegments.stream(),
                     segments.stream()
                             .filter(s -> !s.getName().equals("") && !s.getName().equals(seg.getName()) && (s.getDestination().equals(seg.getOrigin()) || s.getOrigin().equals(seg.getDestination())))
-            ).distinct()
-            .collect(Collectors.toList());
+            )
+            .collect(Collectors.collectingAndThen(Collectors.toCollection(()->new TreeSet<>(Comparator.comparing(Segment::getName ))), ArrayList::new));
             System.out.println(finalIntersectionSegments);
         }
         return new ArrayList<>(new HashSet<>(finalIntersectionSegments));
