@@ -11,62 +11,97 @@ import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
 import java.util.List;
 
-public class DialogController implements ItemListener, ActionListener {
+public class DialogController implements ItemListener, ActionListener, ChangeListener {
 
-    private JComboBox<Segment> pVoie1;
-    private JComboBox<Segment> pVoie2;
-    private JComboBox<Segment> dVoie1;
-    private JComboBox<Segment> dVoie2;
+    private JComboBox<Segment> pickupFirstWay;
+    private JComboBox<Segment> pickupSecondWay;
+    private JComboBox<Segment> deliveryFirstWay;
+    private JComboBox<Segment> deliverySecondWay;
 
     private PickupDeliveryDialogView pickupDeliveyDialogView;
+
+    private JSpinner deliveryDurationSpinner;
+
+    private JSpinner pickupDurationSpinner;
+
+    private JButton validateButton;
 
     PickupAndDeliveryForm pickupAndDeliveryForm;
 
 
-    public DialogController(PickupDeliveryDialogView pickupDeliveryDialogView, JComboBox pVoie1, JComboBox pVoie2, JComboBox dVoie1, JComboBox dVoie2, JButton okButton, JButton cancelButton){
-        this.pVoie1 = pVoie1;
-        this.pVoie2 = pVoie2;
-        this.dVoie1 = dVoie1;
-        this.dVoie2 = dVoie2;
-
+    public DialogController(PickupDeliveryDialogView pickupDeliveryDialogView, JButton okButton, JButton cancelButton){
         this.pickupDeliveyDialogView = pickupDeliveryDialogView;
 
-        this.pVoie1.addItemListener(this);
-        this.pVoie2.addItemListener(this);
-        this.dVoie1.addItemListener(this);
-        this.dVoie2.addItemListener(this);
+        this.pickupFirstWay = this.pickupDeliveyDialogView.getPickupFirstWay();
+        this.pickupSecondWay = this.pickupDeliveyDialogView.getPickupSecondWay();
+        this.deliveryFirstWay = this.pickupDeliveyDialogView.getDeliveryFirstWay();
+        this.deliverySecondWay = this.pickupDeliveyDialogView.getDeliverySecondWay();
 
-        pickupAndDeliveryForm = new PickupAndDeliveryForm();
+        this.deliveryDurationSpinner = this.pickupDeliveyDialogView.getDeliveryDurationSpinner();
+        this.pickupDurationSpinner = this.pickupDeliveyDialogView.getPickupDurationSpinner();
+
+        this.validateButton = okButton;
+
+        this.pickupFirstWay.addItemListener(this);
+        this.pickupSecondWay.addItemListener(this);
+        this.deliveryFirstWay.addItemListener(this);
+        this.deliverySecondWay.addItemListener(this);
 
         okButton.addActionListener(this);
         cancelButton.addActionListener(this);
 
+        this.pickupDurationSpinner.addChangeListener(this);
+        this.deliveryDurationSpinner.addChangeListener(this);
+
+        okButton.setEnabled(false);
+
+        pickupAndDeliveryForm = new PickupAndDeliveryForm();
     }
-
-
 
     @Override
     public void itemStateChanged(ItemEvent e) {
         Object o = e.getSource();
-        if(o instanceof JComboBox){
+        if(o instanceof JComboBox)
+        {
             JComboBox<Segment> comboBox = (JComboBox<Segment>) o;
-            if(comboBox.equals(this.pVoie1) && this.pVoie1.getSelectedIndex()!=0){
+
+            // Premiere voie pour le pickup
+            if(comboBox.equals(this.pickupFirstWay) && this.pickupFirstWay.getSelectedIndex()!=0){
                 Segment segmentRef = (Segment) comboBox.getSelectedItem();
                 List<Segment> intersectionSegment = this.pickupDeliveyDialogView.getController().getCityMap().getIntersectionSegments(segmentRef);
-                this.pVoie2.removeAllItems();
+                this.pickupSecondWay.removeAllItems();
                 for(Segment s : intersectionSegment){
-                    this.pVoie2.addItem(s);
+                    this.pickupSecondWay.addItem(s);
                 }
-                this.pVoie2.setEnabled(true);
-                this.pickupAndDeliveryForm.setpVoie1((Segment) comboBox.getSelectedItem());
-            } else if(comboBox.equals(this.pVoie2) && this.pVoie2.getSelectedIndex()!=0){
-                this.pickupAndDeliveryForm.setpVoie2((Segment) comboBox.getSelectedItem());
-            } else if(comboBox.equals(this.dVoie1) && this.dVoie1.getSelectedIndex()!=0){
-                this.dVoie2.setEnabled(true);
-                this.pickupAndDeliveryForm.setdVoie1((Segment) comboBox.getSelectedItem());
-            } else if(comboBox.equals(this.dVoie2) && this.pVoie2.getSelectedIndex()!=0){
-                this.pickupAndDeliveryForm.setpVoie2((Segment) comboBox.getSelectedItem());
+                this.pickupSecondWay.setEnabled(true);
+                this.pickupAndDeliveryForm.setPickupFirstWay((Segment) comboBox.getSelectedItem());
+                this.pickupAndDeliveryForm.setPickupSecondWay(intersectionSegment.get(0));
+
+            // Deuxieme voie pour el pickup
+            } else if(comboBox.equals(this.pickupSecondWay) && this.pickupSecondWay.getSelectedIndex()!=0){
+                this.pickupAndDeliveryForm.setPickupSecondWay((Segment) comboBox.getSelectedItem());
+
+            // Premiere voie pour le delivery
+            } else if(comboBox.equals(this.deliveryFirstWay) && this.deliveryFirstWay.getSelectedIndex()!=0){
+                Segment segmentRef = (Segment) comboBox.getSelectedItem();
+                List<Segment> intersectionSegment = this.pickupDeliveyDialogView.getController().getCityMap().getIntersectionSegments(segmentRef);
+                this.deliverySecondWay.removeAllItems();
+                for(Segment s : intersectionSegment){
+                    this.deliverySecondWay.addItem(s);
+                }
+                this.deliverySecondWay.setEnabled(true);
+                this.pickupAndDeliveryForm.setDeliveryFirstWay((Segment) comboBox.getSelectedItem());
+                this.pickupAndDeliveryForm.setDeliverySecondWay(intersectionSegment.get(0));
+
+                // Deuxieme voie pour le delivery
+            } else if(comboBox.equals(this.deliverySecondWay) && this.pickupSecondWay.getSelectedIndex()!=0){
+                this.pickupAndDeliveryForm.setDeliverySecondWay((Segment) comboBox.getSelectedItem());
             }
+        }
+
+        if (this.pickupAndDeliveryForm.isValid())
+        {
+            this.validateButton.setEnabled(true);
         }
     }
 
@@ -77,6 +112,23 @@ public class DialogController implements ItemListener, ActionListener {
             System.out.println(this.pickupAndDeliveryForm);
         } else if(actionCommand.equals(PickupDeliveryDialogView.ACTION_CANCEL)) {
             this.pickupDeliveyDialogView.dispose();
+        }
+    }
+
+    @Override
+    public void stateChanged(ChangeEvent e) {
+        Object o = e.getSource();
+        if (o instanceof JSpinner)
+        {
+            JSpinner source = (JSpinner) o;
+            if (source.equals(this.deliveryDurationSpinner))
+            {
+                this.pickupAndDeliveryForm.setDeliveryDuration((int) source.getValue());
+            }
+            else if (source.equals(this.pickupDurationSpinner))
+            {
+                this.pickupAndDeliveryForm.setPickupDuration((int) source.getValue());
+            }
         }
     }
 }

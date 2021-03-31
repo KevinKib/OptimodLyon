@@ -1,5 +1,7 @@
 package optimodLyon.model;
 
+import optimodLyon.ListUtils;
+
 import java.awt.*;
 import java.util.*;
 import java.util.List;
@@ -160,15 +162,15 @@ public class CityMap
         List<Segment> allSegmentOfRue = segments.stream()
                 .filter(s -> s.getName().equals(segment.getName()))
                 .collect(Collectors.toList());
+
         for(Segment seg : allSegmentOfRue){
-            finalIntersectionSegments = Stream.concat( finalIntersectionSegments.stream(),
+            finalIntersectionSegments.addAll(
                     segments.stream()
                             .filter(s -> !s.getName().equals("") && !s.getName().equals(seg.getName()) && (s.getDestination().equals(seg.getOrigin()) || s.getOrigin().equals(seg.getDestination())))
-            )
-            .collect(Collectors.collectingAndThen(Collectors.toCollection(()->new TreeSet<>(Comparator.comparing(Segment::getName ))), ArrayList::new));
-            System.out.println(finalIntersectionSegments);
+            .collect(Collectors.toList()));
         }
-        return new ArrayList<>(new HashSet<>(finalIntersectionSegments));
+
+        return ListUtils.removeDuplicatesSegment(finalIntersectionSegments);
     }
 
     /**
