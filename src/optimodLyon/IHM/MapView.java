@@ -150,6 +150,7 @@ public class MapView extends JComponent
                 p.drawImage(image, wareHousePoint.x - 10, wareHousePoint.y - 10, null);
 
                 List<Request> requests = deliveryPlan.getRequests();
+                List<Intersection> waypoints = new ArrayList<>();
                 for (int i = 0; i < requests.size(); ++i)
                 {
                     Color color = null;
@@ -167,8 +168,12 @@ public class MapView extends JComponent
 
                     Request request = requests.get(i);
 
+                    waypoints.add(request.getDelivery().getIntersection());
+                    waypoints.add(request.getPickup().getIntersection());
+
                     Point deliveryPoint = cityMapCoordinates.normalizeIntersection(request.getDelivery().getIntersection());
                     Point pickupPoint = cityMapCoordinates.normalizeIntersection(request.getPickup().getIntersection());
+
 
                     // Affichage de la delivery
                     image = this.resize(this.deliveryLocalisationlogo, 30, 30);
@@ -185,11 +190,12 @@ public class MapView extends JComponent
 
                 int order = 1;
                 int waypointNumber = 1;
-                List<Segment> visitedSegments = new ArrayList<>();
+                List<Intersection> numberedWaypoints = new ArrayList<>();
                 if (solution != null) {
                     // Affichage des itinéraires
                     for (List<Segment> cycle: solution){
-                        for (Segment segment : cycle) {
+                        for( int i=0; i < cycle.size(); i++){
+                            Segment segment = cycle.get(i);
                             final Intersection origin = segment.getOrigin();
                             final Intersection destination = segment.getDestination();
 
@@ -199,25 +205,22 @@ public class MapView extends JComponent
                             p.setColor(Color.RED);
                             Graphics2D g2 = (Graphics2D) p;
                             g2.setStroke(new BasicStroke(2));
-                            if(visitedSegments.contains(segment)){
-                                System.out.println("Already displayed this segment");
-                                System.out.println(order);
-                            }
-                            for (Request request : requests) {
-                                Intersection deliveryPoint = request.getDelivery().getIntersection();
-                                Intersection pickupPoint = request.getPickup().getIntersection();
-                                if (origin.equals(deliveryPoint) || origin.equals(pickupPoint)) {
-                                    g2.drawString(String.valueOf(waypointNumber), originPoint.x, originPoint.y);
-                                    waypointNumber += 1;
-                                }
-                            }
+
                             if (Math.floorMod(order,2)==0){
                                 this.drawArrowLine(g2,originPoint.x, originPoint.y, destinationPoint.x, destinationPoint.y,20,5);
                             }
                             else{
                                 g2.drawLine(originPoint.x, originPoint.y, destinationPoint.x, destinationPoint.y);
                             }
-                            visitedSegments.add(segment);
+                            for (Intersection waypoint : waypoints) {
+                                if (!numberedWaypoints.contains(waypoint) && origin.equals(waypoint) ) {
+                                    numberedWaypoints.add(waypoint);
+                                    p.setColor(Color.BLACK);
+                                    p.setFont(new Font("Arial", Font.BOLD, 15));
+                                    p.drawString(String.valueOf(waypointNumber), originPoint.x-10, originPoint.y+5);
+                                    waypointNumber += 1;
+                                }
+                            }
                             order +=1;
                         }
                     }
@@ -253,7 +256,7 @@ public class MapView extends JComponent
         int[] ypoints = {y2, (int) ym, (int) yn};
 
         g.drawLine(x1, y1, x2, y2);
-        if (D-d>1){
+        if (D-d>0){
             g.fillPolygon(xpoints, ypoints, 3);
         }
     }

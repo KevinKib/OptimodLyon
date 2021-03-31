@@ -4,6 +4,7 @@ import optimodLyon.model.Node;
 import optimodLyon.model.Segment;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 public class Graph {
@@ -87,44 +88,18 @@ public class Graph {
             if(edge.getFirst().equals(start) && edge.getSecond().equals(end)) {
                 if (ordered) {
                     List<Segment> segments = edge.getPath();
-                    for (int i = 0; i < segments.size()-1; i++) {
-                        Segment segment = segments.get(i);
-                        Segment nextSegment = segments.get(i+1);
-                        if (!segment.getDestination().equals(nextSegment.getOrigin())) {
-                            if (segment.getDestination().equals(nextSegment.getDestination())) {
-                                nextSegment.revertDirection();
-                            } else if (segment.getOrigin().equals(nextSegment.getOrigin())) {
-                                segment.revertDirection();
-                            } else if (segment.getOrigin().equals(nextSegment.getDestination())) {
-                                segment.revertDirection();
-                                nextSegment.revertDirection();
-                            } else {
-                                System.out.println("ISSUE");
-                            }
-                        }
-                    }
+                    this.orderPath(segments);
                 }
                 return edge;
             }
             else if (edge.getFirst().equals(end) && edge.getSecond().equals(start)){
                 if (ordered) {
                     List<Segment> segments = edge.getPath();
-                    for (int i = segments.size()-1; i > 0; i--) {
-                        Segment segment = segments.get(i);
-                        Segment nextSegment = segments.get(i-1);
-                        if (!segment.getDestination().equals(nextSegment.getOrigin())) {
-                            if (segment.getDestination().equals(nextSegment.getDestination())) {
-                                nextSegment.revertDirection();
-                            } else if (segment.getOrigin().equals(nextSegment.getOrigin())) {
-                                segment.revertDirection();
-                            } else if (segment.getOrigin().equals(nextSegment.getDestination())) {
-                                segment.revertDirection();
-                                nextSegment.revertDirection();
-                            } else {
-                                System.out.println("ISSUE");
-                            }
-                        }
-                    }
+                    Collections.reverse(segments);
+                    this.orderPath(segments);
+                    Node first = edge.getFirst();
+                    edge.setFirst(edge.getSecond());
+                    edge.setSecond(first);
                 }
                 return edge;
             }
@@ -132,6 +107,30 @@ public class Graph {
         return null;
     }
 
+    private void orderPath(List<Segment> segments){
+        for (int i = 0; i < segments.size()-1; i++) {
+            Segment segment = segments.get(i);
+            Segment nextSegment = segments.get(i+1);
+            if (!segment.getDestination().equals(nextSegment.getOrigin())) {
+                if (segment.getDestination().equals(nextSegment.getDestination())) {
+                    nextSegment.revertDirection();
+                } else if (segment.getOrigin().equals(nextSegment.getOrigin())) {
+                    segment.revertDirection();
+                } else if (segment.getOrigin().equals(nextSegment.getDestination())) {
+                    segment.revertDirection();
+                    nextSegment.revertDirection();
+                } else {
+                    System.out.println("ISSUE");
+                }
+            }
+            /*
+            else{
+                if(i==segments.size()-2){
+
+                }
+            }*/
+        }
+    }
 
     /**
      * Permet d'avoir false par défault pour le paramètre ordered.
