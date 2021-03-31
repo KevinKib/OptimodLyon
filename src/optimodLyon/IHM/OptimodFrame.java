@@ -45,6 +45,11 @@ public class OptimodFrame extends JFrame {
     private JPanel navigationView;
 
     /**
+     * Vue du menu à gauche
+     */
+    private JPanel leftMenuView;
+
+    /**
      * Le controleur de la fenetre
      */
     private Controller controller;
@@ -82,9 +87,10 @@ public class OptimodFrame extends JFrame {
         this.mapView = new MapView(this.controller);
         mainPanel.add(this.mapView, BorderLayout.CENTER);
 
-        // Left Panel
-        buildLeftPanel();
-        mainPanel.add(leftPanel, BorderLayout.WEST);
+        // Left Menu
+        this.leftMenuView = new LeftMenuView(this);
+        //buildLeftPanel();
+        mainPanel.add(this.leftMenuView, BorderLayout.WEST);
 
         // Set main panel
         this.setContentPane(mainPanel);
@@ -159,6 +165,10 @@ public class OptimodFrame extends JFrame {
 
     private void updateView()
     {
+    }
+
+    public Controller getController() {
+        return controller;
     }
 
     private void buildLeftPanel() {

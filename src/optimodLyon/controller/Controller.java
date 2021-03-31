@@ -1,11 +1,17 @@
 package optimodLyon.controller;
 
-import optimodLyon.model.CityMap;
+import optimodLyon.IHM.MapView;
+import optimodLyon.IHM.PickupDeliveryDialogView;
+import optimodLyon.model.*;
+
 import static optimodLyon.model.CityMap.CityMapCoordinates;
-import optimodLyon.model.DeliveryPlan;
+
 import optimodLyon.model.circuit.CircuitManager;
 
+import javax.swing.*;
 import java.awt.*;
+import java.util.HashSet;
+import java.util.Set;
 
 /**
  * Classe qui fait le lien entre les données de la fenetre et les interactions possibles avec.
@@ -34,6 +40,8 @@ public class Controller
      */
     private CircuitManager circuitManager;
 
+    private Set<JComponent> observedViews;
+
     /**
      * Constructeur par défaut du controleur
      */
@@ -43,6 +51,18 @@ public class Controller
         this.deliveryPlan = null;
         this.cityMapCoordinates = null;
         this.circuitManager = null;
+        observedViews = new HashSet<>();
+        //this.mapView = mapView;
+    }
+
+    private void updateObservedView(){
+        for (JComponent view : this.observedViews){
+            view.repaint();
+        }
+    }
+
+    public void registerObservedView(JComponent view){
+        this.observedViews.add(view);
     }
 
     /**
@@ -105,6 +125,20 @@ public class Controller
         {
             this.cityMapCoordinates = new CityMapCoordinates(mapComponentDimension, this.cityMap.getIntersections());
         }
+    }
+
+    /**
+     *
+     */
+    public void addRequest(PickupAndDeliveryForm pickupAndDeliveryForm){
+
+        Intersection pickupIntersection = this.cityMap.getCommonIntersection(pickupAndDeliveryForm.getPickupFirstWay(), pickupAndDeliveryForm.getPickupSecondWay());
+        Intersection deliveryIntersection = this.cityMap.getCommonIntersection(pickupAndDeliveryForm.getDeliveryFirstWay(), pickupAndDeliveryForm.getDeliverySecondWay());
+
+        Request r = new Request(pickupAndDeliveryForm.getDeliveryDuration(), pickupAndDeliveryForm.getPickupDuration(), deliveryIntersection, pickupIntersection);
+
+        this.deliveryPlan.addRequest(r);
+        this.updateObservedView();
     }
 
     /**
