@@ -189,6 +189,10 @@ public class NavigationView extends JPanel
         {
             this.calculateCircuitButton.setEnabled(true);
         }
+        else if (this.state.equals(NavigationViewState.CIRCUIT_CALCULATED))
+        {
+            //this.calculateCircuitButton.setEnabled(true);
+        }
     }
 
     private JButton buildButton(String text) {

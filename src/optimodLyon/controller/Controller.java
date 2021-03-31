@@ -1,11 +1,6 @@
 package optimodLyon.controller;
 
-import optimodLyon.IHM.MapView;
-import optimodLyon.IHM.PickupDeliveryDialogView;
 import optimodLyon.model.*;
-
-import static optimodLyon.model.CityMap.CityMapCoordinates;
-
 import optimodLyon.model.circuit.CircuitManager;
 
 import javax.swing.*;
@@ -13,6 +8,7 @@ import java.awt.*;
 import java.util.HashSet;
 import java.util.Set;
 
+import static optimodLyon.model.CityMap.CityMapCoordinates;
 /**
  * Classe qui fait le lien entre les données de la fenetre et les interactions possibles avec.
  * @author Dorian TERBAH
@@ -34,6 +30,10 @@ public class Controller
      * Informations utiles pour l'affichage de la carte
      */
     private CityMapCoordinates cityMapCoordinates;
+
+    public CircuitManager getCircuitManager() {
+        return circuitManager;
+    }
 
     /**
      * CircuitManager
@@ -155,6 +155,6 @@ public class Controller
      */
     public void computeCircuit(DeliveryPlan plan, int cycleNumber)
     {
-        this.circuitManager.getSolution(plan, cycleNumber);
+        this.circuitManager.computeSolution(plan, cycleNumber);
     }
 }

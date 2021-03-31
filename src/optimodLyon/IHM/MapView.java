@@ -1,19 +1,15 @@
 package optimodLyon.IHM;
 
+import optimodLyon.controller.Controller;
+import optimodLyon.controller.ihm.MapViewResizeController;
 import optimodLyon.model.*;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
-
-import optimodLyon.controller.Controller;
-import optimodLyon.controller.ihm.MapViewResizeController;
-import optimodLyon.model.*;
-
-import static optimodLyon.model.CityMap.CityMapCoordinates;
-
 import java.awt.image.BufferedImage;
 import java.io.File;
+import java.util.ArrayList;
 import java.util.List;
 
 import static optimodLyon.model.CityMap.CityMapCoordinates;
@@ -36,6 +32,11 @@ public class MapView extends JComponent
     private BufferedImage pickupLocalisationlogo;
 
     /**
+     * Logo de localisation d'un dépôt
+     */
+    private BufferedImage warehouseLocalisationlogo;
+
+    /**
      * Chemin d'accés à l'image de localisation d'une livraison
      */
     private static final String DELIVERY_LOCALISATION_PATH = "./rsc/image/delivery-localisation.png";
@@ -44,6 +45,11 @@ public class MapView extends JComponent
      * Chemin d'accés à l'image de localisation d'une recherche de livraison
      */
     private static final String PICKUP_LOCALISATION_PATH = "./rsc/image/pickup-localisation.png";
+
+    /**
+     * Chemin d'accés à l'image de localisation d'un dépôt
+     */
+    private static final String WAREHOUSE_LOCALISATION_PATH = "./rsc/image/warehouse.png";
 
     private static Color[] COLORS = new Color[]
             {
@@ -87,6 +93,7 @@ public class MapView extends JComponent
         {
             this.deliveryLocalisationlogo = ImageIO.read(new File(DELIVERY_LOCALISATION_PATH));
             this.pickupLocalisationlogo = ImageIO.read(new File(PICKUP_LOCALISATION_PATH));
+            this.warehouseLocalisationlogo = ImageIO.read(new File(WAREHOUSE_LOCALISATION_PATH));
         }
         catch (Exception e)
         {
@@ -139,6 +146,10 @@ public class MapView extends JComponent
             // Affichage des pickup-delivery
             if (deliveryPlan != null)
             {
+                Point wareHousePoint = cityMapCoordinates.normalizeIntersection(deliveryPlan.getWarehouse().getIntersection());
+                BufferedImage image = this.resize(this.warehouseLocalisationlogo, 20, 20);
+                p.drawImage(image, wareHousePoint.x - 10, wareHousePoint.y - 10, null);
+
                 List<Request> requests = deliveryPlan.getRequests();
                 for (int i = 0; i < requests.size(); ++i)
                 {
@@ -161,7 +172,7 @@ public class MapView extends JComponent
                     Point pickupPoint = cityMapCoordinates.normalizeIntersection(request.getPickup().getIntersection());
 
                     // Affichage de la delivery
-                    BufferedImage image = this.resize(this.deliveryLocalisationlogo, 30, 30);
+                    image = this.resize(this.deliveryLocalisationlogo, 30, 30);
                     image = this.dye(image, color);
                     p.drawImage(image, deliveryPoint.x - 15, deliveryPoint.y - 30, null);
 
@@ -170,7 +181,81 @@ public class MapView extends JComponent
                     image = this.dye(image, color);
                     p.drawImage(image, pickupPoint.x - 15, pickupPoint.y - 30, null);
                 }
+
+                List<List<Segment>> solution = this.controller.getCircuitManager().getSolution();
+
+                int order = 1;
+                int waypointNumber = 1;
+                List<Segment> visitedSegments = new ArrayList<>();
+                if (solution != null) {
+                    // Affichage des itinéraires
+                    for (List<Segment> cycle: solution){
+                        for (Segment segment : cycle) {
+                            final Intersection origin = segment.getOrigin();
+                            final Intersection destination = segment.getDestination();
+
+                            Point originPoint = cityMapCoordinates.normalizeIntersection(origin);
+                            Point destinationPoint = cityMapCoordinates.normalizeIntersection(destination);
+
+                            p.setColor(Color.RED);
+                            Graphics2D g2 = (Graphics2D) p;
+                            g2.setStroke(new BasicStroke(2));
+                            if(visitedSegments.contains(segment)){
+                                System.out.println("Already displayed this segment");
+                                System.out.println(order);
+                            }
+                            for (Request request : requests) {
+                                Intersection deliveryPoint = request.getDelivery().getIntersection();
+                                Intersection pickupPoint = request.getPickup().getIntersection();
+                                if (origin.equals(deliveryPoint) || origin.equals(pickupPoint)) {
+                                    g2.drawString(String.valueOf(waypointNumber), originPoint.x, originPoint.y);
+                                    waypointNumber += 1;
+                                }
+                            }
+                            if (Math.floorMod(order,2)==0){
+                                this.drawArrowLine(g2,originPoint.x, originPoint.y, destinationPoint.x, destinationPoint.y,20,5);
+                            }
+                            else{
+                                g2.drawLine(originPoint.x, originPoint.y, destinationPoint.x, destinationPoint.y);
+                            }
+                            visitedSegments.add(segment);
+                            order +=1;
+                        }
+                    }
+                }
             }
+        }
+    }
+    /**
+     * Draw an arrow line between two points.
+     * @param g the graphics component.
+     * @param x1 x-position of first point.
+     * @param y1 y-position of first point.
+     * @param x2 x-position of second point.
+     * @param y2 y-position of second point.
+     * @param d  the width of the arrow.
+     * @param h  the height of the arrow.
+     */
+    private void drawArrowLine(Graphics g, int x1, int y1, int x2, int y2, int d, int h) {
+        int dx = x2 - x1, dy = y2 - y1; // Direction in x and in y
+        double D = Math.sqrt(dx*dx + dy*dy);// The distance between the two points of the line
+        double xm = D - d, xn = xm, ym = h, yn = -h, x;
+        double sin = dy / D, cos = dx / D;
+
+        x = xm*cos - ym*sin + x1;
+        ym = xm*sin + ym*cos + y1;
+        xm = x;
+
+        x = xn*cos - yn*sin + x1;
+        yn = xn*sin + yn*cos + y1;
+        xn = x;
+
+        int[] xpoints = {x2, (int) xm, (int) xn};
+        int[] ypoints = {y2, (int) ym, (int) yn};
+
+        g.drawLine(x1, y1, x2, y2);
+        if (D-d>1){
+            g.fillPolygon(xpoints, ypoints, 3);
         }
     }
 

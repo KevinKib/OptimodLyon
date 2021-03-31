@@ -18,30 +18,29 @@ public class DeliveryPlan
     private List<Request> requests;
 
     /**
-     * Id de l'intersection du depôt
+     * Noeud correspondant au dépot
      */
-    private int depotIntersectionId;
+    private Warehouse warehouse;
 
     /**
-     * Date de départ
+     * Date de départ de la livraison
      */
     private Time departureTime;
 
-    public DeliveryPlan(final List<Request> requests, final Time departureTime, int depotIntersectionId)
+    public DeliveryPlan(final List<Request> requests, Warehouse w, Time departureTime)
     {
         this.requests = new ArrayList<Request>();
         this.requests.addAll(requests);
-
+        this.warehouse = w;
         this.departureTime = departureTime;
-        this.depotIntersectionId = depotIntersectionId;
     }
 
     /**
      * @return L'id de l'intersection correspondant au depot
      */
-    public int getDepotAddressId()
+    public long getDepotAddressId()
     {
-        return this.depotIntersectionId;
+        return this.warehouse.getIntersection().getId();
     }
 
     /**
@@ -50,6 +49,14 @@ public class DeliveryPlan
     public Time getDepartureTime()
     {
         return this.departureTime;
+    }
+
+    /**
+     * @return Le dépot associé au plan de livraison.
+     */
+    public Warehouse getWarehouse()
+    {
+        return this.warehouse;
     }
 
     /**

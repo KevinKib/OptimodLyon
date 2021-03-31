@@ -116,4 +116,14 @@ public class Segment implements Comparable<Segment>
     public int compareTo(Segment segment) {
         return this.getName().compareTo(segment.getName());
     }
+
+    /**
+     * Inverse l'ordre Origin/Destination du segment.
+     */
+    public void revertDirection()
+    {
+        Intersection destination = this.destination;
+        this.destination = this.origin;
+        this.origin = destination;
+    }
 }

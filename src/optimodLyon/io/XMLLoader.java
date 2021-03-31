@@ -383,8 +383,9 @@ public class XMLLoader
             }
         }
 
-            int depotAddress = Integer.parseInt(depotAddressAttribute);
-            deliveryPlan = new DeliveryPlan(requests, departureTime, depotAddress);
+        int depotAddress = Integer.parseInt(depotAddressAttribute);
+        Warehouse w = new Warehouse(map.getIntersectionById(depotAddress));
+        deliveryPlan = new DeliveryPlan(requests, w, departureTime);
         return deliveryPlan;
     }
 }

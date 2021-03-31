@@ -21,8 +21,8 @@ public class Request
     public Request(int deliveryDuration, int pickupDuration, Intersection deliveryIntersection,
                    Intersection pickupIntersection)
     {
-        this.delivery = new Delivery(deliveryIntersection, deliveryDuration);
-        this.pickup = new Pickup(pickupIntersection, pickupDuration);
+        this.delivery = new Delivery(deliveryIntersection, deliveryDuration, this);
+        this.pickup = new Pickup(pickupIntersection, pickupDuration, this);
     }
 
     public Request(Pickup pickup, Delivery delivery)

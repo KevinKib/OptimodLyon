@@ -7,7 +7,6 @@ import optimodLyon.model.*;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import java.util.NoSuchElementException;
 
 /**
  * Classe gérant un circuit
@@ -53,6 +52,12 @@ public class CircuitManager
     private Graph cityMapGraph;
     private AbstractCircuitPlanner circuitPlanner;
 
+    public List<List<Segment>> getSolution() {
+        return solution;
+    }
+
+    private List<List<Segment>> solution;
+
     public Graph getCityMapGraph() {
         return cityMapGraph;
     }
@@ -96,31 +101,33 @@ public class CircuitManager
         List<Node> waypoints = new ArrayList<>();
         List<Edge> edges = new ArrayList<>();
 
+        waypoints.add(plan.getWarehouse());
+
         //For each waypoint in the requests of the plan, (either Delivery or Pickup): append them to the circuit waypoint
         //And computes the edge between
         for (Request request: requests) {
             Delivery delivery = request.getDelivery();
             Pickup pickup = request.getPickup();
+
             waypoints.add(delivery);
+            for (int i=0; i<waypoints.size()-1; i++){
+                edges.add(this.createEdge((Waypoint) waypoints.get(i), delivery));
+            }
+
             waypoints.add(pickup);
-            List<Segment> path = this.circuitPlanner.getShortestPath(this.cityMapGraph, pickup, delivery);
-            float distance = this.getDistance(path);
-            Edge edge = new Edge(path, distance, pickup, delivery);
-            edges.add(edge);
+            for (int i=0; i<waypoints.size()-1; i++){
+                edges.add(this.createEdge((Waypoint) waypoints.get(i), pickup));
+            }
         }
-        return new Graph(waypoints, edges, requests.get(0).getPickup());
+        return new Graph(waypoints, edges, plan.getWarehouse());
     }
 
-    public List<List<Segment>> getSolution(DeliveryPlan plan, int cycleNumber){
+    public void computeSolution(DeliveryPlan plan, int cycleNumber){
         //The first step is to create the graph corresponding to the delivery plan, which is the circuit.
         this.circuit = this.createCircuit(plan);
-
-        System.out.println(this.cityMapGraph);
-        System.out.println(this.circuit);
-
-        System.out.println(plan.getRequests());
-        //CircuitPlanner1.searchSolution(this.cityMap, plan, cycleNumber);
-        return null;
+        System.out.println("Circuit has been built. Searching for solution...");
+        //Then get the solution which is the ordered circuit. Taking in account the number of cycle.
+        this.solution = this.circuitPlanner.searchSolution(this.circuit, cycleNumber);
     }
 
     /**
