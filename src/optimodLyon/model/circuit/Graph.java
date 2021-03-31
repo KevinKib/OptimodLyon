@@ -79,30 +79,68 @@ public class Graph {
      * Réordonne l'edge si le sens intial n'est pas bon.
      * @param start First node link to the edge
      * @param end Second node link to the edge
+     * @param ordered Tell if we want to order the segment when finded
      * @return le edge correspondant
      */
-    public Edge getEdgeByNodes(Node start, Node end) {
+    public Edge getEdgeByNodes(Node start, Node end, boolean ordered) {
         for (Edge edge: this.edges) {
             if(edge.getFirst().equals(start) && edge.getSecond().equals(end)) {
-                return edge;
-            }
-            else if (edge.getFirst().equals(end) && edge.getSecond().equals(start)){
-                for(Segment segment: edge.getPath()){
-
-                    if(this.revertedSegments.contains(segment)){
-                        System.out.println("reverting again a new segment");
+                if (ordered) {
+                    List<Segment> segments = edge.getPath();
+                    for (int i = 0; i < segments.size()-1; i++) {
+                        Segment segment = segments.get(i);
+                        Segment nextSegment = segments.get(i+1);
+                        if (!segment.getDestination().equals(nextSegment.getOrigin())) {
+                            if (segment.getDestination().equals(nextSegment.getDestination())) {
+                                nextSegment.revertDirection();
+                            } else if (segment.getOrigin().equals(nextSegment.getOrigin())) {
+                                segment.revertDirection();
+                            } else if (segment.getOrigin().equals(nextSegment.getDestination())) {
+                                segment.revertDirection();
+                                nextSegment.revertDirection();
+                            } else {
+                                System.out.println("ISSUE");
+                            }
+                        }
                     }
-                    this.revertedSegments.add(segment);
-                    segment.revertDirection();
                 }
                 return edge;
             }
-            else if(edge.getFirst().equals(end) || edge.getFirst().equals(start) || edge.getSecond().equals(start) ||
-                    edge.getSecond().equals(end)){
-                System.out.println("found one");
+            else if (edge.getFirst().equals(end) && edge.getSecond().equals(start)){
+                if (ordered) {
+                    List<Segment> segments = edge.getPath();
+                    for (int i = segments.size()-1; i > 0; i--) {
+                        Segment segment = segments.get(i);
+                        Segment nextSegment = segments.get(i-1);
+                        if (!segment.getDestination().equals(nextSegment.getOrigin())) {
+                            if (segment.getDestination().equals(nextSegment.getDestination())) {
+                                nextSegment.revertDirection();
+                            } else if (segment.getOrigin().equals(nextSegment.getOrigin())) {
+                                segment.revertDirection();
+                            } else if (segment.getOrigin().equals(nextSegment.getDestination())) {
+                                segment.revertDirection();
+                                nextSegment.revertDirection();
+                            } else {
+                                System.out.println("ISSUE");
+                            }
+                        }
+                    }
+                }
+                return edge;
             }
         }
         return null;
+    }
+
+
+    /**
+     * Permet d'avoir false par défault pour le paramètre ordered.
+     * @param start First node link to the edge
+     * @param end Second node link to the edge
+     * @return le edge correspondant
+     */
+    public Edge getEdgeByNodes(Node start, Node end) {
+        return this.getEdgeByNodes(start, end, false);
     }
 
     /**
