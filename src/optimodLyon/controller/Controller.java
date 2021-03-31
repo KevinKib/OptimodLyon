@@ -1,7 +1,6 @@
 package optimodLyon.controller;
 
-import optimodLyon.model.CityMap;
-import optimodLyon.model.DeliveryPlan;
+import optimodLyon.model.*;
 import optimodLyon.model.circuit.CircuitManager;
 
 import javax.swing.*;
