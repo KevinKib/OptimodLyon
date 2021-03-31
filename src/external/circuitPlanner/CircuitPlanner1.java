@@ -70,18 +70,17 @@ public class CircuitPlanner1 extends AbstractCircuitPlanner{
     public List<List<Segment>> searchSolution(Graph circuit, int cycleNumber){
         List<List<Segment>> pathForAllCycles = new ArrayList<>();
         List<Segment> pathForOneCycle = new ArrayList<>();
-        List<Node> nodes = circuit.getNodes();
+
+        Graph result = this.voyageurCommerce.calculate(circuit);
+        List<Node> nodes = result.getNodes();
 
         for (int i=0; i<cycleNumber; i++){
             for(int j=0; j<nodes.size()-1;j++){
 
-                pathForOneCycle.addAll(circuit.getEdgeByNodes(nodes.get(j), nodes.get(j+1)).getPath());
+                pathForOneCycle.addAll(result.getEdgeByNodes(nodes.get(j), nodes.get(j+1)).getPath());
             }
             pathForAllCycles.add(pathForOneCycle);
         }
-
-        Graph result = this.voyageurCommerce.calculate(circuit);
-
         return pathForAllCycles;
     }
 
