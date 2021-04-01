@@ -1,15 +1,39 @@
-package optimodLyon.model;
+package optimodLyon.model.circuit;
 
+import optimodLyon.model.Intersection;
+
+/**
+ * Classe qui représente un noeud d'un graphe
+ * @author Yolann GAUVIN
+ * @since 1.0
+ */
 public class Node {
+
+    /**
+     * L'intersection sur la carte représentée par le noeud
+     */
     private Intersection intersection;
 
+    /**
+     * Constructeur d'un noeud
+     * @param intersection, l'intersection représentée par le noeud
+     */
     public Node(Intersection intersection) {
         this.intersection = intersection;
     }
 
+    /**
+     * Retourne l'intersection représentée par le noeud
+     * @return Intersection, l'intersection
+     */
     public Intersection getIntersection() {
         return intersection;
     }
+
+    /**
+     * Met à jour l'intersection représentée par le noeud
+     * @param intersection, la nouvelle intersection
+     */
     public void setIntersection(Intersection intersection) {
         this.intersection = intersection;
     }

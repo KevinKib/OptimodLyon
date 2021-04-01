@@ -1,13 +1,10 @@
 package external.circuitPlanner;
 
-import optimodLyon.model.Node;
+import optimodLyon.model.circuit.Node;
 import optimodLyon.model.Warehouse;
-import optimodLyon.model.circuit.Edge;
 import optimodLyon.model.circuit.Graph;
 
-import java.lang.reflect.Array;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Collections;
 
 public class Algorithme2Opt extends AlgorithmeVoyageurCommerce{

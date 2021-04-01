@@ -1,6 +1,5 @@
 package optimodLyon.model.circuit;
 
-import optimodLyon.model.Node;
 import optimodLyon.model.Segment;
 
 import java.util.ArrayList;

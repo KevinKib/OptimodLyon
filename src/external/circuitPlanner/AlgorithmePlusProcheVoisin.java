@@ -1,10 +1,9 @@
 package external.circuitPlanner;
 
-import optimodLyon.model.Node;
+import optimodLyon.model.circuit.Node;
 import optimodLyon.model.Warehouse;
 import optimodLyon.model.circuit.Graph;
 
-import java.util.AbstractMap;
 import java.util.Map;
 
 public class AlgorithmePlusProcheVoisin extends AlgorithmeVoyageurCommerce{

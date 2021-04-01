@@ -1,11 +1,13 @@
 package optimodLyon.model;
 
+import optimodLyon.model.circuit.Node;
+
 /**
  * Classe représentant un point de passage
  * @author Fanny ROUVEL
  * @since 1.0
  */
-public abstract class Waypoint extends Node{
+public abstract class Waypoint extends Node {
     /**
      * La durée associée au waypoint
      */

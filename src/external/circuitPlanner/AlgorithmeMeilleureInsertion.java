@@ -1,15 +1,11 @@
 package external.circuitPlanner;
 
-import jdk.swing.interop.SwingInterOpUtils;
 import optimodLyon.model.Delivery;
-import optimodLyon.model.Node;
+import optimodLyon.model.circuit.Node;
 import optimodLyon.model.Warehouse;
-import optimodLyon.model.circuit.Edge;
 import optimodLyon.model.circuit.Graph;
 
 import java.util.AbstractMap;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Map;
 
 public class AlgorithmeMeilleureInsertion extends AlgorithmeVoyageurCommerce{

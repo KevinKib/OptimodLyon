@@ -1,6 +1,6 @@
 package external.circuitPlanner;
 
-import optimodLyon.model.Node;
+import optimodLyon.model.circuit.Node;
 import optimodLyon.model.Segment;
 import optimodLyon.model.Waypoint;
 import optimodLyon.model.circuit.Graph;
