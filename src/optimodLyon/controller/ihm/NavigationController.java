@@ -2,7 +2,8 @@ package optimodLyon.controller.ihm;
 
 import optimodLyon.IHM.NavigationView;
 
-import javax.swing.*;
+import javax.swing.JFileChooser;
+import javax.swing.JButton;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;

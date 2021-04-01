@@ -168,7 +168,7 @@ public class CityMap
     }
 
     /**
-     * @return Les segments ayant une intersection avec le nom de la rue passé en paramèrtre
+     * @return Les segments ayant une intersection avec le nom de la rue passé en paramètre
      */
     public List<Segment> getIntersectionSegments(final Segment segment){
         List<Segment> segments = this.getSegments();

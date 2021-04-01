@@ -1,18 +1,12 @@
 package optimodLyon.controller.ihm;
 
 import optimodLyon.IHM.LeftMenuView;
-import optimodLyon.IHM.NavigationView;
 import optimodLyon.IHM.PickupDeliveryDialogView;
 import optimodLyon.controller.Controller;
-import optimodLyon.model.Segment;
 
-import javax.swing.*;
-import java.awt.*;
+import javax.swing.JButton;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.ItemEvent;
-import java.awt.event.ItemListener;
-import java.util.ArrayList;
 import java.util.List;
 
 public class LeftMenuController implements ActionListener {
@@ -22,8 +16,10 @@ public class LeftMenuController implements ActionListener {
      */
     private final LeftMenuView view;
 
+    /**
+     * Contrôleur principal de l'application
+     */
     private final Controller controller;
-
 
     /**
      * Constructeur de la classe NavigationController
