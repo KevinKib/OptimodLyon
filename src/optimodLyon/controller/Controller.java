@@ -3,12 +3,13 @@ package optimodLyon.controller;
 import optimodLyon.model.*;
 import optimodLyon.model.circuit.CircuitManager;
 
-import javax.swing.*;
-import java.awt.*;
+import javax.swing.JComponent;
+import java.awt.Dimension;
 import java.util.HashSet;
 import java.util.Set;
 
 import static optimodLyon.model.CityMap.CityMapCoordinates;
+
 /**
  * Classe qui fait le lien entre les données de la fenetre et les interactions possibles avec.
  * @author Dorian TERBAH
@@ -55,12 +56,19 @@ public class Controller
         //this.mapView = mapView;
     }
 
+    /**
+     * Permet de mettre à jour les composants graphiques observées par le contrôleur
+     */
     private void updateObservedView(){
         for (JComponent view : this.observedViews){
             view.repaint();
         }
     }
 
+    /**
+     * Permet de renseigner une vue à observer par le contrôleur
+     * @param view La vue à observer
+     */
     public void registerObservedView(JComponent view){
         this.observedViews.add(view);
     }
@@ -87,15 +95,6 @@ public class Controller
     public void setDeliveryPlan(DeliveryPlan deliveryPlan)
     {
         this.deliveryPlan = deliveryPlan;
-    }
-
-    /**
-     * Met à jour le circuitManager
-     * @param circuitManager Le nouveau circuitManager
-     */
-    public void setCircuitManager(CircuitManager circuitManager)
-    {
-        this.circuitManager = circuitManager;
     }
 
     /**
@@ -128,7 +127,8 @@ public class Controller
     }
 
     /**
-     *
+     * Permet d'ajouter une requête dans l'inventaire
+     * @param pickupAndDeliveryForm Le formulaire qui provient de l'ihm pour ajouter un point de Pickup & Delivery
      */
     public void addRequest(PickupAndDeliveryForm pickupAndDeliveryForm){
 
@@ -150,8 +150,9 @@ public class Controller
     }
 
     /**
-     *
-     * @param
+     * Permet de lancer le calcul des circuits
+     * @param plan L'inventaire
+     * @param cycleNumber Le nombre de cyclistes
      */
     public void computeCircuit(DeliveryPlan plan, int cycleNumber)
     {

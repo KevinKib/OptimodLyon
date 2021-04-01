@@ -3,9 +3,7 @@ package optimodLyon.controller.ihm;
 import optimodLyon.IHM.MapView;
 import optimodLyon.controller.Controller;
 
-import static optimodLyon.model.CityMap.CityMapCoordinates;
-
-import java.awt.*;
+import java.awt.Component;
 import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
 
@@ -23,6 +21,7 @@ public class MapViewResizeController extends ComponentAdapter
 
     /**
      * Constructeur par défaut
+     * @param controller La contrôleur principal de l'application
      */
     public MapViewResizeController(Controller controller)
     {

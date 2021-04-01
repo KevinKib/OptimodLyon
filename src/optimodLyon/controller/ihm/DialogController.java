@@ -4,7 +4,10 @@ import optimodLyon.IHM.PickupDeliveryDialogView;
 import optimodLyon.model.PickupAndDeliveryForm;
 import optimodLyon.model.Segment;
 
-import javax.swing.*;
+import javax.swing.JSpinner;
+import javax.swing.JComboBox;
+import javax.swing.JButton;
+
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 import java.awt.event.ActionEvent;
@@ -13,24 +16,64 @@ import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
 import java.util.List;
 
+/**
+ * Contrôleur qui gère le formulaire d'ajout d'un point de Pickup & Delivery
+ *
+ * @author Oumar Diakhaby
+ * @since 1.0
+ */
 public class DialogController implements ItemListener, ActionListener, ChangeListener {
-
+    /**
+     * Champ qui permet de sélectionner la première rue composant le point de pickup
+     */
     private JComboBox<Segment> pickupFirstWay;
+
+    /**
+     * Champ qui permet de sélectionner la deuxième rue composant le point de pickup
+     */
     private JComboBox<Segment> pickupSecondWay;
+
+    /**
+     * Champ qui permet de sélectionner la première rue composant le point de delivery
+     */
     private JComboBox<Segment> deliveryFirstWay;
+
+    /**
+     * Champ qui permet de sélectionner la deuxième rue composant le point de delivery
+     */
     private JComboBox<Segment> deliverySecondWay;
 
+    /**
+     * Référence vers la popup d'ajout de point de Pickup & Delivery
+     */
     private PickupDeliveryDialogView pickupDeliveyDialogView;
 
+    /**
+     * Champ qui permet de renseigner une durée de delivery
+     */
     private JSpinner deliveryDurationSpinner;
 
+    /**
+     * Champ qui permet de renseigner une durée de pickup
+     */
     private JSpinner pickupDurationSpinner;
 
+    /**
+     * Bouton pour ajouter le point de Pickup & Delivery
+     */
     private JButton validateButton;
 
+    /**
+     * Modèle correspondant à l'ajout d'un point de Pickup & Delivery
+     */
     PickupAndDeliveryForm pickupAndDeliveryForm;
 
-
+    /**
+     * Constructeur de la classe DialogController
+     * @param pickupDeliveryDialogView Référence vers la popup d'ajout de point de Pickup & Delivery
+     * @param okButton La référence du bouton pour valider l'ajout
+     * @param cancelButton La référence du bouton pour annuler l'ajout
+     */
     public DialogController(PickupDeliveryDialogView pickupDeliveryDialogView, JButton okButton, JButton cancelButton){
         this.pickupDeliveyDialogView = pickupDeliveryDialogView;
 
