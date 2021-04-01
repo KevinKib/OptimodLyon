@@ -16,7 +16,7 @@ public class MainTest {
     public static void main(String[] args) throws Exception {
         CircuitPlanner1 circuitPlanner1 = new CircuitPlanner1();
 
-        Controller c = new Controller();
+        Controller c = Controller.getInstance();
         c.setCityMap(XMLLoader.loadMap("./rsc/test/io/mapfiles/map.xml"));
         c.setDeliveryPlan(XMLLoader.loadDeliveryPlan(c.getCityMap(), "./rsc/test/io/delivery-files/delivery-good-formed2.xml"));
 

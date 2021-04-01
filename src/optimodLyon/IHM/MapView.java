@@ -76,22 +76,15 @@ public class MapView extends JComponent
     private MapViewResizeController mapViewResizeController;
 
     /**
-     * Controleur général qui contient les données de l'application
-     */
-    private final Controller controller;
-
-    /**
      * Constructeur par défaut de la classe MapView
-     * @param controller Le controleur général
      */
-    public MapView(Controller controller)
+    public MapView()
     {
         super();
         this.deliveryLocalisationlogo = null;
         this.pickupLocalisationlogo = null;
 
-        this.controller = controller;
-        this.controller.registerObservedView(this);
+        Controller.getInstance().registerObservedView(this);
 
         try
         {
@@ -104,7 +97,7 @@ public class MapView extends JComponent
             System.err.println(e);
         }
 
-        this.mapViewResizeController = new MapViewResizeController(controller);
+        this.mapViewResizeController = new MapViewResizeController();
         this.addComponentListener(this.mapViewResizeController);
     }
 
@@ -127,11 +120,11 @@ public class MapView extends JComponent
 
         p.setColor(Color.BLACK);
 
-        CityMapCoordinates cityMapCoordinates = this.controller.getCityMapCoordinates();
+        CityMapCoordinates cityMapCoordinates = Controller.getInstance().getCityMapCoordinates();
 
         if (cityMapCoordinates != null)
         {
-            CityMap cityMap = this.controller.getCityMap();
+            CityMap cityMap = Controller.getInstance().getCityMap();
             // Affichage de la carte
             List<Segment> segments = cityMap.getSegments();
 
@@ -146,7 +139,7 @@ public class MapView extends JComponent
                 p.drawLine(originPoint.x, originPoint.y, destinationPoint.x, destinationPoint.y);
             }
 
-            DeliveryPlan deliveryPlan = this.controller.getDeliveryPlan();
+            DeliveryPlan deliveryPlan = Controller.getInstance().getDeliveryPlan();
             // Affichage des pickup-delivery
             if (deliveryPlan != null)
             {
@@ -191,7 +184,7 @@ public class MapView extends JComponent
                     p.drawImage(image, pickupPoint.x - 15, pickupPoint.y - 30, null);
                 }
 
-                List<List<Segment>> solution = this.controller.getCircuitManager().getSolution();
+                List<List<Segment>> solution = Controller.getInstance().getCircuitManager().getSolution();
 
                 int order = 1;
                 List<Intersection> numberedWaypoints = new ArrayList<>();

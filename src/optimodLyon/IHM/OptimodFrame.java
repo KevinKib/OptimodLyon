@@ -49,11 +49,6 @@ public class OptimodFrame extends JFrame {
     private JPanel leftMenuView;
 
     /**
-     * Le controleur de la fenetre
-     */
-    private Controller controller;
-
-    /**
      * Nom de l'application
      */
     public static final String APP_NAME = "Optimod'Lyon";
@@ -68,8 +63,6 @@ public class OptimodFrame extends JFrame {
     public OptimodFrame(String name) {
         super();
 
-        this.controller = new Controller();
-
         // Frame construction
         this.setSize(FRAME_WIDTH, FRAME_HEIGHT);
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -83,7 +76,7 @@ public class OptimodFrame extends JFrame {
         mainPanel.add(this.navigationView, BorderLayout.NORTH);
 
         // Center Panel
-        this.mapView = new MapView(this.controller);
+        this.mapView = new MapView();
         mainPanel.add(this.mapView, BorderLayout.CENTER);
 
         // Left Menu
@@ -105,10 +98,10 @@ public class OptimodFrame extends JFrame {
         try
         {
             CityMap map = XMLLoader.loadMap(filename);
-            this.controller.setCityMap(map);
-            this.controller.setDeliveryPlan(null);
-            this.controller.getCircuitManager().setSolution(null);
-            this.controller.setCityMapCoordinates(this.mapView.getDimension());
+            Controller.getInstance().setCityMap(map);
+            Controller.getInstance().setDeliveryPlan(null);
+            Controller.getInstance().getCircuitManager().setSolution(null);
+            Controller.getInstance().setCityMapCoordinates(this.mapView.getDimension());
             this.mapView.repaint();
         }
         catch (Exception e)
@@ -129,9 +122,9 @@ public class OptimodFrame extends JFrame {
     {
         try
         {
-            DeliveryPlan plan = XMLLoader.loadDeliveryPlan(this.controller.getCityMap(), filename);
-            this.controller.setDeliveryPlan(plan);
-            this.controller.getCircuitManager().setSolution(null);
+            DeliveryPlan plan = XMLLoader.loadDeliveryPlan(Controller.getInstance().getCityMap(), filename);
+            Controller.getInstance().setDeliveryPlan(plan);
+            Controller.getInstance().getCircuitManager().setSolution(null);
             this.mapView.repaint();
         }
         catch (Exception e)
@@ -152,8 +145,8 @@ public class OptimodFrame extends JFrame {
     {
         try
         {
-            DeliveryPlan plan = this.controller.getDeliveryPlan();
-            this.controller.computeCircuit(plan, cycleNumber);
+            DeliveryPlan plan = Controller.getInstance().getDeliveryPlan();
+            Controller.getInstance().computeCircuit(plan, cycleNumber);
             this.mapView.repaint();
         }
         catch (Exception e)
@@ -162,12 +155,5 @@ public class OptimodFrame extends JFrame {
             return false;
         }
         return true;
-    }
-
-    /**
-     * @return Le contrôleur principale de l'application
-     */
-    public Controller getController() {
-        return controller;
     }
 }

@@ -30,7 +30,7 @@ public class LeftMenuView extends JPanel {
     /**
      * Constante pour identifier le bouton de d'ajout de changement de l'ordre de livraison
      */
-    public static final String MODIFY_ITINERARY_ORDER = "MODIFY_ITINERARY_ORDER";
+    //public static final String MODIFY_ITINERARY_ORDER = "MODIFY_ITINERARY_ORDER";
 
     /**
      * Bouton qui permet d'ajouter un point de Pickup & Delivery
@@ -40,7 +40,7 @@ public class LeftMenuView extends JPanel {
     /**
      * Bouton qui permet de modifier l'ordre des requêtes dans l'inventaire
      */
-    private JButton modifyOrderButton;
+    //private JButton modifyOrderButton;
 
     /**
      * Composant graphique qui permet d'afficher la légende de la carte
@@ -61,23 +61,23 @@ public class LeftMenuView extends JPanel {
         addPDButton.setActionCommand(ADD_PICKUP_AND_DELIVERY_POINTS);
 
         // Bouton de modification de l'ordre de passage du livreur
-        modifyOrderButton = new JButton();
+        /*modifyOrderButton = new JButton();
         modifyOrderButton.setText("Modifier l'ordre");
-        modifyOrderButton.setActionCommand(MODIFY_ITINERARY_ORDER);
+        modifyOrderButton.setActionCommand(MODIFY_ITINERARY_ORDER);*/
 
         // Légende
         legendPanel = new LegendView(this.window);
 
         this.add(addPDButton);
-        this.add(modifyOrderButton);
+        //this.add(modifyOrderButton);
         this.add(legendPanel);
 
         // création du controleur
         List<JButton> buttons = new ArrayList<>();
         buttons.add(this.addPDButton);
-        buttons.add(this.modifyOrderButton);
+        //buttons.add(this.modifyOrderButton);
 
-        LeftMenuController leftMenuController = new LeftMenuController(this, buttons, window.getController());
+        new LeftMenuController(this, buttons);
     }
 
     /**

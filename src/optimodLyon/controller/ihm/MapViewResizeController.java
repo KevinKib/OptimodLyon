@@ -14,20 +14,6 @@ import java.awt.event.ComponentEvent;
  */
 public class MapViewResizeController extends ComponentAdapter
 {
-    /**
-     * Le controleur qui contient les données de l'application
-     */
-    private final Controller controller;
-
-    /**
-     * Constructeur par défaut
-     * @param controller La contrôleur principal de l'application
-     */
-    public MapViewResizeController(Controller controller)
-    {
-        super();
-        this.controller = controller;
-    }
 
     @Override
     public void componentResized(ComponentEvent event)
@@ -36,7 +22,7 @@ public class MapViewResizeController extends ComponentAdapter
         if (component instanceof MapView)
         {
             MapView mapView = (MapView) component;
-            this.controller.setCityMapCoordinates(mapView.getDimension());
+            Controller.getInstance().setCityMapCoordinates(mapView.getDimension());
             mapView.repaint();
         }
     }

@@ -1,6 +1,7 @@
 package optimodLyon.controller.ihm;
 
 import optimodLyon.IHM.PickupDeliveryDialogView;
+import optimodLyon.controller.Controller;
 import optimodLyon.model.PickupAndDeliveryForm;
 import optimodLyon.model.Segment;
 
@@ -113,7 +114,7 @@ public class DialogController implements ItemListener, ActionListener, ChangeLis
             // Premiere voie pour le pickup
             if(comboBox.equals(this.pickupFirstWay) && this.pickupFirstWay.getSelectedIndex()!=0){
                 Segment segmentRef = (Segment) comboBox.getSelectedItem();
-                List<Segment> intersectionSegment = this.pickupDeliveyDialogView.getController().getCityMap().getIntersectionSegments(segmentRef);
+                List<Segment> intersectionSegment = Controller.getInstance().getCityMap().getIntersectionSegments(segmentRef);
                 this.pickupSecondWay.removeAllItems();
                 for(Segment s : intersectionSegment){
                     this.pickupSecondWay.addItem(s);
@@ -129,7 +130,7 @@ public class DialogController implements ItemListener, ActionListener, ChangeLis
             // Premiere voie pour le delivery
             } else if(comboBox.equals(this.deliveryFirstWay) && this.deliveryFirstWay.getSelectedIndex()!=0){
                 Segment segmentRef = (Segment) comboBox.getSelectedItem();
-                List<Segment> intersectionSegment = this.pickupDeliveyDialogView.getController().getCityMap().getIntersectionSegments(segmentRef);
+                List<Segment> intersectionSegment = Controller.getInstance().getCityMap().getIntersectionSegments(segmentRef);
                 this.deliverySecondWay.removeAllItems();
                 for(Segment s : intersectionSegment){
                     this.deliverySecondWay.addItem(s);
@@ -154,7 +155,7 @@ public class DialogController implements ItemListener, ActionListener, ChangeLis
     public void actionPerformed(ActionEvent e) {
         String actionCommand = e.getActionCommand();
         if(actionCommand.equals(PickupDeliveryDialogView.ACTION_OK)){
-            this.pickupDeliveyDialogView.getController().addRequest(this.pickupAndDeliveryForm);
+            Controller.getInstance().addRequest(this.pickupAndDeliveryForm);
             this.pickupDeliveyDialogView.dispose();
         } else if(actionCommand.equals(PickupDeliveryDialogView.ACTION_CANCEL)) {
             this.pickupDeliveyDialogView.dispose();

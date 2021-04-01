@@ -27,19 +27,16 @@ public class PickupDeliveryDialogView extends JDialog {
 
     private JSpinner pickupDurationSpinner;
 
-    private Controller controller;
-
-    public PickupDeliveryDialogView(final JFrame frame, Controller controller){
+    public PickupDeliveryDialogView(final JFrame frame){
         super(frame, "Ajout d'un couple Pickup&Delivery", Dialog.ModalityType.DOCUMENT_MODAL);
-        this.controller = controller;
         this.setBounds(132, 132, 500, 500);
 
         Container dialogContainer = this.getContentPane();
 
         dialogContainer.setLayout(new BorderLayout());
 
-        JPanel pickupPanel = buidPanelForm(controller.getCityMap().getSegments(), "Pickup");
-        JPanel deliveryPanel = buidPanelForm(controller.getCityMap().getSegments(), "Delivery");
+        JPanel pickupPanel = buidPanelForm(Controller.getInstance().getCityMap().getSegments(), "Pickup");
+        JPanel deliveryPanel = buidPanelForm(Controller.getInstance().getCityMap().getSegments(), "Delivery");
         dialogContainer.add(pickupPanel, BorderLayout.NORTH);
         dialogContainer.add(deliveryPanel, BorderLayout.CENTER);
 
@@ -56,12 +53,6 @@ public class PickupDeliveryDialogView extends JDialog {
 
         dialogContainer.add(footerButtonPanel, BorderLayout.SOUTH);
     }
-
-    public Controller getController() {
-        return controller;
-    }
-
-
 
     private JPanel buidPanelForm(List<Segment> voies, String name){
         JLabel pickupLabel = new JLabel(name);

@@ -6,6 +6,7 @@ import optimodLyon.model.circuit.CircuitManager;
 import javax.swing.JComponent;
 import java.awt.Dimension;
 import java.util.HashSet;
+import java.util.Objects;
 import java.util.Set;
 
 import static optimodLyon.model.CityMap.CityMapCoordinates;
@@ -39,16 +40,25 @@ public class Controller
 
     private Set<JComponent> observedViews;
 
+    private static Controller instance;
+
     /**
      * Constructeur par défaut du controleur
      */
-    public Controller()
+    private Controller()
     {
         this.cityMap = null;
         this.deliveryPlan = null;
         this.cityMapCoordinates = null;
         this.circuitManager = null;
         observedViews = new HashSet<>();
+    }
+
+    public static Controller getInstance() {
+        if(Objects.isNull(instance)) {
+            instance = new Controller();
+        }
+        return instance;
     }
 
     /**
