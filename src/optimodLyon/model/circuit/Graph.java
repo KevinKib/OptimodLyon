@@ -7,37 +7,60 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+/**
+ * Classe qui représente un graphe composé de noeuds (Node) reliés par des arcs (Edge)
+ * @author Yolann GAUVIN
+ * @since 1.0
+ */
 public class Graph {
-    public List<Node> getNodes() {
-        return nodes;
-    }
 
-    public List<Edge> getEdges() {
-        return edges;
-    }
-
+    /**
+     * La liste des noeuds contenus dans le graphe
+     */
     private List<Node> nodes;
+
+    /**
+     * La liste des arcs contenus dans le graphe
+     */
     private List<Edge> edges;
+
+    /**
+     * Le premier noeud du graphe
+     */
     private Node firstNode;
 
+    /**
+     * Constructeur d'un graphe
+     * @param nodes, la liste des noeuds du graphe
+     * @param edges, la liste des arcs du graphe
+     * @param firstNode, le premier noeud du graphe
+     */
     public Graph(List<Node> nodes, List<Edge> edges, Node firstNode) {
         this.nodes = nodes;
         this.edges = edges;
         this.firstNode = firstNode;
-        this.revertedSegments = new ArrayList<>();
     }
 
+    /**
+     * Retourne la liste des noeuds du graphe
+     * @return List<Node>, les noeuds du graphe
+     */
+    public List<Node> getNodes() {
+        return nodes;
+    }
+
+    /**
+     * Met à jour les noeuds du graphe
+     * @param nodes, les nouveaux noeuds du graphe
+     */
     public void setNodes(List<Node> nodes) {
         this.nodes = nodes;
     }
 
-    public void setEdges(List<Edge> edges) {
-        this.edges = edges;
-        this.revertedSegments = new ArrayList<>();
-    }
-
-    private List<Segment> revertedSegments;
-
+    /**
+     * Ajoute un noeud au graphe
+     * @param node, le noeud à ajouter
+     */
     public void addNode(Node node){
         if(this.nodes.isEmpty()) {
             this.firstNode = node;
@@ -46,67 +69,53 @@ public class Graph {
     }
 
     /**
-     * Retourne un edge dont le premier node est égal au node passé en paramètre
-     * @param node
-     * @return le edge correspondant
+     * Retourne la liste des arcs du graphe
+     * @return List<Edge>, les arcs du graphe
      */
-    //TODO repenser ces fonctions que ne marchent pas si il y a plusieurs edges sur 1 node
-    public Edge getEdgeByFirstNode(Node node) {
-        for (Edge edge: getEdges()) {
-            if(edge.getFirst().equals(node)) {
-                return edge;
-            }
-        }
-        return null;
+    public List<Edge> getEdges() {
+        return edges;
     }
 
     /**
-     * Retourne un edge dont le second node est égal au node passé en paramètre
-     * @param node
-     * @return le edge correspondant
+     * Retourne le premier noeud du graphe
+     * @return Node, le premier noeud
      */
-    //TODO repenser ces fonctions que ne marchent pas si il y a plusieurs edges sur 1 node
-    public Edge getEdgeBySecondNode(Node node) {
-        for (Edge edge: getEdges()) {
-            if(edge.getSecond().equals(node)) {
-                return edge;
-            }
-        }
-        return null;
+    public Node getFirstNode() {
+        return firstNode;
     }
 
     /**
-     * Retourne un edge dont les nodes en extrémités correpondent à ceux en paramètre
-     * Réordonne l'edge si le sens intial n'est pas bon.
-     * @param start First node link to the edge
-     * @param end Second node link to the edge
-     * @param ordered Tell if we want to order the segment when finded
-     * @return le edge correspondant
+     * Récupère le chemin sous forme de liste de segment à partir d'une liste de noeuds.
+     * @param nodes
+     * @return List<Segment>, le chemin sous forme de la liste des segments liant les noeuds.
      */
-    public Edge getEdgeByNodes(Node start, Node end, boolean ordered) {
-        for (Edge edge: this.edges) {
-            if(edge.getFirst().equals(start) && edge.getSecond().equals(end)) {
-                if (ordered) {
-                    List<Segment> segments = edge.getPath();
-                    this.orderPath(segments);
-                }
-                return edge;
-            }
-            else if (edge.getFirst().equals(end) && edge.getSecond().equals(start)){
-                if (ordered) {
-                    List<Segment> segments = edge.getPath();
-                    Collections.reverse(segments);
-                    this.orderPath(segments);
-                    Node first = edge.getFirst();
-                    edge.setFirst(edge.getSecond());
-                    edge.setSecond(first);
-                }
-                return edge;
-            }
+    public List<Segment> getPath(List<Node> nodes) {
+        List<Segment> segments = new ArrayList<>();
+        for (int i = 0; i < nodes.size()-1; i++) {
+            Edge edge = this.getEdgeByNodes(nodes.get(i), nodes.get(i+1));
+            segments.addAll(edge.getPath());
         }
-        return null;
+        return segments;
     }
 
+    /**
+     * Calcule la longueur du chemin du graphe.
+     * @return int, la longueur du chemin.
+     */
+    public int getLength() {
+        int length = 0;
+        for(int j=0; j<nodes.size()-1;j++) {
+            length += this.getEdgeByNodes(nodes.get(j), nodes.get(j+1)).getLength();
+        }
+
+        length += this.getEdgeByNodes(nodes.get(nodes.size()-1), nodes.get(0)).getLength();
+        return length;
+    }
+
+    /**
+     * Réordonne la liste de segments passée en paramètre
+     * @param segments, la liste à réordonner
+     */
     private void orderPath(List<Segment> segments){
         for (int i = 0; i < segments.size()-1; i++) {
             Segment segment = segments.get(i);
@@ -132,34 +141,12 @@ public class Graph {
         }
     }
 
-    /**
-     * Permet d'avoir false par défault pour le paramètre ordered.
-     * @param start First node link to the edge
-     * @param end Second node link to the edge
-     * @return le edge correspondant
-     */
-    public Edge getEdgeByNodes(Node start, Node end) {
-        return this.getEdgeByNodes(start, end, false);
-    }
+
 
     /**
-     * Retourne un node dont l'id de l'intersection est égal à l'id passé en paramètre
-     * @param id
-     * @return le node correspondant
-     */
-    public Node getNodeByIntersectionID(int id) {
-        for (Node node: this.nodes) {
-            if(node.getIntersection().getId() == id) {
-                return node;
-            }
-        }
-        return null;
-    }
-
-    /**
-     * Retourne la liste des nodes directement connectés au node passé en paramètre
-     * @param node
-     * @return la liste de nodes correspondant
+     * Retourne la liste des noeuds directement connectés au noeud passé en paramètre
+     * @param node, le noeud dont on recherche les voisins
+     * @return la liste de noeuds correspondants
      */
     public List<Node> getConnectionsFromNode(Node node) {
         List<Node> connections = new ArrayList<>();
@@ -175,9 +162,9 @@ public class Graph {
     }
 
     /**
-     * Retourne le coût estimé pour naviguer entre deux node.
+     * Retourne le coût estimé pour naviguer entre deux noeuds.
      * @param start, end
-     * @return le coût estimé
+     * @return float, le coût estimé
      */
     public float computeCost(Node start, Node end) {
         float y1 = start.getIntersection().latitude;
@@ -189,54 +176,45 @@ public class Graph {
     }
 
     /**
-     * Récupère le chemin sous forme de liste de segment à partir d'une liste de noeuds.
-     * @param nodes
-     * @return le chemin sous forme de la liste des segments liant les noeuds.
+     * Retourne un edge dont les noeuds en extrémités correpondent à ceux en paramètre
+     * Réordonne l'edge si le sens initial n'est pas bon.
+     * @param first, le premier noeud lié au Edge
+     * @param second le second noeud lié au Edge
+     * @param ordered Vrai si l'on souhaite réordonner le segment, faux sinon
+     * @return Edge, le edge correspondant
      */
-    public List<Segment> getPath(List<Node> nodes) {
-        List<Segment> segments = new ArrayList<>();
-        for (int i = 0; i < nodes.size()-1; i++) {
-            Edge edge = this.getEdgeByNodes(nodes.get(i), nodes.get(i+1));
-            segments.addAll(edge.getPath());
+    public Edge getEdgeByNodes(Node first, Node second, boolean ordered) {
+        for (Edge edge: this.edges) {
+            if(edge.getFirst().equals(first) && edge.getSecond().equals(second)) {
+                if (ordered) {
+                    List<Segment> segments = edge.getPath();
+                    this.orderPath(segments);
+                }
+                return edge;
+            }
+            else if (edge.getFirst().equals(second) && edge.getSecond().equals(first)){
+                if (ordered) {
+                    List<Segment> segments = edge.getPath();
+                    Collections.reverse(segments);
+                    this.orderPath(segments);
+                    Node f = edge.getFirst();
+                    edge.setFirst(edge.getSecond());
+                    edge.setSecond(f);
+                }
+                return edge;
+            }
         }
-        return segments;
+        return null;
     }
 
     /**
-     * Ajoute un edge du graphe
-     * @param edge, le edge à ajouter
+     * Retourne un edge dont les noeuds en extrémités correpondent à ceux en paramètre.
+     * Permet d'avoir false par défault pour le paramètre ordered.
+     * @param first le premier noeud lié au Edge
+     * @param second le second noeud lié au Edge
+     * @return le edge correspondant
      */
-    public void addEdge(Edge edge) {
-        this.getEdges().add(edge);
-    }
-
-    /**
-     * Supprime un edge du graphe
-     * @param edge, le edge à supprimer
-     */
-    public void removeEdge(Edge edge){
-        this.getEdges().remove(edge);
-    }
-
-    /**
-     * Retourne le premier noeud du graphe
-     * @return le premier noeud
-     */
-    public Node getFirstNode() {
-        return firstNode;
-    }
-
-    /**
-     * Calcule la longueur du chemin du graphe.
-     * @return Longueur du chemin.
-     */
-    public int getLength() {
-        int length = 0;
-        for(int j=0; j<nodes.size()-1;j++) {
-            length += this.getEdgeByNodes(nodes.get(j), nodes.get(j+1)).getLength();
-        }
-
-        length += this.getEdgeByNodes(nodes.get(nodes.size()-1), nodes.get(0)).getLength();
-        return length;
+    public Edge getEdgeByNodes(Node first, Node second) {
+        return this.getEdgeByNodes(first, second, false);
     }
 }
