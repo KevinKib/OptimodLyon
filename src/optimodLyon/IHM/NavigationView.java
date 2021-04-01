@@ -184,6 +184,7 @@ public class NavigationView extends JPanel
         if (this.state.equals(NavigationViewState.MAP_LOADED))
         {
             this.loadProgramButton.setEnabled(true);
+            this.calculateCircuitButton.setEnabled(false);
         }
         else if (this.state.equals(NavigationViewState.DELIVERY_PLAN_LOADED))
         {

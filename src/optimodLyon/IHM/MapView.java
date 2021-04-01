@@ -9,6 +9,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.File;
+import java.sql.Time;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -151,7 +152,7 @@ public class MapView extends JComponent
                 p.drawImage(image, wareHousePoint.x - 10, wareHousePoint.y - 10, null);
 
                 List<Request> requests = deliveryPlan.getRequests();
-                List<Intersection> waypoints = new ArrayList<>();
+                List<Waypoint> waypoints = new ArrayList<>();
                 for (int i = 0; i < requests.size(); ++i)
                 {
                     Color color = null;
@@ -169,8 +170,8 @@ public class MapView extends JComponent
 
                     Request request = requests.get(i);
 
-                    waypoints.add(request.getDelivery().getIntersection());
-                    waypoints.add(request.getPickup().getIntersection());
+                    waypoints.add(request.getDelivery());
+                    waypoints.add(request.getPickup());
 
                     Point deliveryPoint = cityMapCoordinates.normalizeIntersection(request.getDelivery().getIntersection());
                     Point pickupPoint = cityMapCoordinates.normalizeIntersection(request.getPickup().getIntersection());
@@ -190,13 +191,14 @@ public class MapView extends JComponent
                 List<List<Segment>> solution = this.controller.getCircuitManager().getSolution();
 
                 int order = 1;
-                int waypointNumber = 1;
                 List<Intersection> numberedWaypoints = new ArrayList<>();
                 if (solution != null) {
                     // Affichage des itinéraires
                     for (List<Segment> cycle: solution){
+                        long circuitDuration = deliveryPlan.getDepartureTime().getTime()/1000;
                         for( int i=0; i < cycle.size(); i++){
                             Segment segment = cycle.get(i);
+                            circuitDuration += segment.getLength()/5.5;
                             final Intersection origin = segment.getOrigin();
                             final Intersection destination = segment.getDestination();
 
@@ -213,13 +215,20 @@ public class MapView extends JComponent
                             else{
                                 g2.drawLine(originPoint.x, originPoint.y, destinationPoint.x, destinationPoint.y);
                             }
-                            for (Intersection waypoint : waypoints) {
-                                if (!numberedWaypoints.contains(waypoint) && origin.equals(waypoint) ) {
-                                    numberedWaypoints.add(waypoint);
-                                    p.setColor(Color.BLACK);
-                                    p.setFont(new Font("Arial", Font.BOLD, 15));
-                                    p.drawString(String.valueOf(waypointNumber), originPoint.x-10, originPoint.y+5);
-                                    waypointNumber += 1;
+                            p.setColor(Color.BLACK);
+                            p.setFont(new Font("Arial", Font.BOLD, 15));
+                            if(i==0){
+                                p.drawString("D-"+new Time(circuitDuration*1000).toString(), originPoint.x-10, originPoint.y-5);
+                            }
+                            else if(i==cycle.size()-1){
+                                p.drawString("A-"+new Time(circuitDuration*1000).toString(), originPoint.x-10, originPoint.y+25);
+                            }
+                            for (Waypoint waypoint : waypoints) {
+                                Intersection intersection = waypoint.getIntersection();
+                                if (!numberedWaypoints.contains(intersection) && origin.equals(intersection) ) {
+                                    circuitDuration += waypoint.getDuration();
+                                    numberedWaypoints.add(intersection);
+                                    p.drawString(String.valueOf(new Time(circuitDuration*1000).toString()), originPoint.x-10, originPoint.y+25);
                                 }
                             }
                             order +=1;

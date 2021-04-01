@@ -1,15 +1,10 @@
 package optimodLyon.IHM;
 
-import optimodLyon.controller.ihm.NavigationController;
-
 import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
-
 import java.awt.image.BufferedImage;
 import java.io.File;
-import java.util.List;
-import java.util.ArrayList;
 
 /**
  * Vue qui va contenir les boutons de chargement de fichiers XML
@@ -59,6 +54,17 @@ public class LegendView extends JPanel
     private JLabel warehouseLabel;
 
     /**
+     * Composant qui va contenir l'icône pour le circuit
+     */
+    private JLabel circuitIconLabel;
+
+    /**
+     * Composant qui va contenir la légende pour le circuit
+     */
+    private JLabel circuitLabel;
+
+
+    /**
      * Label du titre du panneau Légende
      */
     private static final String LEGEND_LABEL = "Légende";
@@ -79,6 +85,11 @@ public class LegendView extends JPanel
     private static final String WAREHOUSE_LABEL = "Entrepôt des vélos";
 
     /**
+     * Label de la légende pour le circuit
+     */
+    private static final String CIRCUIT_LABEL = "Cycliste n°1";
+
+    /**
      * Chemin d'accés à l'image de localisation d'un point de pickup
      */
     private static final String PICKUP_IMAGE_PATH = "./rsc/image/pickup-localisation.png";
@@ -92,6 +103,11 @@ public class LegendView extends JPanel
      * Chemin d'accés à l'image de localisation d'un point de delivery
      */
     private static final String WAREHOUSE_IMAGE_PATH = "./rsc/image/warehouse.png";
+
+    /**
+     * Chemin d'accés à l'image du circuit
+     */
+    private static final String CIRCUIT_IMAGE_PATH = "./rsc/image/circuit.png";
 
     /**
      * Référence vers la fenetre de l'application
@@ -154,6 +170,17 @@ public class LegendView extends JPanel
             this.warehouseLabel.setText(WAREHOUSE_LABEL);
             this.warehouseLabel.setFont(new Font("Arial", Font.PLAIN, 16));
 
+            // Circuit icon
+            BufferedImage bigCircuitIconImage = ImageIO.read(new File(CIRCUIT_IMAGE_PATH));
+            BufferedImage circuitIconImage = this.resize(bigCircuitIconImage, 30, 30);
+            ImageIcon circuitIcon = new ImageIcon(circuitIconImage);
+            this.circuitIconLabel = new JLabel(circuitIcon);
+
+            // Circuit label
+            this.circuitLabel = new JLabel();
+            this.circuitLabel.setText(CIRCUIT_LABEL);
+            this.circuitLabel.setFont(new Font("Arial", Font.PLAIN, 16));
+
             // Add labels to label list panel
             GridBagConstraints c = new GridBagConstraints();
             c.insets = new Insets(5, 5, 5, 5);
@@ -164,6 +191,8 @@ public class LegendView extends JPanel
             this.labelListPanel.add(deliveryIconLabel, c);
             c.gridy++;
             this.labelListPanel.add(warehouseIconLabel, c);
+            c.gridy++;
+            this.labelListPanel.add(circuitIconLabel, c);
             c.anchor = GridBagConstraints.LINE_START;
             c.gridx++;
             c.gridy = 0;
@@ -172,6 +201,8 @@ public class LegendView extends JPanel
             this.labelListPanel.add(deliveryLabel, c);
             c.gridy++;
             this.labelListPanel.add(warehouseLabel, c);
+            c.gridy++;
+            this.labelListPanel.add(circuitLabel, c);
 
             // Add component to the legend panel
             c = new GridBagConstraints();
