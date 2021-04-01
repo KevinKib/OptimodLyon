@@ -23,6 +23,9 @@ public class NavigationView extends JPanel
         UNDEFINED, MAP_LOADED, DELIVERY_PLAN_LOADED, CIRCUIT_CALCULATED
     }
 
+    /**
+     * Enumération qui définit les types de fichiers qui peuvent être chargés par l'application
+     */
     public enum FileType
     {
         MAP, DELIVERY_PLAN
@@ -171,6 +174,11 @@ public class NavigationView extends JPanel
         return false;
     }
 
+    /**
+     * Demande à la fenêtre de charger un circuit
+     * @param cycleNumber Le nombre de cyclistes
+     * @return true si le chargement a été correctement effectué, sinon false
+     */
     public boolean notifyWindowToLoadCircuit(int cycleNumber)
     {
         return this.window.loadCircuit(cycleNumber);
@@ -196,6 +204,11 @@ public class NavigationView extends JPanel
         }
     }
 
+    /**
+     * Permet de construire un composant JButton avec un texte donnée
+     * @param text Le texte pour le JButton
+     * @return Le JButton créé
+     */
     private JButton buildButton(String text) {
         JButton button = new JButton();
         button.setText(

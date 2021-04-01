@@ -2,11 +2,19 @@ package optimodLyon.IHM;
 
 import optimodLyon.controller.ihm.LeftMenuController;
 
-import javax.swing.*;
-import java.awt.*;
+import javax.swing.JPanel;
+import javax.swing.JButton;
+import java.awt.GridLayout;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Composant graphique qui donne les fonctionnalité d'ajout d'un point de pickup & delivery et de la modification de l'ordre dans l'inventaire.
+ * Il affiche également la légende.
+ *
+ * @author Dorian TERBAH
+ * @since 1.0
+ */
 public class LeftMenuView extends JPanel {
 
     /**
@@ -24,12 +32,25 @@ public class LeftMenuView extends JPanel {
      */
     public static final String MODIFY_ITINERARY_ORDER = "MODIFY_ITINERARY_ORDER";
 
-    private JPanel leftPanel;
+    /**
+     * Bouton qui permet d'ajouter un point de Pickup & Delivery
+     */
     private JButton addPDButton;
+
+    /**
+     * Bouton qui permet de modifier l'ordre des requêtes dans l'inventaire
+     */
     private JButton modifyOrderButton;
+
+    /**
+     * Composant graphique qui permet d'afficher la légende de la carte
+     */
     private JPanel legendPanel;
 
-
+    /**
+     * Constructeur de la classe LeftMenuView
+     * @param window La référence de la fenêtre de l'application
+     */
     public LeftMenuView (final OptimodFrame window) {
         super(new GridLayout(3,1));
         this.window = window;
@@ -59,6 +80,9 @@ public class LeftMenuView extends JPanel {
         LeftMenuController leftMenuController = new LeftMenuController(this, buttons, window.getController());
     }
 
+    /**
+     * @return La référence de la fenêtre de l'application
+     */
     public OptimodFrame getWindow() {
         return window;
     }

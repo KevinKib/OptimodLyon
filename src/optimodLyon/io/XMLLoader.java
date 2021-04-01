@@ -378,12 +378,22 @@ public class XMLLoader
                 long deliveryAddress = Long.parseLong(deliveryAddressAttribute);
                 long pickupAddress = Long.parseLong(pickupAddressAttribute);
 
+                if (map.getIntersectionById(deliveryAddress) == null || map.getIntersectionById(pickupAddress) == null)
+                {
+                    throw new MalformedXMLException("Certaines intersections renseignées dans le fichier d'inventaire ne correspondent pas à la carte chargée");
+                }
+
                 Request request = new Request(deliveryDuration, pickupDuration, map.getIntersectionById(deliveryAddress), map.getIntersectionById(pickupAddress));
                 requests.add(request);
             }
         }
 
         int depotAddress = Integer.parseInt(depotAddressAttribute);
+
+        if (map.getIntersectionById(depotAddress) == null)
+        {
+            throw new MalformedXMLException("L'adresse de l'entrepôt n'est pas présente dans la carte chargée");
+        }
         Warehouse w = new Warehouse(map.getIntersectionById(depotAddress));
         deliveryPlan = new DeliveryPlan(requests, w, departureTime);
         return deliveryPlan;
