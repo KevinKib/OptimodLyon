@@ -1,7 +1,6 @@
 package external.circuitPlanner;
 
-import optimodLyon.model.Node;
-import optimodLyon.model.Pickup;
+import optimodLyon.model.circuit.Node;
 import optimodLyon.model.circuit.Graph;
 
 import java.util.Random;

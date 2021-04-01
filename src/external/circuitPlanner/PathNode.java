@@ -1,6 +1,6 @@
 package external.circuitPlanner;
 
-import optimodLyon.model.Node;
+import optimodLyon.model.circuit.Node;
 
 class PathNode implements Comparable<PathNode>{
     public Node getCurrent() {

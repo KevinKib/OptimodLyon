@@ -1,7 +1,7 @@
 package external.circuitPlanner;
 
 import optimodLyon.model.Delivery;
-import optimodLyon.model.Node;
+import optimodLyon.model.circuit.Node;
 import optimodLyon.model.Warehouse;
 import optimodLyon.model.circuit.Graph;
 

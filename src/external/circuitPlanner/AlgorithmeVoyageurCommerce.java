@@ -1,6 +1,6 @@
 package external.circuitPlanner;
 
-import optimodLyon.model.Node;
+import optimodLyon.model.circuit.Node;
 import optimodLyon.model.Pickup;
 import optimodLyon.model.Warehouse;
 import optimodLyon.model.circuit.Edge;
