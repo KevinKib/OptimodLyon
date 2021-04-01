@@ -17,7 +17,13 @@ public class Request
      */
     private Pickup pickup;
 
-
+    /**
+     * Constructeur de la classe Request
+     * @param deliveryDuration le durée de livraison
+     * @param pickupDuration La durée de récupération du colis
+     * @param deliveryIntersection L'emplacement de la livraison
+     * @param pickupIntersection L'emplacement de la récupération du colis
+     */
     public Request(int deliveryDuration, int pickupDuration, Intersection deliveryIntersection,
                    Intersection pickupIntersection)
     {
@@ -25,19 +31,28 @@ public class Request
         this.pickup = new Pickup(pickupIntersection, pickupDuration, this);
     }
 
+    /**
+     * Constructeur de la classe Request
+     * @param pickup Le point de pickup
+     * @param delivery Le point de delivery
+     */
     public Request(Pickup pickup, Delivery delivery)
     {
         this.pickup = pickup;
         this.delivery = delivery;
     }
 
+    /**
+     * @return Le point de delivery
+     */
     public Delivery getDelivery() {
         return delivery;
     }
 
+    /**
+     * @return Le point de pickup
+     */
     public Pickup getPickup() {
         return pickup;
     }
-
-
 }

@@ -6,8 +6,16 @@ package optimodLyon.model;
  * @since 1.0
  */
 public abstract class Waypoint extends Node{
+    /**
+     * La durée associée au waypoint
+     */
     private int duration;
 
+    /**
+     * Constructeur de la classe Wayppoint
+     * @param intersection L'emplacement du waypoint
+     * @param duration La durée associée au waypoint
+     */
     public Waypoint(Intersection intersection, int duration) {
         super(intersection);
         this.duration = duration;
@@ -21,19 +29,11 @@ public abstract class Waypoint extends Node{
         return duration;
     }
 
+    /**
+     * Mets à jour la durée du point d'arrêt
+     * @param duration La nouvelle durée
+     */
     public void setDuration(int duration) {
         this.duration = duration;
     }
-
-    /**
-     * Met à jour un waypoint
-     * @param intersection, l'intersection où est situé le waypoint
-     * @param duration, la durée d'arrêt du waypoint
-     */
-    public void updateWaypoint(Intersection intersection, int duration)
-    {
-        this.setIntersection(intersection);
-        this.duration = duration;
-    }
-
 }

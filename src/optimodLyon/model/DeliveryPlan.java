@@ -27,6 +27,12 @@ public class DeliveryPlan
      */
     private Time departureTime;
 
+    /**
+     * Constructeur de la classe DeliveryPlan
+     * @param requests La liste des requêtes de l'inventaire
+     * @param w L'emplacement de l'entrepôt
+     * @param departureTime L'heure de départ
+     */
     public DeliveryPlan(final List<Request> requests, Warehouse w, Time departureTime)
     {
         this.requests = new ArrayList<Request>();
@@ -74,14 +80,5 @@ public class DeliveryPlan
     public void addRequest(Request request)
     {
         this.requests.add(request);
-    }
-
-    /**
-     * Supprime une requête
-     * @param request La requête à supprimer
-     */
-    public void deleteRequest(Request request)
-    {
-        this.requests.remove(request);
     }
 }

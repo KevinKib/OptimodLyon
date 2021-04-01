@@ -30,6 +30,10 @@ public class Segment implements Comparable<Segment>
     private float length;
 
 
+    /**
+     * Constructeur de la classe Segment
+     * @param name Le nom de la rue associé au segment
+     */
     public Segment(String name){
         this.name = name;
     }
