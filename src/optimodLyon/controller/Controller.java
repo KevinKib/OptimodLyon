@@ -1,12 +1,14 @@
 package optimodLyon.controller;
 
+import optimodLyon.IHM.MapView;
 import optimodLyon.model.*;
 import optimodLyon.model.circuit.CircuitManager;
 
 import javax.swing.*;
 import java.awt.*;
-import java.util.HashSet;
-import java.util.Set;
+
+import java.util.*;
+import java.util.List;
 
 import static optimodLyon.model.CityMap.CityMapCoordinates;
 /**
@@ -42,6 +44,8 @@ public class Controller
 
     private Set<JComponent> observedViews;
 
+    private List<RequestCoordinates> requestCoordinates;
+
     /**
      * Constructeur par défaut du controleur
      */
@@ -52,7 +56,8 @@ public class Controller
         this.cityMapCoordinates = null;
         this.circuitManager = null;
         observedViews = new HashSet<>();
-        //this.mapView = mapView;
+
+        this.requestCoordinates = new ArrayList<>();
     }
 
     private void updateObservedView(){
@@ -87,6 +92,55 @@ public class Controller
     public void setDeliveryPlan(DeliveryPlan deliveryPlan)
     {
         this.deliveryPlan = deliveryPlan;
+        this.requestCoordinates.clear();
+
+        if (this.deliveryPlan != null)
+        {
+            // Creation des requestCoordinates
+            for (Request r : this.deliveryPlan.getRequests())
+            {
+                this.addRequestCoordinates(r);
+            }
+        }
+    }
+
+    private void addRequestCoordinates(final Request request)
+    {
+        Point deliveryPoint = this.cityMapCoordinates.normalizeIntersection(request.getDelivery().getIntersection());
+        Point pickupPoint = this.cityMapCoordinates.normalizeIntersection(request.getPickup().getIntersection());
+
+        Rectangle deliveryBounds = new Rectangle(deliveryPoint.x - (MapView.IMAGE_WIDTH / 2), deliveryPoint.y - MapView.IMAGE_HEIGHT, MapView.IMAGE_WIDTH, MapView.IMAGE_HEIGHT);
+        Rectangle pickupBounds = new Rectangle(pickupPoint.x - (MapView.IMAGE_WIDTH / 2), pickupPoint.y - MapView.IMAGE_HEIGHT, MapView.IMAGE_WIDTH, MapView.IMAGE_HEIGHT);
+
+        this.requestCoordinates.add(new RequestCoordinates(request, deliveryBounds, pickupBounds));
+    }
+
+    /**
+     * Permet de récupérer une requete sur la map
+     * @param mouseX La coordonnée X de la souris
+     * @param mouseY La coordonnée Y de la souris
+     * @return Une Pair qui stocke la requete et un booleen signifiant si l'image cliquée correspond au delivery
+     */
+    public Map.Entry<Request, Boolean> getRequest(int mouseX, int mouseY)
+    {
+        for (RequestCoordinates requestCoordinate : this.requestCoordinates)
+        {
+            Rectangle deliveryBounds = requestCoordinate.getDeliveryBounds();
+
+            if (deliveryBounds.contains(mouseX, mouseY))
+            {
+                return Map.entry(requestCoordinate.getRequest(), true);
+            }
+
+            Rectangle pickupBounds = requestCoordinate.getPickupBounds();
+
+            if (pickupBounds.contains(mouseX, mouseY))
+            {
+                return Map.entry(requestCoordinate.getRequest(), false);
+            }
+        }
+
+        return null;
     }
 
     /**
@@ -136,8 +190,9 @@ public class Controller
         Intersection deliveryIntersection = this.cityMap.getCommonIntersection(pickupAndDeliveryForm.getDeliveryFirstWay(), pickupAndDeliveryForm.getDeliverySecondWay());
 
         Request r = new Request(pickupAndDeliveryForm.getDeliveryDuration(), pickupAndDeliveryForm.getPickupDuration(), deliveryIntersection, pickupIntersection);
-
         this.deliveryPlan.addRequest(r);
+        this.addRequestCoordinates(r);
+
         this.updateObservedView();
     }
 

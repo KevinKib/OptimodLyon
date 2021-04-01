@@ -1,6 +1,7 @@
 package optimodLyon.IHM;
 
 import optimodLyon.controller.Controller;
+import optimodLyon.controller.ihm.MapViewMouseController;
 import optimodLyon.controller.ihm.MapViewResizeController;
 import optimodLyon.model.*;
 
@@ -51,6 +52,16 @@ public class MapView extends JComponent
      */
     private static final String WAREHOUSE_LOCALISATION_PATH = "./rsc/image/warehouse.png";
 
+    /**
+     * Largeur des images utilisées pour les points de pickup delivery
+     */
+    public static final int IMAGE_WIDTH = 30;
+
+    /**
+     * Hauteur des images utilisées pour les points de pickup delivery
+     */
+    public static final int IMAGE_HEIGHT = 30;
+
     private static Color[] COLORS = new Color[]
             {
                     new Color(0xA31834), new Color(0x006195),
@@ -70,6 +81,11 @@ public class MapView extends JComponent
      * Controle le redimensionnement du composant
      */
     private MapViewResizeController mapViewResizeController;
+
+    /**
+     * Controle les clicks sur la map
+     */
+    private MapViewMouseController mapViewMouseController;
 
     /**
      * Controleur général qui contient les données de l'application
@@ -101,7 +117,10 @@ public class MapView extends JComponent
         }
 
         this.mapViewResizeController = new MapViewResizeController(controller);
+        this.mapViewMouseController = new MapViewMouseController(controller);
+
         this.addComponentListener(this.mapViewResizeController);
+        this.addMouseListener(this.mapViewMouseController);
     }
 
     /**
@@ -172,14 +191,14 @@ public class MapView extends JComponent
                     Point pickupPoint = cityMapCoordinates.normalizeIntersection(request.getPickup().getIntersection());
 
                     // Affichage de la delivery
-                    image = this.resize(this.deliveryLocalisationlogo, 30, 30);
+                    image = this.resize(this.deliveryLocalisationlogo, IMAGE_WIDTH, IMAGE_HEIGHT);
                     image = this.dye(image, color);
-                    p.drawImage(image, deliveryPoint.x - 15, deliveryPoint.y - 30, null);
+                    p.drawImage(image, deliveryPoint.x - (IMAGE_WIDTH / 2), deliveryPoint.y - IMAGE_HEIGHT, null);
 
                     // Affichage du pickup
-                    image = this.resize(this.pickupLocalisationlogo, 30, 30);
+                    image = this.resize(this.pickupLocalisationlogo, IMAGE_WIDTH, IMAGE_HEIGHT);
                     image = this.dye(image, color);
-                    p.drawImage(image, pickupPoint.x - 15, pickupPoint.y - 30, null);
+                    p.drawImage(image, pickupPoint.x - (IMAGE_WIDTH / 2), pickupPoint.y - IMAGE_HEIGHT, null);
                 }
 
                 // Test
