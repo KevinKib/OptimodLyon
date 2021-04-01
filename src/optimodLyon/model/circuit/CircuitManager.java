@@ -1,7 +1,7 @@
 package optimodLyon.model.circuit;
 
-import external.circuitPlanner.AbstractCircuitPlanner;
-import external.circuitPlanner.CircuitPlanner1;
+import optimodLyon.circuitPlanner.AbstractCircuitPlanner;
+import optimodLyon.circuitPlanner.CircuitPlanner1;
 import optimodLyon.model.*;
 
 import java.util.ArrayList;

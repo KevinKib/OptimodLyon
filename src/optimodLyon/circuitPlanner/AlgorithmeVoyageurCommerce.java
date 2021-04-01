@@ -1,4 +1,4 @@
-package external.circuitPlanner;
+package optimodLyon.circuitPlanner;
 
 import optimodLyon.model.circuit.Node;
 import optimodLyon.model.Pickup;

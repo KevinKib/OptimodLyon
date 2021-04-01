@@ -1,11 +1,9 @@
-package optimodLyon;
+package optimodLyon.test;
 
 import optimodLyon.IHM.OptimodFrame;
-import external.circuitPlanner.CircuitPlanner1;
+import optimodLyon.circuitPlanner.CircuitPlanner1;
 import optimodLyon.controller.Controller;
 import optimodLyon.io.XMLLoader;
-
-import java.io.File;
 
 public class MainTest {
     private OptimodFrame mainFrame;
