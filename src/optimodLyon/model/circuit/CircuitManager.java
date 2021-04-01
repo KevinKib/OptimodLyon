@@ -16,11 +16,38 @@ import java.util.List;
 public class CircuitManager
 {
     /**
-     * Retourne le graph du circuit courant
-     * @return Circuit, le graphe représentant le circuit courant s'il existe, null sinon
+     * Le circuit à gérer, sous la forme d'un graphe
      */
-    public Graph getGraph() {
-        return circuit;
+    private Graph circuit;
+
+    /**
+     * La carte sur laquelle le circuit se base
+     */
+    private CityMap cityMap;
+
+    /**
+     * Le graph représentant la carte
+     */
+    private Graph cityMapGraph;
+
+    /**
+     * L'algorithme utilisé pour calculer les circuits
+     */
+    private AbstractCircuitPlanner circuitPlanner;
+
+    /**
+     * La solution de l'algorithme : les circuits générés sous forme de suite de segments
+     */
+    private List<List<Segment>> solution;
+
+    /**
+     * Constructeur de circuit manager
+     * @param cityMap, la map sur laquelle se base le circuit
+     */
+    public CircuitManager(CityMap cityMap) {
+        this.cityMap = cityMap;
+        this.cityMapGraph = this.createCityMapGraph();
+        this.circuitPlanner = new CircuitPlanner1();
     }
 
     /**
@@ -31,51 +58,35 @@ public class CircuitManager
         return cityMap;
     }
 
-    public void setCircuit(Graph circuit) {
-        this.circuit = circuit;
-    }
-
+    /**
+     * Met à jour la carte utilisée et crée le graphe qui la représente
+     * @param cityMap, la carte
+     */
     public void setCityMap(CityMap cityMap) {
         this.cityMap = cityMap;
         this.cityMapGraph = this.createCityMapGraph();
     }
 
     /**
-     * Le circuit à gérer, sous la forme d'un graphe
+     * Retourne le graphe du circuit courant
+     * @return Circuit, le graphe représentant le circuit courant s'il existe, null sinon
      */
-    private Graph circuit;
+    public Graph getCircuit() {
+        return circuit;
+    }
 
     /**
-     * La carte sur laquelle le circuit se base
+     * Met à jour le graphe du circuit
+     * @param circuit, le graphe
      */
-    private CityMap cityMap;
-    private Graph cityMapGraph;
-    private AbstractCircuitPlanner circuitPlanner;
-
-    public List<List<Segment>> getSolution() {
-        return solution;
+    public void setCircuit(Graph circuit) {
+        this.circuit = circuit;
     }
 
-    public void setSolution(List<List<Segment>> solution) {
-        this.solution = solution;
-    }
-
-    private List<List<Segment>> solution;
-
-    public Graph getCityMapGraph() {
-        return cityMapGraph;
-    }
-
-    public void setCityMapGraph(Graph cityMapGraph) {
-        this.cityMapGraph = cityMapGraph;
-    }
-
-    public CircuitManager(CityMap cityMap) {
-        this.cityMap = cityMap;
-        this.cityMapGraph = this.createCityMapGraph();
-        this.circuitPlanner = new CircuitPlanner1();
-    }
-
+    /**
+     * Crée un graphe représentant la carte CityMap
+     * @return le graphe crée
+     */
     public Graph createCityMapGraph(){
         List<Segment> segments = this.cityMap.getSegments();
         List<Node> nodes = new ArrayList<>();
@@ -100,6 +111,11 @@ public class CircuitManager
         return new Graph(nodes, edges, firstNode);
     }
 
+    /**
+     * Crée un simple graphe des waypoints à partir d'un DeliveryPlan
+     * @param plan, le DeliveryPlan
+     * @return le graphe crée
+     */
     public Graph createCircuit(DeliveryPlan plan){
         List<Request> requests = plan.getRequests();
         List<Node> waypoints = new ArrayList<>();
@@ -126,136 +142,33 @@ public class CircuitManager
         return new Graph(waypoints, edges, plan.getWarehouse());
     }
 
+    /**
+     * Retourne les circuits générés par l'algorithme sous forme de liste de liste de segments
+     * @return la solution de l'algorithme
+     */
+    public List<List<Segment>> getSolution() {
+        return solution;
+    }
+
+    /**
+     * Met à jour les circuits
+     * @param solution, la solution sous forme de liste de liste de segments
+     */
+    public void setSolution(List<List<Segment>> solution) {
+        this.solution = solution;
+    }
+
+    /**
+     * Calcule les circuits
+     * @param plan, le DeliveryPlan contenant les points de pickup-delivery à relier par les circuits
+     * @param cycleNumber, le nombre de cyclistes disponibles c'est-à-dire le nombre de circuit à créer
+     */
     public void computeSolution(DeliveryPlan plan, int cycleNumber){
         //The first step is to create the graph corresponding to the delivery plan, which is the circuit.
         this.circuit = this.createCircuit(plan);
         System.out.println("Circuit has been built. Searching for solution...");
         //Then get the solution which is the ordered circuit. Taking in account the number of cycle.
         this.solution = this.circuitPlanner.searchSolution(this.circuit, cycleNumber);
-    }
-
-    /**
-     * Ajoute un Pickup-Delivery au circuit courant s'il existe
-     * @param request le Pickup-Delivery à ajouter
-     * @param beforePickup le waypoint précédent le pickup
-     * @param beforeDelivery le waypoint précédent la delivery
-     */
-    public void addRequest(Request request, Waypoint beforePickup, Waypoint beforeDelivery){
-        if(this.circuit != null) {
-            Delivery delivery = request.getDelivery();
-            Pickup pickup = request.getPickup();
-
-            List<Node> waypoints = this.circuit.getNodes();
-            waypoints.add(pickup);
-            waypoints.add(delivery);
-
-            Edge pickupSplitEdge = this.circuit.getEdgeByFirstNode(beforePickup);
-            Node destinationPickup = pickupSplitEdge.getSecond();
-
-            this.circuit.removeEdge(pickupSplitEdge);
-            this.circuit.addEdge(createEdge(beforePickup, pickup));
-            this.circuit.addEdge(createEdge(pickup, (Waypoint) destinationPickup));
-
-            Edge deliverySplitEdge = this.circuit.getEdgeByFirstNode(beforeDelivery);
-            Node destinationDelivery = deliverySplitEdge.getSecond();
-
-            this.circuit.removeEdge(deliverySplitEdge);
-            this.circuit.addEdge(createEdge(beforeDelivery, delivery));
-            this.circuit.addEdge(createEdge(delivery, (Waypoint) destinationDelivery));
-        }
-    }
-
-    /**
-     * Supprime un Pickup-Delivery au circuit courant s'il existe
-     * @param request le Pickup-Delivery à supprimer
-     */
-    public void deleteRequest(Request request) {
-        if(circuit != null) {
-            Delivery delivery = request.getDelivery();
-            Pickup pickup = request.getPickup();
-
-            List<Node> waypoints = this.circuit.getNodes();
-            waypoints.remove(pickup);
-            waypoints.remove(delivery);
-
-            Edge pickupGroupEdge1 = this.circuit.getEdgeBySecondNode(pickup);
-            Waypoint originPickup = (Waypoint) pickupGroupEdge1.getFirst();
-            Edge pickupGroupEdge2 = this.circuit.getEdgeByFirstNode(pickup);
-            Waypoint destinationPickup = (Waypoint) pickupGroupEdge2.getSecond();
-
-            this.circuit.removeEdge(pickupGroupEdge1);
-            this.circuit.removeEdge(pickupGroupEdge2);
-            this.circuit.addEdge(createEdge(originPickup, destinationPickup));
-
-            Edge deliveryGroupEdge1 = this.circuit.getEdgeBySecondNode(delivery);
-            Waypoint originDelivery = (Waypoint) deliveryGroupEdge1.getFirst();
-            Edge deliveryGroupEdge2 = this.circuit.getEdgeByFirstNode(delivery);
-            Waypoint destinationDelivery = (Waypoint) deliveryGroupEdge2.getSecond();
-
-            this.circuit.removeEdge(deliveryGroupEdge1);
-            this.circuit.removeEdge(deliveryGroupEdge2);
-            this.circuit.addEdge(createEdge(originDelivery, destinationDelivery));
-        }
-    }
-
-    /**
-     * Met à jour les trajets vers et depuis le waypoint qui à été modifié si le circuit existe
-     * @param waypoint le waypoint modifié
-     */
-    public void updateWaypoint(Waypoint waypoint){
-        if(circuit != null) {
-            Edge edge = this.circuit.getEdgeBySecondNode(waypoint);
-            this.circuit.removeEdge(edge);
-            this.circuit.addEdge(this.createEdge((Waypoint) edge.getFirst(), waypoint));
-
-            edge = this.circuit.getEdgeByFirstNode(waypoint);
-            this.circuit.removeEdge(edge);
-            this.circuit.addEdge(this.createEdge(waypoint, (Waypoint) edge.getSecond()));
-        }
-    }
-
-    /**
-     * Modifie l'ordre des waypoint dans le circuit
-     * @param oldWaypointList la liste anciennement triée des waypoint
-     * @param newWaypointList la liste nouvellement triée des waypoint
-     * @throws NoWarehouseException si le circuit ne débute pas par un point de dépôt
-     */
-    public void updateRequest(List<Waypoint> oldWaypointList, List<Waypoint> newWaypointList) throws NoWarehouseException {
-        Node warehouse = this.circuit.getFirstNode();
-
-        if (!(warehouse instanceof Warehouse)) {
-            throw new NoWarehouseException("Le circuit n'est pas conforme, il ne débute pas par un point de dépôt.");
-        }
-
-        for(int oldCpt = 0; oldCpt < oldWaypointList.size(); ++oldCpt){
-            Waypoint waypointFromOld = oldWaypointList.get(oldCpt);
-            Waypoint waypointFromNew = newWaypointList.get(oldCpt);
-
-            // S'il y a eu un changement d'ordre
-            if (!waypointFromOld.equals(waypointFromNew)){
-
-                // On supprime les arcs liés à l'ancien Waypoint
-                Edge edgeToRemove = this.circuit.getEdgeByNodes(newWaypointList.get(oldCpt - 1), waypointFromOld);
-                this.circuit.removeEdge(edgeToRemove);
-                edgeToRemove = this.circuit.getEdgeByNodes(waypointFromOld, oldWaypointList.get(oldCpt + 1));
-                this.circuit.removeEdge(edgeToRemove);
-
-                // On crée les nouveaux arcs liés au nouveau Waypoint
-                Edge createdEdge = this.createEdge(newWaypointList.get(oldCpt - 1), waypointFromNew);
-                this.circuit.addEdge(createdEdge);
-                createdEdge = this.createEdge(waypointFromNew, oldWaypointList.get(oldCpt + 1));
-                this.circuit.addEdge(createdEdge);
-            }
-        }
-    }
-
-    /**
-     * Retourne la longueur du circuit courant
-     * @return float, la longueur du circuit courant
-     * @throws NoWarehouseException si le circuit ne débute pas par un point de dépôt
-     */
-    public float getSolutionCost() throws NoWarehouseException {
-        return this.getDistance(this.graphToSegmentList());
     }
 
     /**
@@ -271,34 +184,9 @@ public class CircuitManager
     }
 
     /**
-     * Retourne la liste des segments composants le circuit courant
-     * @return List<Segment> La liste des segments
-     * @throws NoWarehouseException si le circuit ne débute pas par un point de dépôt
-     */
-    public List<Segment> graphToSegmentList() throws NoWarehouseException {
-        List<Segment> segments = new ArrayList<>();
-
-        Node warehouse = this.circuit.getFirstNode();
-
-        if (!(warehouse instanceof Warehouse)) {
-            throw new NoWarehouseException("Le circuit n'est pas conforme, il ne débute pas par un point de dépôt.");
-        }
-
-        Edge currentEdge = this.circuit.getEdgeByFirstNode(warehouse);
-        segments.addAll(currentEdge.getPath());
-        Node destination = currentEdge.getSecond();
-
-        while (!(destination instanceof Warehouse)) {
-            currentEdge = this.circuit.getEdgeByFirstNode(destination);
-            segments.addAll(currentEdge.getPath());
-            destination = currentEdge.getSecond();
-        }
-
-        return segments;
-    }
-
-    /**
-     * Crée un Edge
+     * Crée un Edge à partir de deux Waypoint
+     * @param first, le premier Waypoint à relier
+     * @param second, le deuxième Waypoint à relier
      * @return Edge, le Edge crée
      */
     private Edge createEdge(Waypoint first, Waypoint second){
@@ -307,7 +195,4 @@ public class CircuitManager
         Edge edge = new Edge(path, distance, first, second);
         return edge;
     }
-
-
-
 }
