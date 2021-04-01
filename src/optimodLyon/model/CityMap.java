@@ -6,7 +6,6 @@ import java.awt.*;
 import java.util.*;
 import java.util.List;
 import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 /**
  * Classe qui représente une carte XML.
@@ -87,15 +86,6 @@ public class CityMap
             int finalY = (int) (((intersection.getLatitude() - this.minLatitude) / (this.maxLatitude - this.minLatitude)) * this.mapComponentDimension.height);
 
             return new Point(finalX, finalY);
-        }
-
-        /**
-         * Met à jour les dimensions du composant qui prend en charge la carte
-         * @param mapComponentDimension Les nouvelles dimension de la carte
-         */
-        public void setMapComponentDimension(Dimension mapComponentDimension)
-        {
-            this.mapComponentDimension = mapComponentDimension;
         }
     }
 
@@ -215,14 +205,6 @@ public class CityMap
         }
 
         return returnedSeg;
-    }
-
-    /**
-     * Retourne la liste contenant les segments indexés par leur IDs d'intersection.
-     * @return La liste concernée.
-     */
-    public Map<String, Segment> getSegmentsByIntersectionIdList() {
-        return segmentsByIntersectionId;
     }
 
     /**

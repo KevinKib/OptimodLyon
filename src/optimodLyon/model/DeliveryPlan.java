@@ -3,7 +3,6 @@ package optimodLyon.model;
 import java.util.List;
 import java.util.ArrayList;
 import java.sql.Time;
-import java.util.NoSuchElementException;
 
 /**
  * Classe représentant un inventaire de demandes de pickup-delivery.
@@ -35,7 +34,7 @@ public class DeliveryPlan
      */
     public DeliveryPlan(final List<Request> requests, Warehouse w, Time departureTime)
     {
-        this.requests = new ArrayList<Request>();
+        this.requests = new ArrayList<>();
         this.requests.addAll(requests);
         this.warehouse = w;
         this.departureTime = departureTime;

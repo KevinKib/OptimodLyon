@@ -51,14 +51,6 @@ public class CircuitManager
     }
 
     /**
-     * Retourne la carte sur laquelle se base le circuit courant
-     * @return CityMap, la carte si elle existe, null sinon
-     */
-    public CityMap getCityMap() {
-        return cityMap;
-    }
-
-    /**
      * Met à jour la carte utilisée et crée le graphe qui la représente
      * @param cityMap, la carte
      */

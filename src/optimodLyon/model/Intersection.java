@@ -9,12 +9,12 @@ public class Intersection {
     /**
      * La longitude de l'intersection (coordonnée x)
      */
-    public final float longitude;
+    private float longitude;
 
     /**
      * La latitude de l'intersection (coordonnée y)
      */
-    public final float latitude;
+    private float latitude;
 
     /**
      * L'id de l'intersection

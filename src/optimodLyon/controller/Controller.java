@@ -32,10 +32,6 @@ public class Controller
      */
     private CityMapCoordinates cityMapCoordinates;
 
-    public CircuitManager getCircuitManager() {
-        return circuitManager;
-    }
-
     /**
      * CircuitManager
      */
@@ -53,7 +49,75 @@ public class Controller
         this.cityMapCoordinates = null;
         this.circuitManager = null;
         observedViews = new HashSet<>();
-        //this.mapView = mapView;
+    }
+
+    /**
+     * Retourne le circuitManager
+     * @return CircuitManager
+     */
+    public CircuitManager getCircuitManager() {
+        return circuitManager;
+    }
+
+    /**
+     * @return La map de la ville
+     */
+    public CityMap getCityMap()
+    {
+        return this.cityMap;
+    }
+
+    /**
+     * Met à jour la map de la ville
+     * @param cityMap La nouvelle carte
+     */
+    public void setCityMap(CityMap cityMap)
+    {
+        this.cityMap = cityMap;
+        if (circuitManager != null){
+            this.circuitManager.setCityMap(cityMap);
+        }
+        else {
+            this.circuitManager = new CircuitManager(cityMap);
+        }
+    }
+
+    /**
+     * @return L'inventaire de pickup-delivery
+     */
+    public DeliveryPlan getDeliveryPlan()
+    {
+        return this.deliveryPlan;
+    }
+
+    /**
+     * Met à jour de l'inventaire
+     * @param deliveryPlan Le nouvel inventaire
+     */
+    public void setDeliveryPlan(DeliveryPlan deliveryPlan)
+    {
+        this.deliveryPlan = deliveryPlan;
+    }
+
+    /**
+     * @return Le CityMapCoordinates courant
+     */
+    public CityMapCoordinates getCityMapCoordinates()
+    {
+        return this.cityMapCoordinates;
+    }
+
+    /**
+     * Met à jour le CityMapCoordinates. Attention : la CityMap ne doit jamais
+     * être nulle à l'appel de cette méthode.
+     * @param mapComponentDimension La dimension du composant qui contient la carte
+     */
+    public void setCityMapCoordinates(Dimension mapComponentDimension)
+    {
+        if (this.cityMap != null)
+        {
+            this.cityMapCoordinates = new CityMapCoordinates(mapComponentDimension, this.cityMap.getIntersections());
+        }
     }
 
     /**
@@ -74,59 +138,6 @@ public class Controller
     }
 
     /**
-     * Met à jour la map de la ville
-     * @param cityMap La nouvelle carte
-     */
-    public void setCityMap(CityMap cityMap)
-    {
-        this.cityMap = cityMap;
-        if (circuitManager != null){
-            this.circuitManager.setCityMap(cityMap);
-        }
-        else {
-            this.circuitManager = new CircuitManager(cityMap);
-        }
-    }
-
-    /**
-     * Met à jour de l'inventaire
-     * @param deliveryPlan Le nouvel inventaire
-     */
-    public void setDeliveryPlan(DeliveryPlan deliveryPlan)
-    {
-        this.deliveryPlan = deliveryPlan;
-    }
-
-    /**
-     * @return La map de la ville
-     */
-    public CityMap getCityMap()
-    {
-        return this.cityMap;
-    }
-
-    /**
-     * @return L'inventaire de pickup-delivery
-     */
-    public DeliveryPlan getDeliveryPlan()
-    {
-        return this.deliveryPlan;
-    }
-
-    /**
-     * Met à jour le CityMapCoordinates. Attention : la CityMap ne doit jamais
-     * être nulle à l'appel de cette méthode.
-     * @param mapComponentDimension La dimension du composant qui contient la carte
-     */
-    public void setCityMapCoordinates(Dimension mapComponentDimension)
-    {
-        if (this.cityMap != null)
-        {
-            this.cityMapCoordinates = new CityMapCoordinates(mapComponentDimension, this.cityMap.getIntersections());
-        }
-    }
-
-    /**
      * Permet d'ajouter une requête dans l'inventaire
      * @param pickupAndDeliveryForm Le formulaire qui provient de l'ihm pour ajouter un point de Pickup & Delivery
      */
@@ -139,14 +150,6 @@ public class Controller
 
         this.deliveryPlan.addRequest(r);
         this.updateObservedView();
-    }
-
-    /**
-     * @return Le CityMapCoordinates courant
-     */
-    public CityMapCoordinates getCityMapCoordinates()
-    {
-        return this.cityMapCoordinates;
     }
 
     /**

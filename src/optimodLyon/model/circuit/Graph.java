@@ -85,7 +85,7 @@ public class Graph {
 
     /**
      * Récupère le chemin sous forme de liste de segment à partir d'une liste de noeuds.
-     * @param nodes
+     * @param nodes, la liste de noeuds
      * @return List<Segment>, le chemin sous forme de la liste des segments liant les noeuds.
      */
     public List<Segment> getPath(List<Node> nodes) {
@@ -166,10 +166,10 @@ public class Graph {
      * @return float, le coût estimé
      */
     public float computeCost(Node start, Node end) {
-        float y1 = start.getIntersection().latitude;
-        float y2 = end.getIntersection().latitude;
-        float x1 = start.getIntersection().longitude;
-        float x2 = end.getIntersection().longitude;
+        float y1 = start.getIntersection().getLatitude();
+        float y2 = end.getIntersection().getLatitude();
+        float x1 = start.getIntersection().getLongitude();
+        float x2 = end.getIntersection().getLongitude();
 
         return (float) Math.sqrt((y2 - y1) * (y2 - y1) + (x2 - x1) * (x2 - x1));
     }

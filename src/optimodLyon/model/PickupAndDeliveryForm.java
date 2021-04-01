@@ -14,7 +14,7 @@ public class PickupAndDeliveryForm {
     private Segment pickupFirstWay;
 
     /**
-     * Le segment qui définit la deyuxième rue définissant le point de pickup
+     * Le segment qui définit la deuxième rue définissant le point de pickup
      */
     private Segment pickupSecondWay;
 
