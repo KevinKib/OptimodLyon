@@ -5,8 +5,13 @@ import optimodLyon.io.XMLLoader;
 import optimodLyon.model.CityMap;
 import optimodLyon.model.DeliveryPlan;
 
-import javax.swing.*;
-import java.awt.*;
+import javax.swing.JFrame;
+import javax.swing.JPanel;
+import javax.swing.JButton;
+import javax.swing.JLabel;
+import javax.swing.JOptionPane;
+
+import java.awt.BorderLayout;
 /**
  * Main class of the application Optimod'Lyon.
  * Contains the map, and the main functionalities of the app.
@@ -17,11 +22,6 @@ public class OptimodFrame extends JFrame {
      * Composant qui va contenir toutes les différentes vues
      */
     private JPanel mainPanel;
-
-    /**
-     * Etat de la fenetre
-     */
-    private OptimodFrameState state;
 
     /**
      * Largeyr de la fenetre
@@ -144,9 +144,9 @@ public class OptimodFrame extends JFrame {
     }
 
     /**
-     *
-     * @param
-     * @return
+     * Permet de charger un circuit
+     * @param cycleNumber Le nombre de cyclistes
+     * @return true si le circuit a bien été chargé, sinon false
      */
     boolean loadCircuit(int cycleNumber)
     {
@@ -164,33 +164,10 @@ public class OptimodFrame extends JFrame {
         return true;
     }
 
-    private void updateView()
-    {
-    }
-
+    /**
+     * @return Le contrôleur principale de l'application
+     */
     public Controller getController() {
         return controller;
-    }
-
-    private void buildLeftPanel() {
-        leftPanel = new JPanel();
-        leftPanel.setLayout(new GridBagLayout());
-
-        addPDButton = new JButton();
-        addPDButton.setText("Ajouter un Pickup & Delivery");
-        modifyOrderButton = new JButton();
-        modifyOrderButton.setText("Modifier l'ordre");
-        legendPlaceholder = new JLabel();
-        //legendPlaceholder.setText("Légende");
-        leftPanel.setBackground(Color.white);
-
-        GridBagConstraints cons = new GridBagConstraints();
-        cons.gridy = 1;
-        leftPanel.add(addPDButton, cons);
-        cons.gridy++;
-        leftPanel.add(modifyOrderButton, cons);
-        cons.gridy++;
-        cons.gridheight = GridBagConstraints.REMAINDER;
-        leftPanel.add(legendPlaceholder, cons);
     }
 }

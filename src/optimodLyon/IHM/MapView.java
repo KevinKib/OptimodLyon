@@ -52,6 +52,9 @@ public class MapView extends JComponent
      */
     private static final String WAREHOUSE_LOCALISATION_PATH = "./rsc/image/warehouse.png";
 
+    /**
+     * Constante qui définit une palette de couleurs pour l'affichage des points de Pickup & Deilevry
+     */
     private static Color[] COLORS = new Color[]
             {
                     new Color(0xA31834), new Color(0x006195),
@@ -271,6 +274,13 @@ public class MapView extends JComponent
         }
     }
 
+    /**
+     * Fonction qui permet de redimensionner une image
+     * @param img L'image à redimensionner
+     * @param newW La nouvelle largeur de l'image
+     * @param newH La nouvelle hauteur de l'image
+     * @return L'image redimensionnée avec la nouvelle largeur et la nouvelle hauteur
+     */
     private BufferedImage resize(BufferedImage img, int newW, int newH)
     {
         Image tmp = img.getScaledInstance(newW, newH, Image.SCALE_SMOOTH);
@@ -283,6 +293,12 @@ public class MapView extends JComponent
         return dimg;
     }
 
+    /**
+     * Permet de coloriser une image
+     * @param image L'image à coloriser
+     * @param color La nouvelle couleur de l'image
+     * @return L'image avec la nouvelle couleur
+     */
     private BufferedImage dye(BufferedImage image, Color color)
     {
         int w = image.getWidth();

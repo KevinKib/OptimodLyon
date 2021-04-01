@@ -7,7 +7,7 @@ import java.awt.image.BufferedImage;
 import java.io.File;
 
 /**
- * Vue qui va contenir les boutons de chargement de fichiers XML
+ * Vue qui va contenir la légende de la carte
  * @author Dorian TERBAH
  * @since 1.0
  */
@@ -218,6 +218,13 @@ public class LegendView extends JPanel
         }
     }
 
+    /**
+     * Fonction qui permet de redimensionner une image
+     * @param img L'image à redimensionner
+     * @param newW La nouvelle largeur de l'image
+     * @param newH La nouvelle hauteur de l'image
+     * @return L'image redimensionnée avec la nouvelle largeur et la nouvelle hauteur
+     */
     private BufferedImage resize(BufferedImage img, int newW, int newH)
     {
         Image tmp = img.getScaledInstance(newW, newH, Image.SCALE_SMOOTH);
