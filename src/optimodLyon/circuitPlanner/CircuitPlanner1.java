@@ -7,16 +7,30 @@ import optimodLyon.model.circuit.Graph;
 
 import java.util.*;
 
-
+/**
+ * Classe qui permet de spécifier un planificateur de circuit en précisant les algorithmes à utiliser.
+ * Etends la classe AbstractCircuitPlanner.
+ * @author Yolann GAUVIN
+ * @since 1.0
+ */
 public class CircuitPlanner1 extends AbstractCircuitPlanner{
 
+    /**
+     * Algorithme d'ordonnancement du planificateur de circuit.
+     */
     private AlgorithmeVoyageurCommerce voyageurCommerce;
 
+    /**
+     * Constructeur par défaut d'un planificateur de circuit.
+     */
     public CircuitPlanner1() {
         this.voyageurCommerce = new Algorithme2Opt();
     }
 
-    //TODO Need to test the method
+    /**
+     * Spécifie la méthode abstraite getShortestPath de la classe AbstractCircuitPlanner en implémentant l'algorithme
+     * de résolution A*.
+     */
     public List<Segment> getShortestPath(Graph cityMapGraph, Waypoint pointA, Waypoint pointB){
 
         // The priority queue allow to get the nodes to be visited in order given the result of the compareTo method.
@@ -59,6 +73,10 @@ public class CircuitPlanner1 extends AbstractCircuitPlanner{
         return null;
     }
 
+    /**
+     * Spécifie la méthode abstraite searchSolution de la classe AbstractCircuitPlanner en utilisant l'algorithme
+     * d'ordonnancement instancié dans le constructeur par défaut du planificateur de circuit.
+     */
     public List<List<Segment>> searchSolution(Graph circuit, int cycleNumber){
         List<List<Segment>> pathForAllCycles = new ArrayList<>();
         List<Segment> pathForOneCycle = new ArrayList<>();
