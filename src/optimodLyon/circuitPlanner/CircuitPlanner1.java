@@ -24,12 +24,16 @@ public class CircuitPlanner1 extends AbstractCircuitPlanner{
      * Constructeur par défaut d'un planificateur de circuit.
      */
     public CircuitPlanner1() {
-        this.voyageurCommerce = new Algorithme2Opt();
+        this.voyageurCommerce = new Algorithm2Opt();
     }
 
     /**
      * Spécifie la méthode abstraite getShortestPath de la classe AbstractCircuitPlanner en implémentant l'algorithme
      * de résolution A*.
+     * @param cityMapGraph Graphe représentant la CityMap.
+     * @param pointA Point pickup/delivery/dépot appartenant à la CityMap duquel on veut partir.
+     * @param pointB Point pickup/delivery/dépot appartenant à la CityMap auquel on veut arriver.
+     * @return Liste de segments constituant le plus court chemin.
      */
     public List<Segment> getShortestPath(Graph cityMapGraph, Waypoint pointA, Waypoint pointB){
 
@@ -76,6 +80,9 @@ public class CircuitPlanner1 extends AbstractCircuitPlanner{
     /**
      * Spécifie la méthode abstraite searchSolution de la classe AbstractCircuitPlanner en utilisant l'algorithme
      * d'ordonnancement instancié dans le constructeur par défaut du planificateur de circuit.
+     * @param circuit Graphe représentant la CityMap.
+     * @param cycleNumber Nombre de cyclistes devant effectuer une livraison.
+     * @return Liste de segments à parcourir, pour chaque cycliste.
      */
     public List<List<Segment>> searchSolution(Graph circuit, int cycleNumber){
         List<List<Segment>> pathForAllCycles = new ArrayList<>();

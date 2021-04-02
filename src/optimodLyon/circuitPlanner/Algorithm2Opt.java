@@ -7,15 +7,26 @@ import optimodLyon.model.circuit.Graph;
 import java.util.ArrayList;
 import java.util.Collections;
 
-public class Algorithme2Opt extends AlgorithmeVoyageurCommerce{
+/**
+ * Algorithme résolvant le problème du voyageur de commerce grâce à la méthode d'optimisation locale 2-Opt.
+ * Utilise l'algorithme de résolution aléatoire.
+ */
+public class Algorithm2Opt extends AlgorithmTravellingSalesman {
 
-    public Algorithme2Opt() {
+    public Algorithm2Opt() {
         super();
     }
 
+    /**
+     * Méthode qui prend en entrée un graphe complet contenant toutes les villes et leur chemin pour accéder à toutes
+     * les autres villes du graphe, et retourne une solution au problème du voyageur de commerce pour aller d'une ville
+     * à l'autre.
+     * @param g Graphe complet.
+     * @return Chemin le plus court.
+     */
     public Graph calculate(Graph g) {
 
-        AlgorithmeVoyageurCommerce algoDepart = new AlgorithmeAleatoire();
+        AlgorithmTravellingSalesman algoDepart = new AlgorithmRandom();
         Graph graph = algoDepart.calculate(g);
 
         selectedNodes = new ArrayList<Node>(graph.getNodes());
@@ -52,6 +63,14 @@ public class Algorithme2Opt extends AlgorithmeVoyageurCommerce{
         return graph;
     }
 
+    /**
+     * Méthode effectuant un "swap" selon le principe de l'optimisation locale : il inverse le chemin
+     * entier entre deux noeuds.
+     * @param g Graphe.
+     * @param i Noeud d'où l'inversion démarre.
+     * @param j Noeud d'où l'inversion se termine.
+     * @return Graphe dans lequel l'inversion a été effectuée.
+     */
     private Graph swapOpt(Graph g, Node i, Node j) {
         Graph newGraph = new Graph(g.getNodes(), g.getEdges(), g.getFirstNode());
         ArrayList<Node> newNodes = new ArrayList<>(g.getNodes());
@@ -71,6 +90,13 @@ public class Algorithme2Opt extends AlgorithmeVoyageurCommerce{
         return newGraph;
     }
 
+    /**
+     * Méthode effectuant un "swap" simple : il inverse la position de deux noeuds dans le graphe.
+     * @param g Graphe.
+     * @param i Premier noeud swappé.
+     * @param j Second noeud swappé.
+     * @return Graphe dans lequel le swap a été effectué.
+     */
     private Graph simpleSwapOpt(Graph g, Node i, Node j) {
         Graph newGraph = new Graph(g.getNodes(), g.getEdges(), g.getFirstNode());
         ArrayList<Node> newNodes = new ArrayList<>(g.getNodes());
