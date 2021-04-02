@@ -7,16 +7,32 @@ import optimodLyon.model.circuit.Graph;
 
 import java.util.*;
 
-
+/**
+ * Classe qui a pour objectif de travailler sur les algorithmes pour donner le plus court chemin
+ * de livraison pour un cycliste.
+ */
 public class CircuitPlanner1 extends AbstractCircuitPlanner{
 
+    /**
+     * Instance de l'algorithme de résolution du problème du voyageur de commerce.
+     */
     private AlgorithmTravellingSalesman voyageurCommerce;
 
+    /**
+     * Constructeur.
+     */
     public CircuitPlanner1() {
         this.voyageurCommerce = new Algorithm2Opt();
     }
 
     //TODO Need to test the method
+    /**
+     * Renvoie le trajet optimal (ou un trajet qui s'en rapproche) d'une ville A à une ville B.
+     * @param cityMapGraph Graphe représentant la CityMap.
+     * @param pointA Point pickup/delivery/dépot appartenant à la CityMap duquel on veut partir.
+     * @param pointB Point pickup/delivery/dépot appartenant à la CityMap auquel on veut arriver.
+     * @return Liste de segments constituant le plus court chemin.
+     */
     public List<Segment> getShortestPath(Graph cityMapGraph, Waypoint pointA, Waypoint pointB){
 
         // The priority queue allow to get the nodes to be visited in order given the result of the compareTo method.
@@ -59,6 +75,13 @@ public class CircuitPlanner1 extends AbstractCircuitPlanner{
         return null;
     }
 
+    /**
+     * Retourne le trajet optimal (ou un trajet qui s'en rapproche) d'un ou de plusieurs cyclistes pour effectuer
+     * sa/leur livraison.
+     * @param circuit Graphe représentant la CityMap.
+     * @param cycleNumber Nombre de cyclistes devant effectuer une livraison.
+     * @return Liste de segments à parcourir, pour chaque cycliste.
+     */
     public List<List<Segment>> searchSolution(Graph circuit, int cycleNumber){
         List<List<Segment>> pathForAllCycles = new ArrayList<>();
         List<Segment> pathForOneCycle = new ArrayList<>();

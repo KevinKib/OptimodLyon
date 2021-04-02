@@ -7,13 +7,24 @@ import java.util.Random;
 
 /**
  * Algorithme ayant pour objectif de résoudre le problème du voyageur de commerce via un choix aléatoire des noeuds.
+ * Utilisé car nécessaire à l'exécution du 2Opt.
  */
 public class AlgorithmRandom extends AlgorithmTravellingSalesman {
 
+    /**
+     * Constructeur.
+     */
     public AlgorithmRandom() {
         super();
     }
 
+    /**
+     * Méthode qui prend en entrée un graphe complet contenant toutes les villes et leur chemin pour accéder à toutes
+     * les autres villes du graphe, et retourne une solution au problème du voyageur de commerce pour aller d'une ville
+     * à l'autre.
+     * @param g Graphe complet.
+     * @return Chemin le plus court.
+     */
     public Graph calculate(Graph g) {
         // Graph that will be returned at the end.
         Graph result = new Graph(g.getNodes(), g.getEdges(), g.getFirstNode());

@@ -8,12 +8,27 @@ import optimodLyon.model.circuit.Graph;
 import java.util.AbstractMap;
 import java.util.Map;
 
+/**
+ * Algorithme ayant pour objectif de résoudre le problème du voyageur de commerce via la méthode de la
+ * meilleure insertion.
+ * Non utilisé car moins efficace que le 2Opt.
+ */
 public class AlgorithmNearestInsertion extends AlgorithmTravellingSalesman {
 
+    /**
+     * Constructeur.
+     */
     public AlgorithmNearestInsertion() {
         super();
     }
 
+    /**
+     * Méthode qui prend en entrée un graphe complet contenant toutes les villes et leur chemin pour accéder à toutes
+     * les autres villes du graphe, et retourne une solution au problème du voyageur de commerce pour aller d'une ville
+     * à l'autre.
+     * @param g Graphe complet.
+     * @return Chemin le plus court.
+     */
     public Graph calculate(Graph g) {
 
         this.initValidNodes(g);

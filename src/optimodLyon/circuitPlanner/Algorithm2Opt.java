@@ -63,6 +63,14 @@ public class Algorithm2Opt extends AlgorithmTravellingSalesman {
         return graph;
     }
 
+    /**
+     * Méthode effectuant un "swap" selon le principe de l'optimisation locale : il inverse le chemin
+     * entier entre deux noeuds.
+     * @param g Graphe.
+     * @param i Noeud d'où l'inversion démarre.
+     * @param j Noeud d'où l'inversion se termine.
+     * @return Graphe dans lequel l'inversion a été effectuée.
+     */
     private Graph swapOpt(Graph g, Node i, Node j) {
         Graph newGraph = new Graph(g.getNodes(), g.getEdges(), g.getFirstNode());
         ArrayList<Node> newNodes = new ArrayList<>(g.getNodes());
@@ -82,6 +90,13 @@ public class Algorithm2Opt extends AlgorithmTravellingSalesman {
         return newGraph;
     }
 
+    /**
+     * Méthode effectuant un "swap" simple : il inverse la position de deux noeuds dans le graphe.
+     * @param g Graphe.
+     * @param i Premier noeud swappé.
+     * @param j Second noeud swappé.
+     * @return Graphe dans lequel le swap a été effectué.
+     */
     private Graph simpleSwapOpt(Graph g, Node i, Node j) {
         Graph newGraph = new Graph(g.getNodes(), g.getEdges(), g.getFirstNode());
         ArrayList<Node> newNodes = new ArrayList<>(g.getNodes());
