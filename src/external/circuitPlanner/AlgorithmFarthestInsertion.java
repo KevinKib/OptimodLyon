@@ -1,23 +1,34 @@
 package external.circuitPlanner;
 
-import jdk.swing.interop.SwingInterOpUtils;
 import optimodLyon.model.Delivery;
 import optimodLyon.model.Node;
 import optimodLyon.model.Warehouse;
-import optimodLyon.model.circuit.Edge;
 import optimodLyon.model.circuit.Graph;
 
 import java.util.AbstractMap;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Map;
 
-public class AlgorithmeMeilleureInsertion extends AlgorithmeVoyageurCommerce{
+/**
+ * Algorithme ayant pour objectif de résoudre le problème du voyageur de commerce via la méthode de la
+ * lointaine insertion.
+ * Non utilisé car moins efficace que le 2Opt.
+ */
+public class AlgorithmFarthestInsertion extends AlgorithmTravellingSalesman {
 
-    public AlgorithmeMeilleureInsertion() {
+    /**
+     * Constructeur.
+     */
+    public AlgorithmFarthestInsertion() {
         super();
     }
 
+    /**
+     * Méthode qui prend en entrée un graphe complet contenant toutes les villes et leur chemin pour accéder à toutes
+     * les autres villes du graphe, et retourne une solution au problème du voyageur de commerce pour aller d'une ville
+     * à l'autre.
+     * @param g Graphe complet.
+     * @return Chemin le plus court.
+     */
     public Graph calculate(Graph g) {
 
         this.initValidNodes(g);
@@ -26,21 +37,21 @@ public class AlgorithmeMeilleureInsertion extends AlgorithmeVoyageurCommerce{
         Warehouse warehouse = (Warehouse) g.getFirstNode();
         selectedNodes.add(warehouse);
 
-        // Find node r such that cir is minimal and form sub-tour i-r-i.
-        Map.Entry<Node, Float> entry = this.getClosestNode(g, warehouse);
+        // Find node r such that cir is MAXIMAL and form sub-tour i-r-i.
+        Map.Entry<Node, Float> entry = this.getFarthestNode(g, warehouse);
         this.addNodeToSelected(entry.getKey());
 
         while (selectedNodes.size() != g.getNodes().size()) {
 
             // Selection step
-            // Given a sub-tour, find node r not in the sub-tour closest to any node j in the sub-tour;
+            // Given a sub-tour, find node r not in the sub-tour FARTHEST to any node j in the sub-tour;
             // i.e. with minimal crj
-            Map.Entry<Node, Float> bestNodeR = new AbstractMap.SimpleEntry<Node, Float>(null, Float.MAX_VALUE);
+            Map.Entry<Node, Float> bestNodeR = new AbstractMap.SimpleEntry<Node, Float>(null, Float.MIN_VALUE);
 
             for (Node nodeJ : selectedNodes) {
-                Map.Entry<Node, Float> nodeR = this.getClosestNode(g, nodeJ);
+                Map.Entry<Node, Float> nodeR = this.getFarthestNode(g, nodeJ);
 
-                if (nodeR.getValue() < bestNodeR.getValue()) {
+                if (nodeR.getValue() > bestNodeR.getValue()) {
                     bestNodeR = nodeR;
                 }
             }
