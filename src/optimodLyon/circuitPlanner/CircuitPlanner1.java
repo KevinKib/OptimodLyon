@@ -18,7 +18,7 @@ public class CircuitPlanner1 extends AbstractCircuitPlanner{
     /**
      * Algorithme d'ordonnancement du planificateur de circuit.
      */
-    private AlgorithmeVoyageurCommerce voyageurCommerce;
+    private AlgorithmTravellingSalesman voyageurCommerce;
 
     /**
      * Constructeur par défaut d'un planificateur de circuit.
