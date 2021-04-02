@@ -40,17 +40,17 @@ public class MapView extends JComponent
     /**
      * Chemin d'accés à l'image de localisation d'une livraison
      */
-    private static final String DELIVERY_LOCALISATION_PATH = "./rsc/image/delivery-localisation.png";
+    private static final String DELIVERY_LOCALISATION_PATH = "/image/delivery-localisation.png";
 
     /**
      * Chemin d'accés à l'image de localisation d'une recherche de livraison
      */
-    private static final String PICKUP_LOCALISATION_PATH = "./rsc/image/pickup-localisation.png";
+    private static final String PICKUP_LOCALISATION_PATH = "/image/pickup-localisation.png";
 
     /**
      * Chemin d'accés à l'image de localisation d'un dépôt
      */
-    private static final String WAREHOUSE_LOCALISATION_PATH = "./rsc/image/warehouse.png";
+    private static final String WAREHOUSE_LOCALISATION_PATH = "/image/warehouse.png";
 
     /**
      * Constante qui définit une palette de couleurs pour l'affichage des points de Pickup & Deilevry
@@ -88,9 +88,9 @@ public class MapView extends JComponent
 
         try
         {
-            this.deliveryLocalisationlogo = ImageIO.read(new File(DELIVERY_LOCALISATION_PATH));
-            this.pickupLocalisationlogo = ImageIO.read(new File(PICKUP_LOCALISATION_PATH));
-            this.warehouseLocalisationlogo = ImageIO.read(new File(WAREHOUSE_LOCALISATION_PATH));
+            this.deliveryLocalisationlogo = ImageIO.read(getClass().getResource(DELIVERY_LOCALISATION_PATH));
+            this.pickupLocalisationlogo = ImageIO.read(getClass().getResource(PICKUP_LOCALISATION_PATH));
+            this.warehouseLocalisationlogo = ImageIO.read(getClass().getResource(WAREHOUSE_LOCALISATION_PATH));
         }
         catch (Exception e)
         {

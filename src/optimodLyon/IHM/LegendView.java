@@ -92,22 +92,22 @@ public class LegendView extends JPanel
     /**
      * Chemin d'accés à l'image de localisation d'un point de pickup
      */
-    private static final String PICKUP_IMAGE_PATH = "./rsc/image/pickup-localisation.png";
+    private static final String PICKUP_IMAGE_PATH = "/image/pickup-localisation.png";
 
     /**
      * Chemin d'accés à l'image de localisation d'un point de delivery
      */
-    private static final String DELIVERY_IMAGE_PATH = "./rsc/image/delivery-localisation.png";
+    private static final String DELIVERY_IMAGE_PATH = "/image/delivery-localisation.png";
 
     /**
      * Chemin d'accés à l'image de localisation d'un point de delivery
      */
-    private static final String WAREHOUSE_IMAGE_PATH = "./rsc/image/warehouse.png";
+    private static final String WAREHOUSE_IMAGE_PATH = "/image/warehouse.png";
 
     /**
      * Chemin d'accés à l'image du circuit
      */
-    private static final String CIRCUIT_IMAGE_PATH = "./rsc/image/circuit.png";
+    private static final String CIRCUIT_IMAGE_PATH = "/image/circuit.png";
 
     /**
      * Référence vers la fenetre de l'application
@@ -138,7 +138,7 @@ public class LegendView extends JPanel
             this.labelListPanel.setBackground(null);
 
             // Pickup icon
-            BufferedImage bigPickupIconImage = ImageIO.read(new File(PICKUP_IMAGE_PATH));
+            BufferedImage bigPickupIconImage = ImageIO.read(getClass().getResource(PICKUP_IMAGE_PATH));
             BufferedImage pickupIconImage = this.resize(bigPickupIconImage, 30, 30);
             ImageIcon pickupIcon = new ImageIcon(pickupIconImage);
             this.pickupIconLabel = new JLabel(pickupIcon);
@@ -149,7 +149,7 @@ public class LegendView extends JPanel
             this.pickupLabel.setFont(new Font("Arial", Font.PLAIN, 16));
 
             // Delivery icon
-            BufferedImage bigDeliveryIconImage = ImageIO.read(new File(DELIVERY_IMAGE_PATH));
+            BufferedImage bigDeliveryIconImage = ImageIO.read(getClass().getResource(DELIVERY_IMAGE_PATH));
             BufferedImage deliveryIconImage = this.resize(bigDeliveryIconImage, 30, 30);
             ImageIcon deliveryIcon = new ImageIcon(deliveryIconImage);
             this.deliveryIconLabel = new JLabel(deliveryIcon);
@@ -160,7 +160,7 @@ public class LegendView extends JPanel
             this.deliveryLabel.setFont(new Font("Arial", Font.PLAIN, 16));
 
             // Pickup icon
-            BufferedImage bigWarehouseIconImage = ImageIO.read(new File(WAREHOUSE_IMAGE_PATH));
+            BufferedImage bigWarehouseIconImage = ImageIO.read(getClass().getResource(WAREHOUSE_IMAGE_PATH));
             BufferedImage warehouseIconImage = this.resize(bigWarehouseIconImage, 30, 30);
             ImageIcon warehouseIcon = new ImageIcon(warehouseIconImage);
             this.warehouseIconLabel = new JLabel(warehouseIcon);
@@ -171,7 +171,7 @@ public class LegendView extends JPanel
             this.warehouseLabel.setFont(new Font("Arial", Font.PLAIN, 16));
 
             // Circuit icon
-            BufferedImage bigCircuitIconImage = ImageIO.read(new File(CIRCUIT_IMAGE_PATH));
+            BufferedImage bigCircuitIconImage = ImageIO.read(getClass().getResource(CIRCUIT_IMAGE_PATH));
             BufferedImage circuitIconImage = this.resize(bigCircuitIconImage, 30, 30);
             ImageIcon circuitIcon = new ImageIcon(circuitIconImage);
             this.circuitIconLabel = new JLabel(circuitIcon);
