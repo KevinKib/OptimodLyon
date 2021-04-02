@@ -6,9 +6,9 @@ import optimodLyon.model.circuit.Graph;
 
 import java.util.Map;
 
-public class AlgorithmePlusProcheVoisin extends AlgorithmeVoyageurCommerce{
+public class AlgorithmClosestNeighbour extends AlgorithmTravellingSalesman {
 
-    public AlgorithmePlusProcheVoisin() {
+    public AlgorithmClosestNeighbour() {
         super();
     }
 

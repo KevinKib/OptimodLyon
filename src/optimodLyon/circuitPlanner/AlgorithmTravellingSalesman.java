@@ -10,7 +10,7 @@ import java.util.AbstractMap;
 import java.util.ArrayList;
 import java.util.Map;
 
-public abstract class AlgorithmeVoyageurCommerce {
+public abstract class AlgorithmTravellingSalesman {
 
     /**
      * All nodes that can safely be selected by random
@@ -22,7 +22,7 @@ public abstract class AlgorithmeVoyageurCommerce {
      */
     protected ArrayList<Node> selectedNodes;
 
-    public AlgorithmeVoyageurCommerce() {
+    public AlgorithmTravellingSalesman() {
         this.validNodes = new ArrayList<>();
         this.selectedNodes = new ArrayList<>();
     }

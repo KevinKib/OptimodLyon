@@ -10,10 +10,10 @@ import java.util.*;
 
 public class CircuitPlanner1 extends AbstractCircuitPlanner{
 
-    private AlgorithmeVoyageurCommerce voyageurCommerce;
+    private AlgorithmTravellingSalesman voyageurCommerce;
 
     public CircuitPlanner1() {
-        this.voyageurCommerce = new Algorithme2Opt();
+        this.voyageurCommerce = new Algorithm2Opt();
     }
 
     //TODO Need to test the method

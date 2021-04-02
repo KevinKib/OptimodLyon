@@ -8,9 +8,9 @@ import optimodLyon.model.circuit.Graph;
 import java.util.AbstractMap;
 import java.util.Map;
 
-public class AlgorithmeMeilleureInsertion extends AlgorithmeVoyageurCommerce{
+public class AlgorithmNearestInsertion extends AlgorithmTravellingSalesman {
 
-    public AlgorithmeMeilleureInsertion() {
+    public AlgorithmNearestInsertion() {
         super();
     }
 

@@ -7,15 +7,26 @@ import optimodLyon.model.circuit.Graph;
 import java.util.ArrayList;
 import java.util.Collections;
 
-public class Algorithme2Opt extends AlgorithmeVoyageurCommerce{
+/**
+ * Algorithme résolvant le problème du voyageur de commerce grâce à la méthode d'optimisation locale 2-Opt.
+ * Utilise l'algorithme de résolution aléatoire.
+ */
+public class Algorithm2Opt extends AlgorithmTravellingSalesman {
 
-    public Algorithme2Opt() {
+    public Algorithm2Opt() {
         super();
     }
 
+    /**
+     * Méthode qui prend en entrée un graphe complet contenant toutes les villes et leur chemin pour accéder à toutes
+     * les autres villes du graphe, et retourne une solution au problème du voyageur de commerce pour aller d'une ville
+     * à l'autre.
+     * @param g Graphe complet.
+     * @return Chemin le plus court.
+     */
     public Graph calculate(Graph g) {
 
-        AlgorithmeVoyageurCommerce algoDepart = new AlgorithmeAleatoire();
+        AlgorithmTravellingSalesman algoDepart = new AlgorithmRandom();
         Graph graph = algoDepart.calculate(g);
 
         selectedNodes = new ArrayList<Node>(graph.getNodes());

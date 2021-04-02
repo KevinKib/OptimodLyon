@@ -8,9 +8,9 @@ import java.util.Random;
 /**
  * Algorithme ayant pour objectif de résoudre le problème du voyageur de commerce via un choix aléatoire des noeuds.
  */
-public class AlgorithmeAleatoire extends AlgorithmeVoyageurCommerce {
+public class AlgorithmRandom extends AlgorithmTravellingSalesman {
 
-    public AlgorithmeAleatoire() {
+    public AlgorithmRandom() {
         super();
     }
 
